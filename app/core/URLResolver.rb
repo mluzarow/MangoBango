@@ -7,6 +7,13 @@ class URLResolver
 	# 
 	# @param [String] uri URL of loaded page minus the hostname
 	def initialize(uri)
+		@query_var = []
+		@segments = []
+		@file_contents = ''
+		@class_name = ''
+		
+		uri[0] = ''
+		
 		query_segment = uri.split('?')
 		
 		if (query_segment.size < 2)
@@ -24,6 +31,14 @@ class URLResolver
 		end
 		
 		@segments = uri.split('/')
+		
+		if (@segments[0] == 'resources')
+			# A resource was requested instead of a controller
+			filepath = File.join(File.dirname(__FILE__), "../#{uri}")
+			@file_contents = File.binread(filepath)
+		else
+			@class_name = @segments[-1]
+		end
 	end
 	
 	# Gets the list of URI segments split by '/'
@@ -33,11 +48,15 @@ class URLResolver
 		@segments
 	end
 	
+	def getFileContents()
+		@file_contents
+	end
+	
 	# Gets the page class, or the final segment of the given URI.
 	# 
 	# @return [String] lowercase page controller class name
 	def getPageClass()
-		@segments[-1]
+		@class_name
 	end
 	
 	# Gets hash of query vars passed with the given URL.

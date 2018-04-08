@@ -1,6 +1,8 @@
 require 'socket'
 require 'uri'
 require_relative 'core/URLResolver'
+require_relative 'pages/controllers/LibraryPage'
+require_relative 'pages/views/LibraryPageView'
 
 server = TCPServer.new('localhost', 5678)
 
@@ -8,25 +10,30 @@ loop do
 	socket = server.accept
 	request_line = socket.gets
 	
-	STDERR.puts request_line
+	puts "Request: #{request_line}"
 	
 	# Get URI segments
-	path = (request_line.split ' ')[1]
-	url_resolver = URLResolver.new(path)
-	page_class = url_resolver.getPageClass()
-	query_vars = url_resolver.getQueryVars()
+	if (request_line.empty?)
+		url_resolver = URLResolver.new('')
+	else
+		path = (request_line.split ' ')[1]
+		url_resolver = URLResolver.new(path)
+	end
 	
-	response =
-		"request_line #{request_line}" +
-		"path #{path}\n" +
-		"page class #{page_class}\n" + 
-		"vars #{query_vars}\n"
+	puts "Segs : #{url_resolver.getSegment}"
 	
-	socket.print
-		"HTTP/1.1 200 OK\n" +
-		"Content-Type: text/plain\n" +
-		"Content-Length: #{response.size}\n" +
-		"Connection: close\n\n"
+	if (!url_resolver.getFileContents.empty?)
+		response = url_resolver.getFileContents
+		content_type = "img/jpeg"
+	else
+		page_class = url_resolver.getPageClass()
+		query_vars = url_resolver.getQueryVars()
+		content_type = "text/html"
+		
+		response = LibraryPage.new.render()
+	end
+	
+	socket.print "HTTP/2.0 200/OK\r\ncontent-type: #{content_type}\r\ncontent-length: #{response.size}\r\nconnection: close\r\n\r\n"
 	
 	socket.print response
 	

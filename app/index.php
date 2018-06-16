@@ -62,40 +62,41 @@ if (!empty($current_segs)) {
 			<script type="text/javascript" src="http://69.47.79.25:6969/External/Javascript/jquery-3.3.1.js"></script>
 		</head>
 		<body>
-		<div class="db_button">
+		<a class="db_button" href="http://69.47.79.25:6969/db/dashboard">
 			DB
 		</div>
 		<style>
 			.db_button {
+				padding: 9px;
 				width: 100px;
 				height: 40px;
+				display: block;
 				background-color: #000;
+				box-sizing: border-box;
 				color: #fff;
 				cursor: pointer;
 				text-align: center;
-				box-sizing: border-box;
-				padding: 9px;
+				text-decoration: none;
 			}
 		</style>
-		<script>
-			$(window).ready (function () {
-				$(".db_button").click (function () {
-					$.ajax ({
-						url: "ajax/Controllers/ConfigDisplay/ajaxProcessConfigs",
-						data: {test : "test_data"},
-						type: "post",
-						success: function () {
-							console.log ("Successful ajax!");
-						}
-					});
-				});
-			});
-		</script>
 		</body>';
 }
 
 
-
+// <script>
+// 	$(window).ready (function () {
+// 		$(".db_button").click (function () {
+// 			$.ajax ({
+// 				url: "ajax/Controllers/ConfigDisplay/ajaxProcessConfigs",
+// 				data: {test : "test_data"},
+// 				type: "post",
+// 				success: function () {
+// 					console.log ("Successful ajax!");
+// 				}
+// 			});
+// 		});
+// 	});
+// </script>
 
 // $db = new mysqli ('localhost:3306', 'root', 'glitch123', 'server');
 // 

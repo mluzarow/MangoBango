@@ -20,6 +20,8 @@ spl_autoload_register(function ($className) {
 	}
 });
 
+\Core\Database::initialize ();
+
 // Parse the URL here
 $current_segs = trim ($_SERVER['REQUEST_URI'], '/');
 $current_segs = explode ('/', $current_segs);
@@ -50,7 +52,7 @@ if (!empty($current_segs)) {
 		try {
 			new $namespace ();
 		} catch (Error $e) {
-			echo 'Page not found.';
+			echo $e->getMessage ();
 		}
 	} else {
 		echo 'Not Implemented.';
@@ -98,7 +100,7 @@ if (!empty($current_segs)) {
 // 	});
 // </script>
 
-// $db = new mysqli ('localhost:3306', 'root', 'glitch123', 'server');
+
 // 
 // if ($db->connect_errno) {
 // 	echo 'DB connection error.';

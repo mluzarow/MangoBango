@@ -3,34 +3,31 @@
 // use DBViewer\Controller\DBViewerMain;
 use \Core\AJAXProcessor;
 
-// autoload classes based on a 1:1 mapping from namespace to directory structure.
+// Autoload classes based on a 1:1 mapping from namespace to directory structure.
 spl_autoload_register(function ($className) {
-	# Usually I would just concatenate directly to $file variable below
-	# this is just for easy viewing on Stack Overflow)
 	$ds = DIRECTORY_SEPARATOR;
 	$dir = __DIR__;
 	
-	// replace namespace separator with directory separator (prolly not required)
+	// Replace namespace separator with directory separator
 	$className = str_replace('\\', $ds, $className);
 	
-	// get full name of file containing the required class
+	// Get full name of file containing the required class
 	$file = "{$dir}{$ds}{$className}.php";
-	echo $file;
-	// get file if it is readable
-	if (is_readable($file)) {
+	
+	// Get file if it is readable
+	if (is_readable ($file)) {
 		require_once $file;
 	}
 });
 
 // Parse the URL here
-$current_segs = trim($_SERVER['REQUEST_URI'], '/');
+$current_segs = trim ($_SERVER['REQUEST_URI'], '/');
 $current_segs = explode ('/', $current_segs);
 
 if (count ($current_segs) === 1) {
 	if (empty ($current_segs[0])) {
 		unset ($current_segs[0]);
 		$current_segs = array_values ($current_segs);
-		print_r($current_segs);
 	}
 }
 
@@ -43,7 +40,20 @@ if (!empty($current_segs)) {
 		
 		$ajax = new AJAXProcessor ($current_segs);
 		$ajax->fireTargetMethod ();
-		exit;
+	} else if ($current_segs[0] === 'db') {
+		// Use the DBViewer files
+		$namespace = '\DBViewer\PageControllers';
+		for ($i = 1; $i < count ($current_segs); $i++) {
+			$namespace .= '\\'.$current_segs[$i];
+		}
+		
+		try {
+			new $namespace ();
+		} catch (Error $e) {
+			echo 'Page not found.';
+		}
+	} else {
+		echo 'Not Implemented.';
 	}
 } else {
 	// Empty so its just the home page.

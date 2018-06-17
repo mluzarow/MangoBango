@@ -19,7 +19,7 @@ class Debug {
 		if (is_array($var)) {
 			$output .= print_r($var, true).'</pre>';
 		} else {
-			$output .= var_dump ($var, true).'</pre>';
+			$output .= var_export ($var, true).'</pre>';
 		}
 		
 		echo $output;

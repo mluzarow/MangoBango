@@ -74,11 +74,11 @@ if (!empty($current_segs)) {
 	// Empty so its just the home page.
 	echo '
 		<head>
-			<script type="text/javascript" src="http://69.47.79.25:6969/External/Javascript/jquery-3.3.1.js"></script>
+			<script type="text/javascript" src="/External/Javascript/jquery-3.3.1.js"></script>
 		</head>
 		<body>
-		<a class="db_button" href="http://69.47.79.25:6969/db/dashboard">DB</a>
-		<a class="db_button" href="http://69.47.79.25:6969/displaylibrary">Library</a>
+		<a class="db_button" href="/db/dashboard">DB</a>
+		<a class="db_button" href="/displaylibrary">Library</a>
 		<style>
 			.db_button {
 				margin: 5px;
@@ -96,44 +96,3 @@ if (!empty($current_segs)) {
 		</style>
 		</body>';
 }
-
-
-// <script>
-// 	$(window).ready (function () {
-// 		$(".db_button").click (function () {
-// 			$.ajax ({
-// 				url: "ajax/Controllers/ConfigDisplay/ajaxProcessConfigs",
-// 				data: {test : "test_data"},
-// 				type: "post",
-// 				success: function () {
-// 					console.log ("Successful ajax!");
-// 				}
-// 			});
-// 		});
-// 	});
-// </script>
-
-
-// 
-// if ($db->connect_errno) {
-// 	echo 'DB connection error.';
-// 	echo "Errno: " . $db->connect_errno . "\n";
-//     echo "Error: " . $db->connect_error . "\n";
-// 	exit;
-// }
-// 
-// $q = "SELECT * FROM `server_configs`";
-// $r = $db->query ($q);
-// 
-// if ($r === false) {
-// 	echo 'Failed';
-// }
-// 
-// $configs = [];
-// while ($config = $r->fetch_assoc()) {
-// 	$configs[$config['config_name']] = $config['config_value'];
-// }
-// 
-// print_r($configs);
-
-// $test_page = new Displaylibrary ();

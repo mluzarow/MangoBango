@@ -34,7 +34,7 @@ class DisplayLibrary {
 					
 					$output .=
 					'<div class="manga_cover_wrap">
-						<a href="http://69.47.79.25:6969/reader?source='.$test_directory.'\\'.$series_folder.'\\'.$volume_folder.'\\">
+						<a href="/reader?source='.$test_directory.'\\'.$series_folder.'\\'.$volume_folder.'\\">
 							<img src="data:image/jpeg;base64,'.base64_encode ($blob).'"/>
 						</a>
 					</div>';
@@ -47,7 +47,7 @@ class DisplayLibrary {
 					
 					$output .=
 					'<div class="manga_cover_wrap">
-						<a href="http://69.47.79.25:6969/reader?source='.$test_directory.'\\'.$series_folder.'\\'.$volume_folder.'\\">
+						<a href="/reader?source='.$test_directory.'\\'.$series_folder.'\\'.$volume_folder.'\\">
 							<img src="data:image/jpeg;base64,'.base64_encode ($blob).'"/>
 						</a>
 					</div>';

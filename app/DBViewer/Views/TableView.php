@@ -10,7 +10,7 @@ class TableView {
 		$output =
 		'<html>
 		<head>
-			<script type="text/javascript" src="http://69.47.79.25:6969/External/Javascript/jquery-3.3.1.js"></script>
+			<script type="text/javascript" src="/External/Javascript/jquery-3.3.1.js"></script>
 		</head>
 		<body>
 		<div class="row_list">

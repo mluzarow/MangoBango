@@ -58,7 +58,17 @@ if (!empty($current_segs)) {
 			echo $e->getMessage ();
 		}
 	} else {
-		echo 'Not Implemented.';
+		$namespace = '\Controllers';
+		
+		for ($i = 0; $i < count ($current_segs); $i++) {
+			$namespace .= '\\'.$current_segs[$i];
+		}
+		
+		try {
+			new $namespace ();
+		} catch (Error $e) {
+			echo $e->getMessage ();
+		}
 	}
 } else {
 	// Empty so its just the home page.
@@ -67,11 +77,11 @@ if (!empty($current_segs)) {
 			<script type="text/javascript" src="http://69.47.79.25:6969/External/Javascript/jquery-3.3.1.js"></script>
 		</head>
 		<body>
-		<a class="db_button" href="http://69.47.79.25:6969/db/dashboard">
-			DB
-		</div>
+		<a class="db_button" href="http://69.47.79.25:6969/db/dashboard">DB</a>
+		<a class="db_button" href="http://69.47.79.25:6969/displaylibrary">Library</a>
 		<style>
 			.db_button {
+				margin: 5px;
 				padding: 9px;
 				width: 100px;
 				height: 40px;

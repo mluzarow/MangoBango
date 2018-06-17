@@ -8,10 +8,16 @@ class DisplayLibrary {
 		
 		$output = 
 		'<style>
+			body {
+				margin: 0;
+				background-color: #474747;
+			}
+			
 			.manga_cover_wrap {
 				margin: 10px;
 				width: 300px;
 				display: inline-block;
+				vertical-align: top;
 			}
 			
 			.manga_cover_wrap a {

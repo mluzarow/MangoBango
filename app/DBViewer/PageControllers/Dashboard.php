@@ -1,10 +1,10 @@
 <?php
 namespace DBViewer\PageControllers;
 
+use DBViewer\Views\DashboardView;
+
 class Dashboard {
 	public function __construct () {
-		echo "DASHBOARD!!!";
-		$r = \Core\Database::query ('SELECT * FROM `server_configs`');
-		print_r($r);
+		new DashboardView ();
 	}
 }

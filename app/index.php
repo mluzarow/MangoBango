@@ -23,7 +23,10 @@ spl_autoload_register(function ($className) {
 \Core\Database::initialize ();
 
 // Parse the URL here
-$current_segs = trim ($_SERVER['REQUEST_URI'], '/');
+$url_split = explode ('?', $_SERVER['REQUEST_URI']);
+
+$current_segs = $url_split[0];
+$current_segs = trim ($current_segs, '/');
 $current_segs = explode ('/', $current_segs);
 
 if (count ($current_segs) === 1) {

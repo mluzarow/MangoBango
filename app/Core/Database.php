@@ -10,6 +10,19 @@ class Database {
 	 */
 	private static $database;
 	
+	public static function getConnectionData () {
+		$details = [
+			'client_info' => self::$database->client_info,
+			'client_version' => self::$database->client_version,
+			'host_info' => self::$database->host_info,
+			'stat' => self::$database->stat,
+			'server_info' => self::$database->server_info,
+			'server_version' => self::$database->server_version
+		];
+		
+		return ($details);
+	}
+	
 	/**
 	 * Initializes the database connection.
 	 */

@@ -7,14 +7,22 @@ class Reader {
 		
 		$output =
 		'<style>
+			body {
+				margin: 0;
+				background-color: #474747;
+			}
+		
 			.strip_wrap {
 				margin: 0 auto;
 				width: 1200px;
 				max-width: 100%;
+				background-color: #fff;
+				box-shadow: 0 0 25px 20px rgba(0, 0, 0, 0.3);
 			}
 			
 			.strip_wrap img {
-				width: 100%;
+				margin: 0 auto;
+				max-width: 100%;
 				display: block;
 			}
 		</style>

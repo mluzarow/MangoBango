@@ -1,0 +1,31 @@
+html,
+body {
+	margin: 0 auto;
+	height: 100%;
+	background-color: #414141;
+}
+
+.sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 125px;
+	height: 100%;
+	background-color: #915e00;
+}
+
+.sidebar .button {
+	padding: 10px;
+	height: 100px;
+	display: block;
+}
+
+.sidebar .button a {
+	width: 100%;
+	display: block;
+}
+
+.sidebar .button a img {
+	width: 100%;
+	display: block;
+}

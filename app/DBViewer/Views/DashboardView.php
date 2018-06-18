@@ -5,7 +5,7 @@ class DashboardView {
 	public function __construct () {
 		$details = \Core\Database::getConnectionData ();
 		$tables = \Core\Database::query ('show tables')[0];
-		var_dump ($tables);
+		
 		$output =
 		'<html>
 		<head>

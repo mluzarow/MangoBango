@@ -22,6 +22,27 @@ spl_autoload_register(function ($className) {
 
 \Core\Database::initialize ();
 
+echo
+'<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="/External/Javascript/jquery-3.3.1.js"></script>
+		<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/UIFrame.css">
+	</head>
+	<body>
+		<div class="sidebar">
+			<div class="button">
+				<a href="/displaylibrary">
+					<img src="\resources\icons\bookshelf.svg" />
+				</a>
+			</div>
+			<div class="button">
+				<a href="/db/dashboard">
+					<img src="\resources\icons\gears.svg" />
+				</a>
+			</div>
+		</div>';
+
 // Parse the URL here
 $url_split = explode ('?', $_SERVER['REQUEST_URI']);
 
@@ -73,12 +94,9 @@ if (!empty($current_segs)) {
 } else {
 	// Empty so its just the home page.
 	echo '
-		<head>
-			<script type="text/javascript" src="/External/Javascript/jquery-3.3.1.js"></script>
-		</head>
-		<body>
 		<a class="db_button" href="/db/dashboard">DB</a>
 		<a class="db_button" href="/displaylibrary">Library</a>
+		<a class="db_button" href="/config">Config</a>
 		<style>
 			.db_button {
 				margin: 5px;
@@ -93,6 +111,9 @@ if (!empty($current_segs)) {
 				text-align: center;
 				text-decoration: none;
 			}
-		</style>
-		</body>';
+		</style>';
 }
+
+echo 
+	'</body>
+</html>';

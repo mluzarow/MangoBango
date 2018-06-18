@@ -8,9 +8,9 @@ class DisplayLibrary {
 		
 		$output = 
 		'<style>
-			body {
-				margin: 0;
-				background-color: #474747;
+			.display_area {
+				width: calc(100% - 125px);
+				float: right;
 			}
 			
 			.manga_cover_wrap {
@@ -27,7 +27,8 @@ class DisplayLibrary {
 			.manga_cover_wrap a img {
 				width: 100%;
 			}
-		</style>';
+		</style>
+		<div class="display_area">';
 		
 		foreach ($directory_tree as $series_folder => $series) {
 			foreach ($series as $volume_folder => $volume) {
@@ -61,7 +62,8 @@ class DisplayLibrary {
 			}
 		}
 		
-		
+		$output .=
+		'</div>';
 		
 		echo $output;
 	}

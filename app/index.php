@@ -41,7 +41,8 @@ echo
 					<img src="\resources\icons\gears.svg" />
 				</a>
 			</div>
-		</div>';
+		</div>
+		<div class="display_container">';
 
 // Parse the URL here
 $url_split = explode ('?', $_SERVER['REQUEST_URI']);
@@ -111,7 +112,8 @@ if (!empty($current_segs)) {
 				text-align: center;
 				text-decoration: none;
 			}
-		</style>';
+		</style>
+	</div>';
 }
 
 echo 

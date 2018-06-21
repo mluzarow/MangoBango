@@ -1,71 +1,42 @@
 <?php
 namespace Controllers;
 
+use ViewItems\PageViews\DisplayLibraryView;
+
 class DisplayLibrary {
 	public function __construct () {
 		$test_directory = 'C:\Users\Mark\Desktop\MangoBango_manga_directory';
 		$directory_tree = $this->dirToArray ($test_directory);
 		
-		$output = 
-		'<style>
-			.display_area {
-				width: calc(100% - 125px);
-				float: right;
-			}
-			
-			.manga_cover_wrap {
-				margin: 10px;
-				width: 300px;
-				display: inline-block;
-				vertical-align: top;
-			}
-			
-			.manga_cover_wrap a {
-				display: block;
-			}
-			
-			.manga_cover_wrap a img {
-				width: 100%;
-			}
-		</style>
-		<div class="display_area">';
+		$view_parameters = [];
+		$view_parameters['volumes'] = [];
 		
 		foreach ($directory_tree as $series_folder => $series) {
 			foreach ($series as $volume_folder => $volume) {
 				if (in_array ('cover.png', $volume)) {
-					$file_path = $test_directory.'\\'.$series_folder.'\\'.$volume_folder.'\\cover.png';
-					
-					$f = fopen ($file_path, 'r');
-					$blob = fread ($f, filesize ($file_path));
-					fclose ($f);
-					
-					$output .=
-					'<div class="manga_cover_wrap">
-						<a href="/reader?source='.$test_directory.'\\'.$series_folder.'\\'.$volume_folder.'\\">
-							<img src="data:image/jpeg;base64,'.base64_encode ($blob).'"/>
-						</a>
-					</div>';
+					$ext = 'png';
+					$ext_uri = 'png';
 				} else if (in_array ('cover.jpg', $volume)) {
-					$file_path = $test_directory.'\\'.$series_folder.'\\'.$volume_folder.'\\cover.jpg';
-					
-					$f = fopen ($file_path, 'r');
-					$blob = fread ($f, filesize ($file_path));
-					fclose ($f);
-					
-					$output .=
-					'<div class="manga_cover_wrap">
-						<a href="/reader?source='.$test_directory.'\\'.$series_folder.'\\'.$volume_folder.'\\">
-							<img src="data:image/jpeg;base64,'.base64_encode ($blob).'"/>
-						</a>
-					</div>';
+					$ext = 'jpg';
+					$ext_uri = 'jpeg';
 				}
+				
+				$file_path = "{$test_directory}\\{$series_folder}\\{$volume_folder}\\cover.{$ext}";
+				
+				$f = fopen ($file_path, 'r');
+				$blob = fread ($f, filesize ($file_path));
+				fclose ($f);
+				
+				$view_parameters['volumes'][] = [
+					'link' => "/reader?source={$test_directory}\\{$series_folder}\\{$volume_folder}\\",
+					'source' => "data:image/{$ext_uri};base64,".base64_encode ($blob)
+				];
 			}
 		}
 		
-		$output .=
-		'</div>';
+		$view = new DisplayLibraryView ($view_parameters);
 		
-		echo $output;
+		echo $view->render ();
 	}
 	
 	private function dirToArray ($dir) {

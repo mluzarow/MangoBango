@@ -70,6 +70,7 @@ class DisplayLibraryView extends ViewAbstract {
 	 * 
 	 * @param array $volumes display data for each volume
 	 * 
+	 * @throws TypeError on non-array parameter
 	 * @throws InvalidArgumentException on:
 	 *         - non-array items
 	 *         - missing array item keys

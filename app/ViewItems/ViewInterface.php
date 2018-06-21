@@ -1,7 +1,7 @@
 <?php
-namespace ViewItems\Partial;
+namespace ViewItems;
 
-abstract class PartialView {
+abstract class ViewInterface {
 	protected $error_templates = [
 		'InvalidArgumentException' => '%s::%s Argument (%s) must be %s; %s given.'
 	];

@@ -9,7 +9,7 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 125px;
+	width: 100px;
 	height: 100%;
 	background-color: #915e00;
 }
@@ -28,4 +28,11 @@ body {
 .sidebar .button a img {
 	width: 100%;
 	display: block;
+}
+
+.display_container {
+	padding: 10px;
+	width: calc(100% - 100px);
+	float: right;
+	box-sizing: border-box;
 }

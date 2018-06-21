@@ -37,8 +37,13 @@ echo
 				</a>
 			</div>
 			<div class="button">
-				<a href="/db/dashboard">
+				<a href="/config">
 					<img src="\resources\icons\gears.svg" />
+				</a>
+			</div>
+			<div class="button">
+				<a href="/db/dashboard">
+					<img src="\resources\icons\database.svg" />
 				</a>
 			</div>
 		</div>

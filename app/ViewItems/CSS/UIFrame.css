@@ -5,18 +5,51 @@ body {
 	background-color: #414141;
 }
 
+.topbar {
+	position: fixed;
+	padding: 5px;
+	width: 100%;
+	background-color: #d68100;
+	box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3);
+	box-sizing: border-box;
+	z-index: 3;
+}
+
+.topbar .logo {
+	padding-left: 10px;
+	float: left;
+	font-family: Consolas;
+	font-size: 2em;
+}
+
+.topbar .search_wrap {
+	padding: 3px 5px;
+	display: block;
+	float: right;
+	background-color: aliceblue;
+}
+
+.topbar .search_wrap .search_box {
+	width: 300px;
+	border: none;
+	background-color: transparent;
+	font-size: 1.5em;
+}
+
 .sidebar {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 100px;
+	padding-top: 50px;
+	width: 90px;
 	height: 100%;
 	background-color: #915e00;
+	box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.3);
+	z-index: 2;
 }
 
 .sidebar .button {
 	padding: 10px;
-	height: 100px;
 	display: block;
 }
 
@@ -31,8 +64,6 @@ body {
 }
 
 .display_container {
-	padding: 10px;
-	width: calc(100% - 100px);
-	float: right;
+	padding: 59px 10px 10px 100px;
 	box-sizing: border-box;
 }

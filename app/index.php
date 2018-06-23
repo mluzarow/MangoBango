@@ -30,6 +30,12 @@ echo
 		<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/UIFrame.css">
 	</head>
 	<body>
+		<div class="topbar">
+			<div class="logo">MangaBango</div>
+			<div class="search_wrap">
+				<input class="search_box" type="text" autocomplete="off" />
+			</div>
+		</div>
 		<div class="sidebar">
 			<div class="button">
 				<a href="/displaylibrary">

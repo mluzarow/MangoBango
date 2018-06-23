@@ -105,8 +105,7 @@ if (!empty($current_segs)) {
 	}
 } else {
 	// Empty so its just the home page.
-	$view = new \ViewItems\PageViews\HomeView ([]);
-	echo $view->render ();
+	new \Controllers\Home ();
 }
 
 echo 

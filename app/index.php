@@ -105,28 +105,11 @@ if (!empty($current_segs)) {
 	}
 } else {
 	// Empty so its just the home page.
-	echo '
-		<a class="db_button" href="/db/dashboard">DB</a>
-		<a class="db_button" href="/displaylibrary">Library</a>
-		<a class="db_button" href="/config">Config</a>
-		<style>
-			.db_button {
-				margin: 5px;
-				padding: 9px;
-				width: 100px;
-				height: 40px;
-				display: block;
-				background-color: #000;
-				box-sizing: border-box;
-				color: #fff;
-				cursor: pointer;
-				text-align: center;
-				text-decoration: none;
-			}
-		</style>
-	</div>';
+	$view = new \ViewItems\PageViews\HomeView ([]);
+	echo $view->render ();
 }
 
 echo 
-	'</body>
+		'</div>
+	</body>
 </html>';

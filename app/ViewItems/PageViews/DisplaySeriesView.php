@@ -11,14 +11,45 @@ class DisplaySeriesView extends ViewAbstract {
 	 * Constructs the CSS using the available properties.
 	 */
 	protected function constructCSS () {
-		return ('');
+		$output =
+		'<style>
+			.library_display_container .manga_volume_wrap {
+				margin: 10px;
+				width: 300px;
+				display: inline-block;
+				vertical-align: top;
+			}
+			
+			.library_display_container .manga_volume_wrap a {
+				display: block;
+			}
+			
+			.library_display_container .manga_volume_wrap a img {
+				width: 100%;
+			}
+		</style>';
+		
+		return ($output);
 	}
 	
 	/**
 	 * Constructs the HTML using the available properties.
 	 */
 	protected function constructHTML () {
-		return ('');
+		$output =
+		'<div class="library_display_container">';
+			foreach ($this->getVolumes () as $volume) {
+				$output .=
+				'<div class="manga_volume_wrap">
+					<a href="'.$volume['link'].'">
+						<img src="'.$volume['source'].'" />
+					</a>
+				</div>';
+			}
+		$output .=
+		'</div>';
+		
+		return ($output);
 	}
 	
 	/**

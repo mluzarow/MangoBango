@@ -30,7 +30,7 @@ class DisplayLibrary {
 			
 			$view_parameters['series'][] = [
 				'title' => $name,
-				'link' => "/displaySeries?name={$name}",
+				'link' => "/displaySeries?series={$name}",
 				'source' => "data:image/{$ext};base64,".base64_encode ($blob)
 			];
 		}

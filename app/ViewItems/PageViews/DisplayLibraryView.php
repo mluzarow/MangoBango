@@ -17,6 +17,13 @@ class DisplayLibraryView extends ViewAbstract {
 				vertical-align: top;
 			}
 			
+			.library_display_container .manga_series_wrap .title {
+				display: block;
+				color: #b9b9b9;
+				text-align: center;
+				font-family: Arial;
+			}
+			
 			.library_display_container .manga_series_wrap a {
 				display: block;
 			}

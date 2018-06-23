@@ -38,7 +38,7 @@ class DisplaySeries {
 					$ext = explode ('.', $chapter)[1];
 					
 					$view_parameters['volumes'][] = [
-						'link' => "/reader?series=\"{$_GET['series']}\"&volume=\"{$volume_folder}\"",
+						'link' => "/reader?series={$_GET['series']}&volume={$volume_folder}",
 						'source' => "data:image/{$ext};base64,".base64_encode ($blob)
 					];
 				}

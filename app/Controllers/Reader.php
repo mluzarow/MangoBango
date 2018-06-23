@@ -41,9 +41,11 @@ class Reader {
 				
 				$output .= '<img src="data:image/'.$ext.';base64,'.base64_encode ($blob).'" />';
 			}
+			echo $output;
+			$output = '';
 		}
 		
-		$output .= '</div>';
+		$output = '</div>';
 		
 		echo $output;
 	}

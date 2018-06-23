@@ -4,7 +4,12 @@ namespace DBViewer\Views;
 class DashboardView {
 	public function __construct () {
 		$details = \Core\Database::getConnectionData ();
-		$tables = \Core\Database::query ('show tables')[0];
+		$results = \Core\Database::query ('show tables');
+		
+		$tables = [];
+		foreach ($results as $result) {
+			$tables[] = $result['Tables_in_server'];
+		}
 		
 		$output =
 		'<html>
@@ -79,6 +84,7 @@ class DashboardView {
 				}
 				
 				.table_list .inner_wrap a {
+					display: block;
 					color: #4576bf;
 				}
 			</style>

@@ -3,7 +3,8 @@ namespace Controllers;
 
 class Reader {
 	public function __construct () {
-		$directory_tree = $this->dirToArray ($_GET['source']);
+		$test_directory = 'C:\Users\Mark\Desktop\MangoBango_manga_directory\\'.$_GET['series'].'\\'.$_GET['volume'];
+		$directory_tree = $this->dirToArray ($test_directory);
 		
 		$output =
 		'<style>
@@ -35,13 +36,15 @@ class Reader {
 			}
 			
 			foreach ($chapter as $page) {
-				$file_path = $_GET['source'].'\\'.$chapter_folder.'\\'.$page;
+				$file_path = $test_directory.'\\'.$chapter_folder.'\\'.$page;
 				
 				$f = fopen ($file_path, 'r');
 				$blob = fread ($f, filesize ($file_path));
 				fclose ($f);
 				
-				$output .= '<img src="data:image/jpeg;base64,'.base64_encode ($blob).'" />';
+				$ext = explode ('.', $page)[1];
+				
+				$output .= '<img src="data:image/'.$ext.';base64,'.base64_encode ($blob).'" />';
 			}
 		}
 		

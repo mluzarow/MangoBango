@@ -8,11 +8,6 @@ class Reader {
 		
 		$output =
 		'<style>
-			body {
-				margin: 0;
-				background-color: #474747;
-			}
-		
 			.strip_wrap {
 				margin: 0 auto;
 				width: 1200px;

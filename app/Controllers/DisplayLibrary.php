@@ -8,30 +8,31 @@ class DisplayLibrary {
 		$test_directory = 'C:\Users\Mark\Desktop\MangoBango_manga_directory';
 		$directory_tree = $this->dirToArray ($test_directory);
 		
-		$view_parameters = [];
-		$view_parameters['volumes'] = [];
-		
+		$series_data = [];
 		foreach ($directory_tree as $series_folder => $series) {
-			foreach ($series as $volume_folder => $volume) {
-				if (in_array ('cover.png', $volume)) {
-					$ext = 'png';
-					$ext_uri = 'png';
-				} else if (in_array ('cover.jpg', $volume)) {
-					$ext = 'jpg';
-					$ext_uri = 'jpeg';
+			foreach ($series as $name => $contents) {
+				if (is_string ($contents) && strpos ($contents, 'series_cover') !== false) {
+					$series_data[$series_folder] = $contents;
 				}
-				
-				$file_path = "{$test_directory}\\{$series_folder}\\{$volume_folder}\\cover.{$ext}";
-				
-				$f = fopen ($file_path, 'r');
-				$blob = fread ($f, filesize ($file_path));
-				fclose ($f);
-				
-				$view_parameters['volumes'][] = [
-					'link' => "/reader?source={$test_directory}\\{$series_folder}\\{$volume_folder}\\",
-					'source' => "data:image/{$ext_uri};base64,".base64_encode ($blob)
-				];
 			}
+		}
+		
+		$view_parameters = [];
+		$view_parameters['series'] = [];
+		foreach ($series_data as $name => $image) {
+			$file_path = "{$test_directory}\\{$name}\\{$image}";
+			
+			$f = fopen ($file_path, 'r');
+			$blob = fread ($f, filesize ($file_path));
+			fclose ($f);
+			
+			$ext = explode ('.', $image)[1];
+			
+			$view_parameters['series'][] = [
+				'title' => $name,
+				'link' => "/displaySeries?name={$name}",
+				'source' => "data:image/{$ext};base64,".base64_encode ($blob)
+			];
 		}
 		
 		$view = new DisplayLibraryView ($view_parameters);

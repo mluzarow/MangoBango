@@ -28,7 +28,7 @@ class DisplaySeries {
 					continue;
 				}
 				
-				if (strpos ($chapter, 'cover') !== false) {
+				if (!empty (preg_match ('/^cover\.(?:png|jpg)$/', $chapter))) {
 					$file_path = "{$test_directory}\\{$volume_folder}\\{$chapter}";
 					
 					$f = fopen ($file_path, 'r');

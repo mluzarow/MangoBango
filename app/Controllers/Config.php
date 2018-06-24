@@ -29,8 +29,28 @@ class Config {
 		
 		$view_parameters = [];
 		$view_parameters['reader_display_style'] = $configs_dict['reader_display_style'];
+		$view_parameters['manga_directory'] = $configs_dict['manga_directory'];
 		
 		$view = new ConfigView ($view_parameters);
 		echo $view->render ();
+	}
+	
+	/**
+	 * AJAX method for saving updated configs to the DB.
+	 */
+	public function ajaxUpdateConfigs () {
+		$configs = json_decode ($_POST['configs'], true);
+		
+		$q = '
+			UPDATE `server_configs` 
+			SET `config_value` = '.$configs['reader_display_style'].' 
+			WHERE `config_name` = "reader_display_style"';
+		$r = \Core\Database::query ($q);
+		
+		$q = '
+			UPDATE `server_configs` 
+			SET `config_value` = "'.\Core\Database::sanitize ($configs['manga_directory']).'" 
+			WHERE `config_name` = "manga_directory"';
+		$r = \Core\Database::query ($q);
 	}
 }

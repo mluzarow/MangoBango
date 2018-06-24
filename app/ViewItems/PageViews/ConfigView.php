@@ -3,6 +3,9 @@ namespace ViewItems\PageViews;
 
 use \ViewItems\ViewAbstract;
 
+/**
+ * View class for the list of server configs on the config page.
+ */
 class ConfigView extends ViewAbstract {
 	/**
 	 * Constructs the CSS using the available properties.

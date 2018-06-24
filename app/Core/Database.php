@@ -41,6 +41,10 @@ class Database {
 		$r = self::$database->query ($q);
 		
 		if ($r !== false) {
+			if ($r === true) {
+				return (true);
+			}
+			
 			$result = [];
 			while ($t = $r->fetch_assoc ()) {
 				$result[] = $t;

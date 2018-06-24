@@ -31,7 +31,9 @@ echo
 	</head>
 	<body>
 		<div class="topbar">
-			<div class="logo">MangaBango</div>
+			<div class="logo">
+				<a href="\">MangoBango</a>
+			</div>
 			<div class="search_wrap">
 				<input class="search_box" type="text" autocomplete="off" />
 			</div>

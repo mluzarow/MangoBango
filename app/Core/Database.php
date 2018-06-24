@@ -48,7 +48,7 @@ class Database {
 			
 			return ($result);
 		} else {
-			return ($r);
+			throw new Exception (self::$database->error);
 		}
 	}
 }

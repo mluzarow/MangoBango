@@ -6,6 +6,14 @@ class Reader {
 		$test_directory = 'C:\Users\Mark\Desktop\MangoBango_manga_directory\\'.$_GET['series'].'\\'.$_GET['volume'];
 		$directory_tree = $this->dirToArray ($test_directory);
 		
+		// Get the reader view style
+		$q = '
+			SELECT `config_value` FROM `server_configs`
+			WHERE `config_name` = "reader_display_style"';
+		$r = \Core\Database::query ($q);
+		
+		$reader_display_style = $r[0]['config_value'];
+		
 		$output =
 		'<style>
 			.strip_wrap {

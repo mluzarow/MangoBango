@@ -55,4 +55,17 @@ class Database {
 			throw new Exception (self::$database->error);
 		}
 	}
+	
+	/**
+	 * Sanitizes the given string.
+	 * 
+	 * @param string $input raw input string
+	 * 
+	 * @return string sanitized input string
+	 */
+	public static function sanitize ($input) {
+		$sanitized_input = self::$database->real_escape_string ($input)
+		
+		return ($sanitized_input);
+	}
 }

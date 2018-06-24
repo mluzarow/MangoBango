@@ -11,7 +11,12 @@ class DisplaySeries {
 	 * Constructor for controller DisplaySeries.
 	 */
 	public function __construct () {
-		$test_directory = 'C:\Users\Mark\Desktop\MangoBango_manga_directory\\'.$_GET['series'];
+		$q = '
+			SELECT `config_value` FROM `server_configs`
+			WHERE `config_name` = "manga_directory"';
+		$r = \Core\Database::query ($q);
+		
+		$test_directory = $r[0]['config_value'].'\\'.$_GET['series'];
 		$directory_tree = $this->dirToArray ($test_directory);
 		
 		$view_parameters = [];

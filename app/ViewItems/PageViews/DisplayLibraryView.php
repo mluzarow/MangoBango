@@ -11,10 +11,16 @@ class DisplayLibraryView extends ViewAbstract {
 		$output =
 		'<style>
 			.library_display_container .manga_series_wrap {
-				margin: 10px;
+				margin: 5px;
+				padding: 10px;
 				width: 300px;
 				display: inline-block;
+				background-color: #2b2b2b;
 				vertical-align: top;
+			}
+			
+			.library_display_container .manga_series_wrap:hover {
+				background-color: #d68100;
 			}
 			
 			.library_display_container .manga_series_wrap .title {
@@ -24,12 +30,18 @@ class DisplayLibraryView extends ViewAbstract {
 				font-family: Arial;
 			}
 			
+			.library_display_container .manga_series_wrap:hover .title {
+				color: #5f3d00;
+			}
+			
 			.library_display_container .manga_series_wrap a {
 				display: block;
 			}
 			
 			.library_display_container .manga_series_wrap a img {
 				width: 100%;
+				height: 425px;
+				vertical-align: top;
 			}
 		</style>';
 		

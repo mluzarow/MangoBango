@@ -11,6 +11,16 @@ class Reader {
 		$test_directory = $r[0]['config_value'].'\\'.$_GET['series'].'\\'.$_GET['volume'];
 		$directory_tree = $this->dirToArray ($test_directory);
 		
+		$next_chapter = ((int) ltrim ($_GET['chapter'], 'c')) + 1;
+		$next_chapter_folder = sprintf ('c%04d', $next_chapter);
+		
+		if (!array_key_exists ($next_chapter_folder, $directory_tree)) {
+			$next_chapter = false;
+		}
+		
+		$test_directory .= '\\'.$_GET['chapter'];
+		$directory_tree = $directory_tree[$_GET['chapter']];
+		
 		// Get the reader view style
 		$q = '
 			SELECT `config_value` FROM `server_configs`
@@ -40,31 +50,51 @@ class Reader {
 				max-width: 100%;
 				display: block;
 			}
+			
+			.strip_wrap .continue_btn {
+				display: block;
+				background-color: #d68100;
+			}
+			
+			.strip_wrap .continue_btn:hover {
+				background-color: #ffbb54;
+			}
+			
+			.strip_wrap .continue_btn a {
+				padding: 20px;
+				display: block;
+				color: #000;
+				text-align: center;
+				text-decoration: none;
+				font-family: Arial;
+				font-size: 2em;
+			}
 		</style>
 		<div class="strip_wrap">';
 		
-		foreach ($directory_tree as $chapter_folder => $chapter) {
-			if (!is_array($chapter)) {
-				// Conver and other meta content
-				continue;
-			}
+		foreach ($directory_tree as $page) {
+			$file_path = $test_directory.'\\'.$page;
 			
-			foreach ($chapter as $page) {
-				$file_path = $test_directory.'\\'.$chapter_folder.'\\'.$page;
-				
-				$f = fopen ($file_path, 'r');
-				$blob = fread ($f, filesize ($file_path));
-				fclose ($f);
-				
-				$ext = explode ('.', $page)[1];
-				
-				$output .= '<img src="data:image/'.$ext.';base64,'.base64_encode ($blob).'" />';
-			}
-			echo $output;
-			$output = '';
+			$f = fopen ($file_path, 'r');
+			$blob = fread ($f, filesize ($file_path));
+			fclose ($f);
+			
+			$ext = explode ('.', $page)[1];
+			
+			$output .= '<img src="data:image/'.$ext.';base64,'.base64_encode ($blob).'" />';
 		}
 		
-		$output = '</div>';
+		if ($next_chapter !== false) {
+			$output .=
+			'<div class="continue_btn">
+				<a href="\reader?series='.$_GET['series'].'&volume='.$_GET['volume'].'&chapter='.$next_chapter_folder.'">
+					Continue to chapter '.$next_chapter.'
+				</a>
+			</div>';
+		}
+		
+		$output .= '
+		</div>';
 		
 		echo $output;
 	}

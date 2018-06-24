@@ -20,7 +20,7 @@ class DisplayLibraryView extends ViewAbstract {
 			}
 			
 			.library_display_container .manga_series_wrap:hover {
-				background-color: #d68100;
+				background-color: var(--hightlight_bg);
 			}
 			
 			.library_display_container .manga_series_wrap .title {

@@ -64,7 +64,7 @@ class Database {
 	 * @return string sanitized input string
 	 */
 	public static function sanitize ($input) {
-		$sanitized_input = self::$database->real_escape_string ($input)
+		$sanitized_input = self::$database->real_escape_string ($input);
 		
 		return ($sanitized_input);
 	}

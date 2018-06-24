@@ -1,6 +1,8 @@
 <?php
 namespace Controllers;
 
+use \ViewItems\PageViews\ReaderStripView;
+
 class Reader {
 	public function __construct () {
 		$q = '
@@ -54,6 +56,18 @@ class Reader {
 			}
 		}
 		
+		$view_parameters = [];
+		$view_parameters['image_list'] = $image_list;
+		
+		if ($next_chapter_exits !== false) {
+			$view_parameters['next_chapter_html'] =
+			'<a href="\reader?series='.$_GET['series'].'&volume='.$_GET['volume'].'&chapter='.$next_chapter_folder.'">
+				Continue to chapter '.$next_chapter.'
+			</a>';
+		} else {
+			$view_parameters['next_chapter_html'] = null;
+		}
+		
 		// Get the reader view style
 		$q = '
 			SELECT `config_value` FROM `server_configs`
@@ -64,64 +78,11 @@ class Reader {
 		
 		if ($reader_display_style === 2) {
 			// Display as a strip
+			$view = new ReaderStripView ($view_parameters);
+			echo $view->render ();
 		} else if ($reader_display_style === 1) {
 			// Display as a single page with left and right arrows
 		}
-		
-		$output =
-		'<style>
-			.strip_wrap {
-				margin: 0 auto;
-				width: 1200px;
-				max-width: 100%;
-				background-color: #fff;
-				box-shadow: 0 0 25px 20px rgba(0, 0, 0, 0.3);
-			}
-			
-			.strip_wrap img {
-				margin: 0 auto;
-				max-width: 100%;
-				display: block;
-			}
-			
-			.strip_wrap .continue_btn {
-				display: block;
-				background-color: #d68100;
-			}
-			
-			.strip_wrap .continue_btn:hover {
-				background-color: #ffbb54;
-			}
-			
-			.strip_wrap .continue_btn a {
-				padding: 20px;
-				display: block;
-				color: #000;
-				text-align: center;
-				text-decoration: none;
-				font-family: Arial;
-				font-size: 2em;
-			}
-		</style>
-		<div class="strip_wrap">';
-		
-		foreach ($image_list as $image) {
-			$output .= $image;
-		}
-		
-		if ($next_chapter_exits !== false) {
-			$output .=
-			'<div class="continue_btn">
-				<a href="\reader?series='.$_GET['series'].'&volume='.$_GET['volume'].'&chapter='.$next_chapter_folder.'">
-					Continue to chapter '.$next_chapter.'
-				</a>
-			</div>';
-		}
-		
-		$output .= '
-		</div>';
-		
-		echo $output;
 	}
 	
 	private function dirToArray ($dir) {

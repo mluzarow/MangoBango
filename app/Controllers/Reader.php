@@ -3,7 +3,12 @@ namespace Controllers;
 
 class Reader {
 	public function __construct () {
-		$test_directory = 'C:\Users\Mark\Desktop\MangoBango_manga_directory\\'.$_GET['series'].'\\'.$_GET['volume'];
+		$q = '
+			SELECT `config_value` FROM `server_configs`
+			WHERE `config_name` = "manga_directory"';
+		$r = \Core\Database::query ($q);
+		
+		$test_directory = $r[0]['config_value'].'\\'.$_GET['series'].'\\'.$_GET['volume'];
 		$directory_tree = $this->dirToArray ($test_directory);
 		
 		// Get the reader view style

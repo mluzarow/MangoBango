@@ -12,7 +12,13 @@ class Reader {
 			WHERE `config_name` = "reader_display_style"';
 		$r = \Core\Database::query ($q);
 		
-		$reader_display_style = $r[0]['config_value'];
+		$reader_display_style = (int) $r[0]['config_value'];
+		
+		if ($reader_display_style === 2) {
+			// Display as a strip
+		} else if ($reader_display_style === 1) {
+			// Display as a single page with left and right arrows
+		}
 		
 		$output =
 		'<style>

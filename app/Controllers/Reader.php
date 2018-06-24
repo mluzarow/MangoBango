@@ -12,14 +12,15 @@ class Reader {
 		$directory_tree = $this->dirToArray ($test_directory);
 		
 		$next_chapter = ((int) ltrim ($_GET['chapter'], 'c')) + 1;
-		$next_chapter_folder = sprintf ('c%04d', $next_chapter);
+		$next_chapter_folder = sprintf ('c%04d.zip', $next_chapter);
 		
 		if (!array_key_exists ($next_chapter_folder, $directory_tree)) {
 			$next_chapter = false;
 		}
 		
-		$test_directory .= '\\'.$_GET['chapter'];
-		$directory_tree = $directory_tree[$_GET['chapter']];
+		$test_directory .= '\\'.$_GET['chapter'].'.zip';
+		
+		$zip_dict = \Core\ZipManager::readFiles ($test_directory);
 		
 		// Get the reader view style
 		$q = '
@@ -72,22 +73,28 @@ class Reader {
 		</style>
 		<div class="strip_wrap">';
 		
-		foreach ($directory_tree as $page) {
-			$file_path = $test_directory.'\\'.$page;
+		foreach ($zip_dict as $filename => $blob) {
+			$ext = explode ('.', $filename)[1];
 			
-			$f = fopen ($file_path, 'r');
-			$blob = fread ($f, filesize ($file_path));
-			fclose ($f);
-			
-			$ext = explode ('.', $page)[1];
-			
-			$output .= '<img src="data:image/'.$ext.';base64,'.base64_encode ($blob).'" />';
+			$output .= '<img src="data:image/'.$ext.';base64,'.$blob.'" />';
 		}
+		
+		// foreach ($directory_tree as $page) {
+		// 	$file_path = $test_directory.'\\'.$page;
+		// 
+		// 	$f = fopen ($file_path, 'r');
+		// 	$blob = fread ($f, filesize ($file_path));
+		// 	fclose ($f);
+		// 
+		// 	$ext = explode ('.', $page)[1];
+		// 
+		// 	$output .= '<img src="data:image/'.$ext.';base64,'.base64_encode ($blob).'" />';
+		// }
 		
 		if ($next_chapter !== false) {
 			$output .=
 			'<div class="continue_btn">
-				<a href="\reader?series='.$_GET['series'].'&volume='.$_GET['volume'].'&chapter='.$next_chapter_folder.'">
+				<a href="\reader?series='.$_GET['series'].'&volume='.$_GET['volume'].'&chapter='.explode ('.', $next_chapter_folder)[0].'">
 					Continue to chapter '.$next_chapter.'
 				</a>
 			</div>';

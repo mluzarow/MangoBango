@@ -1,6 +1,4 @@
 <?php
-// use Controllers\Displaylibrary;
-// use DBViewer\Controller\DBViewerMain;
 use \Core\AJAXProcessor;
 
 // Autoload classes based on a 1:1 mapping from namespace to directory structure.

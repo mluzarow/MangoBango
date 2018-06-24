@@ -58,7 +58,13 @@ abstract class ViewAbstract {
 		foreach ($view_parameters as $name => $value) {
 			$this->$name = null;
 			
-			$func = 'set'.ucwords (str_replace ('_', '', $name));
+			$word_segments = explode ('_', $name);
+			
+			foreach ($word_segments as &$segment) {
+				$segment = ucwords ($segment);
+			}
+			
+			$func = 'set'.implode ('', $word_segments);
 			$this->$func ($value);
 		}
 	}

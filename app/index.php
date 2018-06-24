@@ -32,25 +32,27 @@ echo
 			<div class="logo">
 				<a href="\">MangoBango</a>
 			</div>
-			<div class="search_wrap">
-				<input class="search_box" type="text" autocomplete="off" />
-			</div>
-		</div>
-		<div class="sidebar">
-			<div class="button">
-				<a href="/displaylibrary">
-					<img src="\resources\icons\bookshelf.svg" />
-				</a>
-			</div>
-			<div class="button">
-				<a href="/config">
-					<img src="\resources\icons\gears.svg" />
-				</a>
-			</div>
-			<div class="button">
-				<a href="/db/dashboard">
-					<img src="\resources\icons\database.svg" />
-				</a>
+			<div class="icons_wrap">
+				<div class="button btn_library">
+					<a href="/displaylibrary">
+						<img src="\resources\icons\bookshelf.svg" />
+					</a>
+				</div>
+				<div class="flyout library">
+					<div class="search_wrap">
+						<input class="search_box" type="text" autocomplete="off" />
+					</div>
+				</div>
+				<div class="button btn_config">
+					<a href="/config">
+						<img src="\resources\icons\gears.svg" />
+					</a>
+				</div>
+				<div class="button btn_db">
+					<a href="/db/dashboard">
+						<img src="\resources\icons\database.svg" />
+					</a>
+				</div>
 			</div>
 		</div>
 		<div class="display_container">';

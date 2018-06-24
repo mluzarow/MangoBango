@@ -27,48 +27,44 @@ body {
 	text-decoration: none;
 }
 
-.topbar .search_wrap {
+.topbar .icons_wrap {
+	float: right;
+}
+
+.topbar .icons_wrap .button {
+	padding: 0 20px;
+	width: 34px;
+	display: inline-block;
+}
+
+.topbar .icons_wrap .button a {
+	width: 100%;
+}
+
+.topbar .icons_wrap .button a img {
+	width: 100%;
+}
+
+.topbar .icons_wrap .flyout {
+	padding: 10px;
+	display: none;
+}
+
+.topbar .icons_wrap .flyout.library .search_wrap {
 	padding: 3px 5px;
 	display: block;
 	float: right;
 	background-color: aliceblue;
 }
 
-.topbar .search_wrap .search_box {
+.topbar .icons_wrap .flyout.library .search_wrap .search_box {
 	width: 300px;
 	border: none;
 	background-color: transparent;
 	font-size: 1.5em;
 }
 
-.sidebar {
-	position: fixed;
-	top: 0;
-	left: 0;
-	padding-top: 50px;
-	width: 90px;
-	height: 100%;
-	background-color: #915e00;
-	box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.3);
-	z-index: 2;
-}
-
-.sidebar .button {
-	padding: 10px;
-	display: block;
-}
-
-.sidebar .button a {
-	width: 100%;
-	display: block;
-}
-
-.sidebar .button a img {
-	width: 100%;
-	display: block;
-}
-
 .display_container {
-	padding: 59px 10px 10px 100px;
+	padding: 59px 10px 10px 10px;
 	box-sizing: border-box;
 }

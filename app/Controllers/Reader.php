@@ -46,7 +46,13 @@ class Reader {
 			$zip_dict = \Core\ZipManager::readFiles ($test_directory);
 			
 			foreach ($zip_dict as $filename => $blob) {
-				$ext = explode ('.', $filename)[1];
+				$ext = explode ('.', $filename);
+				
+				if (empty ($ext[1])) {
+					continue;
+				}
+				
+				$ext = $ext[1];
 				
 				$image_list[] = '<img src="data:image/'.$ext.';base64,'.$blob.'" />';
 			}

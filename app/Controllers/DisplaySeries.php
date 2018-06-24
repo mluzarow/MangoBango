@@ -22,7 +22,7 @@ class DisplaySeries {
 		$view_parameters = [];
 		$view_parameters['volumes'] = [];
 		foreach ($directory_tree as $volume_folder => $volume_contents) {
-			// Skip llose files like images in the series folder
+			// Skip loose files like images in the series folder
 			if (!is_array($volume_contents)) {
 				continue;
 			}

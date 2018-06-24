@@ -11,6 +11,12 @@ class Config {
 	 * Constructor for page controller Config.
 	 */
 	public function __construct () {
+		if (!empty ($_POST)) {
+			// If there is post data (this controller called via ajax), ignore
+			// standard page setup instructions
+			return;
+		}
+		
 		$q = '
 			SELECT `config_name`, `config_value`
 			FROM `server_configs`';

@@ -3,9 +3,9 @@
 	system. Color definitions reside here.
  */
 
- :root {
- 	--hightlight_bg: #ffc800;
- }
+:root {
+	--hightlight_bg: #ffc800;
+}
 
 html,
 body {

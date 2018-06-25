@@ -28,4 +28,20 @@ class DisplayLibraryBookcaseView extends ViewAbstract {
 	protected function constructJavascript () {
 		return ('');
 	}
+	
+	protected function setSpines (array $spines) {
+		$this->spines = $spines;
+	}
+	
+	protected function setSeriesLinks (array $series_links) {
+		$this->series_links = $series_links;
+	}
+	
+	protected function getSpines () {
+		return ($this->spines);
+	}
+	
+	protected function getSeriesLinks () {
+		return ($this->series_links);
+	}
 }

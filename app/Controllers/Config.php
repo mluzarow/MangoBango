@@ -30,6 +30,7 @@ class Config {
 		$view_parameters = [];
 		$view_parameters['reader_display_style'] = $configs_dict['reader_display_style'];
 		$view_parameters['manga_directory'] = $configs_dict['manga_directory'];
+		$view_parameters['library_view_type'] = $configs_dict['library_view_type'];
 		
 		$view = new ConfigView ($view_parameters);
 		echo $view->render ();
@@ -51,6 +52,12 @@ class Config {
 			UPDATE `server_configs` 
 			SET `config_value` = "'.\Core\Database::sanitize ($configs['manga_directory']).'" 
 			WHERE `config_name` = "manga_directory"';
+		$r = \Core\Database::query ($q);
+		
+		$q = '
+			UPDATE `server_configs` 
+			SET `config_value` = '.$configs['library_view_type'].' 
+			WHERE `config_name` = "library_view_type"';
 		$r = \Core\Database::query ($q);
 	}
 }

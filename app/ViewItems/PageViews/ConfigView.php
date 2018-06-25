@@ -75,6 +75,13 @@ class ConfigView extends ViewAbstract {
 					<label>Manga directory</label>
 					<input id="manga_directory" value="'.$this->getMangaDirectory ().'" type="text" autocomplete="off" />
 				</div>
+				<div class="config_wrap">
+					<label>Library Display Style</label>
+					<select id="library_view_type" autocomplete="off">
+						<option value="1" '.($this->getLibraryViewType () === 1 ? 'selected' : '').'>Display as covers</option>
+						<option value="2" '.($this->getLibraryViewType () === 2 ? 'selected' : '').'>Display as bookcase</option>
+					</select>
+				</div>
 			</form>
 			<div class="submit_btn">Save</div>
 		</div>';
@@ -94,6 +101,7 @@ class ConfigView extends ViewAbstract {
 					
 					configs["reader_display_style"] = $("#reader_display_style").val ();
 					configs["manga_directory"] = $("#manga_directory").val ();
+					configs["library_view_type"] = $("#library_view_type").val ();
 					
 					$.ajax ({
 						url: "ajax/Controllers/Config/ajaxUpdateConfigs",
@@ -112,6 +120,15 @@ class ConfigView extends ViewAbstract {
 	}
 	
 	/**
+	 * Gets the library view type.
+	 * 
+	 * @return int library view type
+	 */
+	protected function getLibraryViewType () {
+		return ($this->library_view_type);
+	}
+	
+	/**
 	 * Gets the manga directory setting.
 	 * 
 	 * @return string manga directory setting
@@ -127,6 +144,22 @@ class ConfigView extends ViewAbstract {
 	 */
 	protected function getReaderDisplayStyle () {
 		return ($this->reader_display_style);
+	}
+	
+	/**
+	 * Sets the library view type.
+	 * 
+	 * @param int $config library view type
+	 * 
+	 * @throws TypeError on non-int config value
+	 * @throws InvalidArgumentException on config value out of bounds
+	 */
+	protected function setLibraryViewType (int $config) {
+		if (!in_array($config, [1, 2])) {
+			throw new \InvalidArgumentException ('Argument (Library View Type) value must in set [1, 2]; '.$config.' given.');
+		}
+		
+		$this->library_view_type = $config;
 	}
 	
 	/**

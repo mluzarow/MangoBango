@@ -12,21 +12,51 @@ class DisplayLibraryBookcaseView extends ViewAbstract {
 	 * Constructs the CSS using the available properties.
 	 */
 	protected function constructCSS () {
-		return ('');
+		$output =
+		'<style>
+			.spine_anchor {
+				margin-right: 4px;
+				display: inline-block;
+			}
+			
+			.spine_anchor img {
+				max-height: 480px;
+			}
+		</style>';
+		
+		return ($output);
 	}
 	
 	/**
 	 * Constructs the HTML using the available properties.
 	 */
 	protected function constructHTML () {
-		return ('');
+		$output = '';
+		
+		foreach ($this->getSpines () as $series => $volumes) {
+			$link = $this->getSeriesLinks ()[$series];
+			
+			foreach ($volumes as $spine) {
+				$output .=
+				'<a class="spine_anchor" href="'.$link.'">
+					<img src="'.$spine.'" />
+				</a>';
+			}
+		}
+		
+		return ($output);
 	}
 	
 	/**
 	 * Constructs the javascript using the available properties.
 	 */
 	protected function constructJavascript () {
-		return ('');
+		$output =
+		'<script>
+		
+		</script>';
+		
+		return ($output);
 	}
 	
 	protected function setSpines (array $spines) {

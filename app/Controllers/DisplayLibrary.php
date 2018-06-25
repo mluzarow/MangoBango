@@ -13,6 +13,14 @@ class DisplayLibrary {
 		$test_directory = $r[0]['config_value'];
 		$directory_tree = $this->dirToArray ($test_directory);
 		
+		// Check for library view type
+		$q = '
+			SELECT `config_value` FROM `server_configs`
+			WHERE `config_name` = "library_view_type"';
+		$r = \Core\Database::query ($q);
+		
+		$library_view_type = $r[0]['library_view_type'];
+		
 		$series_data = [];
 		foreach ($directory_tree as $series_folder => $series) {
 			foreach ($series as $name => $contents) {

@@ -33,6 +33,11 @@ echo
 				<a href="\">MangoBango</a>
 			</div>
 			<div class="icons_wrap">
+				<div class="button btn_import">
+					<a href="/import">
+						<img src="\resources\icons\upload.svg" />
+					</a>
+				</div>
 				<div class="button btn_library">
 					<a href="/displaylibrary">
 						<img src="\resources\icons\bookshelf.svg" />

@@ -12,7 +12,11 @@ class Import {
 	 * Constructor for page controller Import.
 	 */
 	public function __construct () {
+		if (!empty($_POST)) {
+			return;
+		}
+		
 		$view = new ImportView ([]);
-		$view->render ();
+		echo $view->render ();
 	}
 }

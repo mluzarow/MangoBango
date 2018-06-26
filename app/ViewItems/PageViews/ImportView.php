@@ -3,12 +3,15 @@ namespace ViewItems\PageViews;
 
 use ViewItems\ViewAbstract;
 
+/**
+ * View for importer output the importing squence.
+ */
 class ImportView extends ViewAbstract {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */
 	protected function constructCSS () {
-		return ('');
+		return ('<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/Importer.css">');
 	}
 	
 	/**

@@ -15,14 +15,37 @@ class Import {
 		if (!empty($_POST)) {
 			return;
 		}
+		// delete from `manga_metadata`; delete from `manga_directories_series`; delete from `manga_directories_volumes`; delete from `manga_directories_chapters`;
+		
+		echo '
+		<div class="update_btn" style="width: 200px; background-color: yellow; color: black; cursor: pointer;">
+			Update library
+		</div>
+		<script>
+			$(window).ready (function () {
+				$(".update_btn").click (function () {
+					var $btn = $(this);
+					$btn.html ("LOADING");
+					
+					$.ajax ({
+						url: "ajax/Controllers/Import/ajaxUpdateLibrary",
+						success: function () {
+							$btn.html ("DONE!");
+						}
+					});
+				});
+			});
+		</script>';
 	}
 	
 	/**
 	 * AJAX method to update the manga library.
 	 */
 	public function ajaxUpdateLibrary () {
-		$manga = $this->ajaxScanLibrary ();
+		$manga = $this->scanLibrary ();
 		$this->saveNewManga ($manga);
+		
+		return (true);
 	}
 	
 	/**

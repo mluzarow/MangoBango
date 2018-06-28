@@ -52,7 +52,7 @@ class Database {
 			
 			return ($result);
 		} else {
-			throw new Exception (self::$database->error);
+			throw new \Exception (self::$database->error);
 		}
 	}
 	

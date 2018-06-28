@@ -17,6 +17,7 @@ class Import {
 		}
 		
 		$manga = $this->ajaxScanLibrary();
+		// \Core\Debug::prettyPrint ($manga);
 		// $this->saveNewManga ($manga);
 	}
 	
@@ -33,6 +34,7 @@ class Import {
 		
 		$directory_tree = $this->dirToArray ($r[0]['config_value']);
 		
+		$new_content = [];
 		foreach ($directory_tree as $series_name => $series_contents) {
 			// Check if this folder is already bound to a series
 			$q = '
@@ -99,9 +101,13 @@ class Import {
 				
 				ksort ($new_manga['volumes'][$vol_number]['chapters']);
 			}
+			
+			ksort ($new_manga['volumes']);
+			
+			$new_content[] = $new_manga;
 		}
 		
-		return ($new_manga);
+		return ($new_content);
 	}
 	
 	/**

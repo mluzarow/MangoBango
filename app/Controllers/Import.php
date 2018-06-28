@@ -18,7 +18,7 @@ class Import {
 		
 		$manga = $this->ajaxScanLibrary();
 		// \Core\Debug::prettyPrint ($manga);
-		// $this->saveNewManga ($manga);
+		$this->saveNewManga ($manga);
 	}
 	
 	/**
@@ -69,7 +69,7 @@ class Import {
 				];
 				
 				foreach ($volume_contents as $chapter_name => $chapter_contents) {
-					$is_archive = false;
+					$is_archive = 0;
 					
 					if (is_string ($chapter_contents)) {
 						// Is a file
@@ -80,7 +80,7 @@ class Import {
 						
 						if ($ext === 'zip') {
 							// Is archive
-							$is_archive = true;
+							$is_archive = 1;
 						} else {
 							// Is an image
 							continue;
@@ -134,7 +134,12 @@ class Import {
 		return ($result);
 	}
 	
-	private function saveNewManga ($manga) {
+	/**
+	 * Saves new manga into the database.
+	 * 
+	 * @param array $manga_list dictionary of new manga
+	 */
+	private function saveNewManga ($manga_list) {
 		// Get the new manga ID
 		$q = '
 			SELECT MAX(`manga_id`) AS `max_id` FROM `manga_metadata`';
@@ -148,29 +153,58 @@ class Import {
 			}
 		}
 		
-		$q = '
-			INSERT INTO `manga_metadata`
-				(`manga_id`, `name`, `name_original`)
-			VALUES
-				('.$max_id.', "'.$manga['name'].'", "'.$manga['name_original'].'")';
-		$r = \Core\Database::query ($q);
-		
-		$q = '
-			INSERT INTO `manga_directories_series`
-				(`manga_id`, `path`)
-			VALUES
-				('.$max_id.', "'.$manga['path'].'")';
-		$r = \Core\Database::query ($q);
-		
-		foreach ($manga['volumes'] as $vol_sort => $vol_data) {
-			$archive = $vol_data['is_archive'] === true ? 'true' : 'false';
+		foreach ($manga_list as $manga) {
+			$q = '
+				INSERT INTO `manga_metadata`
+					(`manga_id`, `name`, `name_original`)
+				VALUES
+					('.$max_id.', "'.$manga['name'].'", "'.$manga['name_original'].'")';
+			$r = \Core\Database::query ($q);
 			
 			$q = '
-				INSERT INTO `manga_directories_volumes`
-					(`sort`, `manga_id`, `filename`, `is_archive`)
+				INSERT INTO `manga_directories_series`
+					(`manga_id`, `path`)
 				VALUES
-					('.$vol_sort.', '.$max_id.', "'.$vol_data['filename'].'", '.$archive.')';
+					('.$max_id.', "'.$manga['path'].'")';
 			$r = \Core\Database::query ($q);
+			
+			$vol_sort = 1;
+			foreach ($manga['volumes'] as $volume) {
+				$q = '
+					INSERT INTO `manga_directories_volumes`
+						(`sort`, `manga_id`, `filename`)
+					VALUES
+						('.$vol_sort.', '.$max_id.', "'.$volume['filename'].'")';
+				$r = \Core\Database::query ($q);
+				
+				$chap_sort = 1;
+				foreach ($volume['chapters'] as $chapter) {
+					$q = '
+						INSERT INTO `manga_directories_chapters`
+							(
+								`sort`,
+								`manga_id`,
+								`volume_sort`,
+								`filename`,
+								`is_archive`
+							)
+						VALUES
+							(
+								'.$chap_sort.',
+								'.$max_id.',
+								'.$vol_sort.',
+								"'.$chapter['filename'].'",
+								'.$chapter['is_archive'].'
+							)';
+					$r = \Core\Database::query ($q);
+					
+					$chap_sort++;
+				}
+				
+				$vol_sort++;
+			}
+			
+			$max_id++;
 		}
 	}
 }

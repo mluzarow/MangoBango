@@ -15,15 +15,19 @@ class Import {
 		if (!empty($_POST)) {
 			return;
 		}
-		
-		$manga = $this->ajaxScanLibrary();
-		// \Core\Debug::prettyPrint ($manga);
-		
+	}
+	
+	/**
+	 * AJAX method to update the manga library.
+	 */
+	public function ajaxUpdateLibrary () {
+		$manga = $this->ajaxScanLibrary ();
+		$this->saveNewManga ($manga);
 	}
 	
 	/**
 	 * Create an array reflecting the directory structure at a given location.
-	 *  
+	 * 
 	 * @param string $dir file path to folder
 	 * 
 	 * @return array directory structure

@@ -11,8 +11,8 @@ class DisplayLibrary {
 			WHERE `config_name` = "manga_directory"';
 		$r = \Core\Database::query ($q);
 		
-		$test_directory = $r[0]['config_value'];
-		$directory_tree = $this->dirToArray ($test_directory);
+		$manga_directory = $r[0]['config_value'];
+		$directory_tree = $this->dirToArray ($manga_directory);
 		
 		// Check for library view type
 		$q = '
@@ -25,12 +25,12 @@ class DisplayLibrary {
 		if ($library_view_type === 1) {
 			// Display as series of covers
 			$series_data = $this->getImagesCovers ($directory_tree);
-			$view_parameters = $this->processImagesCovers ($series_data, $test_directory);
+			$view_parameters = $this->processImagesCovers ($series_data, $manga_directory);
 			$view = new DisplayLibraryView ($view_parameters);
 		} else if ($library_view_type === 2) {
 			// Display as bookcase
 			$series_data = $this->getImagesSpines ($directory_tree);
-			$view_parameters = $this->processImagesSpines ($series_data, $test_directory);
+			$view_parameters = $this->processImagesSpines ($series_data, $manga_directory);
 			$view = new DisplayLibraryBookcaseView ($view_parameters);
 		}
 		
@@ -114,17 +114,17 @@ class DisplayLibrary {
 	/**
 	 * Process series cover images into view-ready strings.
 	 * 
-	 * @param array  $series_data    dictionary of series covers
-	 * @param string $test_directory manga directory
+	 * @param array  $series_data     dictionary of series covers
+	 * @param string $manga_directory manga directory
 	 * 
 	 * @return array view parameters dictionary
 	 */
-	private function processImagesCovers ($series_data, $test_directory) {
+	private function processImagesCovers ($series_data, $manga_directory) {
 		$view_parameters = [];
 		$view_parameters['series'] = [];
 		
 		foreach ($series_data as $name => $image) {
-			$file_path = "{$test_directory}\\{$name}\\{$image}";
+			$file_path = "{$manga_directory}\\{$name}\\{$image}";
 			
 			$f = fopen ($file_path, 'r');
 			$blob = fread ($f, filesize ($file_path));
@@ -145,12 +145,12 @@ class DisplayLibrary {
 	/**
 	 * Process volume spine images into view-ready strings.
 	 * 
-	 * @param array  $series_data    dictionary of series spines by volume
-	 * @param string $test_directory manga directory
+	 * @param array  $series_data     dictionary of series spines by volume
+	 * @param string $manga_directory manga directory
 	 * 
 	 * @return array view parameters dictionary
 	 */
-	private function processImagesSpines ($series_data, $test_directory) {
+	private function processImagesSpines ($series_data, $manga_directory) {
 		$view_parameters = [];
 		$view_parameters['spines'] = [];
 		$view_parameters['series_links'] = [];
@@ -160,7 +160,7 @@ class DisplayLibrary {
 			$view_parameters['series_links'][$series] = "/displaySeries?series={$series}";
 			
 			foreach ($volumes as $volume => $spine) {
-				$file_path = "{$test_directory}\\{$series}\\{$volume}\\{$spine}";
+				$file_path = "{$manga_directory}\\{$series}\\{$volume}\\{$spine}";
 				
 				$f = fopen ($file_path, 'r');
 				$blob = fread ($f, filesize ($file_path));

@@ -13,23 +13,33 @@ class Reader {
 		
 		$manga_directory = $r[0]['config_value'];
 		
+		$manga_info = [];
+		
 		// Fetch manga info by ID
 		$q = '
-			SELECT DISTINCT
-				`s`.`path` AS `series_folder`,
-				`v`.`filename` AS `volume_folder`,
-				`v`.`sort` AS `volume_sort`,
-				`c`.`filename` AS `chapter`,
-				`c`.`sort` AS `chapter_sort`,
-				`c`.`is_archive`
-			FROM `manga_directories_series` AS `s`
-			JOIN `manga_directories_volumes` AS `v`
-				ON `s`.`manga_id` = `v`.`manga_id`
-			JOIN `manga_directories_chapters` AS `c`
-				ON `v`.`sort` = `c`.`volume_sort`
-			WHERE `s`.`manga_id` = '.$_GET['s'].'
-				AND `v`.`sort` = '.$_GET['v'].'
-				AND `c`.`sort` IN('.$_GET['c'].','.($_GET['c'] + 1).')';
+			SELECT `path`
+			FROM `manga_directories_series`
+			WHERE `manga_id` = '.$_GET['s'];
+		$r = \Core\Database::query ($q);
+		
+		$manga_info['series_folder'] = $r[0]['path'];
+		
+		$q = '
+			SELECT `filename`, `sort`
+			FROM `manga_directories_volumes`
+			WHERE `manga_id` = '.$_GET['s'].'
+				AND `sort` = '.$_GET['v'];
+		$r = \Core\Database::query ($q);
+		
+		$manga_info['volume_folder'] = $r[0]['filename'];
+		$manga_info['volume_sort'] = $r[0]['sort'];
+		
+		$q = '
+			SELECT `filename`, `sort`, `is_archive`
+			FROM `manga_directories_chapters`
+			WHERE `manga_id` = '.$_GET['s'].'
+				AND `volume_sort` = '.$_GET['v'].'
+				AND `sort` IN ('.$_GET['c'].','.($_GET['c'] + 1).')';
 		$r = \Core\Database::query ($q);
 		
 		$next_chapter = null;
@@ -40,10 +50,14 @@ class Reader {
 		// Get the first row (which should be the sort we want to display)
 		$row = current ($r);
 		
-		$path = "{$manga_directory}\\{$row['series_folder']}\\{$row['volume_folder']}\\{$row['chapter']}";
+		$manga_info['chapter'] = $r[0]['filename'];
+		$manga_info['chapter_sort'] = $r[0]['sort'];
+		$manga_info['is_archive'] = $r[0]['is_archive'];
+		
+		$path = "{$manga_directory}\\{$manga_info['series_folder']}\\{$manga_info['volume_folder']}\\{$manga_info['chapter']}";
 			
 		$image_list = [];
-		if ($row['is_archive'] === '1') {
+		if ($manga_info['is_archive'] === '1') {
 			$zip_dict = \Core\ZipManager::readFiles ($path);
 			
 			foreach ($zip_dict as $filename => $blob) {

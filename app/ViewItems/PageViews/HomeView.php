@@ -68,7 +68,6 @@ class HomeView extends ViewAbstract {
 	 */
 	protected function constructHTML () {
 		$output =
-		
 		'<h2 class="home_header">Library Statistics</h2>
 		<div class="statbox_grid_display">
 			<div class="statbox_wrap">

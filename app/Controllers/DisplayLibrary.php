@@ -24,7 +24,7 @@ class DisplayLibrary {
 		
 		if ($library_view_type === 1) {
 			// Display as series of covers
-			$series_data = $this->getImagesCovers ($directory_tree);
+			$series_data = $this->getImagesCovers ($manga_directory);
 			$view_parameters = $this->processImagesCovers ($series_data, $manga_directory);
 			$view = new DisplayLibraryView ($view_parameters);
 		} else if ($library_view_type === 2) {
@@ -64,19 +64,38 @@ class DisplayLibrary {
 	/**
 	 * Collects series cover image locations.
 	 * 
-	 * @param array $directory_tree manga directory tree
+	 * @param string $manga_directory manga directory
 	 * 
-	 * @return array dictionary of series covers
+	 * @return array dictionary of series data in the following structure:
+	 *  [manga ID]         int    manga ID
+	 *    => array
+	 *        ├── ['path'] string path to cover image
+	 *        └── ['name'] string meta name of series
 	 */
-	private function getImagesCovers ($directory_tree) {
-		$series_data = [];
+	private function getImagesCovers ($manga_directory) {
+		$q = '
+			SELECT `s`.`path`, `s`.`series_cover`, `m`.`manga_id`, `m`.`name`
+			FROM `manga_directories_series` AS `s`
+			JOIN `manga_metadata` AS `m`
+				ON `s`.`manga_id` = `m`.`manga_id`';
+		$r = \Core\Database::query ($q);
 		
-		foreach ($directory_tree as $series_folder => $series) {
-			foreach ($series as $name => $contents) {
-				if (is_string ($contents) && strpos ($contents, 'series_cover') !== false) {
-					$series_data[$series_folder] = $contents;
-				}
+		if ($r === false) {
+			return ([]);
+		}
+		
+		$series_data = [];
+		foreach ($r as $series) {
+			if (empty ($series['series_cover'])) {
+				$path = null;
+			} else {
+				$path = "{$manga_directory}\\{$series['path']}\\series_cover.{$series['series_cover']}";
 			}
+			
+			$series_data[$series['manga_id']] = [
+				'path' => $path,
+				'name' => $series['name']
+			];
 		}
 		
 		return ($series_data);
@@ -123,18 +142,17 @@ class DisplayLibrary {
 		$view_parameters = [];
 		$view_parameters['series'] = [];
 		
-		foreach ($series_data as $name => $image) {
-			$file_path = "{$manga_directory}\\{$name}\\{$image}";
-			
-			$f = fopen ($file_path, 'r');
-			$blob = fread ($f, filesize ($file_path));
+		foreach ($series_data as $id => $series) {
+			$f = fopen ($series['path'], 'r');
+			$blob = fread ($f, filesize ($series['path']));
 			fclose ($f);
 			
-			$ext = explode ('.', $image)[1];
+			$file_segs = explode ('.', $series['path']);
+			$ext = end ($file_segs);
 			
 			$view_parameters['series'][] = [
-				'title' => $name,
-				'link' => "/displaySeries?series={$name}",
+				'title' => $series['name'],
+				'link' => "/displaySeries?series={$id}",
 				'source' => "data:image/{$ext};base64,".base64_encode ($blob)
 			];
 		}

@@ -5,70 +5,82 @@ use \ViewItems\PageViews\ReaderStripView;
 
 class Reader {
 	public function __construct () {
+		// Fetch manga directory
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';
 		$r = \Core\Database::query ($q);
 		
-		$test_directory = $r[0]['config_value'].'\\'.$_GET['series'].'\\'.$_GET['volume'];
-		$directory_tree = $this->dirToArray ($test_directory);
+		$manga_directory = $r[0]['config_value'];
 		
-		$next_chapter = ((int) ltrim ($_GET['chapter'], 'c')) + 1;
-		$next_chapter_folder = sprintf ('c%04d', $next_chapter);
+		// Fetch manga info by ID
+		$q = '
+			SELECT DISTINCT
+				`s`.`path` AS `series_folder`,
+				`v`.`filename` AS `volume_folder`,
+				`v`.`sort` AS `volume_sort`,
+				`c`.`filename` AS `chapter`,
+				`c`.`sort` AS `chapter_sort`,
+				`c`.`is_archive`
+			FROM `manga_directories_series` AS `s`
+			JOIN `manga_directories_volumes` AS `v`
+				ON `s`.`manga_id` = `v`.`manga_id`
+			JOIN `manga_directories_chapters` AS `c`
+				ON `v`.`sort` = `c`.`volume_sort`
+			WHERE `s`.`manga_id` = '.$_GET['s'].'
+				AND `v`.`sort` = '.$_GET['v'].'
+				AND `c`.`sort` IN('.$_GET['c'].','.($_GET['c'] + 1).')';
+		$r = \Core\Database::query ($q);
 		
-		$next_chapter_exits = false;
+		$next_chapter = null;
+		if (count ($r) > 1) {
+			$next_chapter = $_GET['c'] + 1;
+		}
+		
+		// Get the first row (which should be the sort we want to display)
+		$row = current ($r);
+		
+		$path = "{$manga_directory}\\{$row['series_folder']}\\{$row['volume_folder']}\\{$row['chapter']}";
+			
 		$image_list = [];
-		
-		// Get the ready type
-		if (array_key_exists ($_GET['chapter'], $directory_tree)) {
+		if ($row['is_archive'] === '1') {
+			$zip_dict = \Core\ZipManager::readFiles ($path);
+			
+			foreach ($zip_dict as $filename => $blob) {
+				$ext = explode ('.', $filename);
+				$ext = end ($ext);
+				
+				if ($ext !== 'jpg' && $ext !== 'png') {
+					continue;
+				}
+				
+				$image_list[] = '<img src="data:image/'.$ext.';base64,'.$blob.'" />';
+			}
+		} else {
 			// Reading list of images from a directory
-			$test_directory .= '\\'.$_GET['chapter'];
-			$chapter_dir_tree = $directory_tree[$_GET['chapter']];
+			$chapter_dir_tree = $this->dirToArray($path);
 			
 			foreach ($chapter_dir_tree as $page) {
-				$file_path = $test_directory.'\\'.$page;
+				$file_path = "{$path}\\{$page}";
 			
 				$f = fopen ($file_path, 'r');
 				$blob = fread ($f, filesize ($file_path));
 				fclose ($f);
 			
-				$ext = explode ('.', $page)[1];
-			
+				$ext = explode ('.', $page);
+				$ext = end ($ext);
+				
 				$image_list[] = '<img src="data:image/'.$ext.';base64,'.base64_encode ($blob).'" />';
-			}
-			
-			if (array_key_exists ($next_chapter_folder, $directory_tree)) {
-				$next_chapter_exits = true;
-			}
-		} else if (in_array ($_GET['chapter'].'.zip', $directory_tree)) {
-			// Reading a zip file
-			$test_directory .= '\\'.$_GET['chapter'].'.zip';
-			$zip_dict = \Core\ZipManager::readFiles ($test_directory);
-			
-			foreach ($zip_dict as $filename => $blob) {
-				$ext = explode ('.', $filename);
-				
-				if (empty ($ext[1])) {
-					continue;
-				}
-				
-				$ext = $ext[1];
-				
-				$image_list[] = '<img src="data:image/'.$ext.';base64,'.$blob.'" />';
-			}
-			
-			if (in_array ($next_chapter_folder.'.zip', $directory_tree)) {
-				$next_chapter_exits = true;
 			}
 		}
 		
 		$view_parameters = [];
 		$view_parameters['image_list'] = $image_list;
 		
-		if ($next_chapter_exits !== false) {
+		if ($next_chapter !== null) {
 			$view_parameters['next_chapter_html'] =
-			'<a href="\reader?series='.$_GET['series'].'&volume='.$_GET['volume'].'&chapter='.$next_chapter_folder.'">
-				Continue to chapter '.$next_chapter.'
+			'<a href="\reader?s='.$_GET['s'].'&v='.$_GET['v'].'&c='.$next_chapter.'">
+				Continue to next chaper.
 			</a>';
 		} else {
 			$view_parameters['next_chapter_html'] = null;
@@ -91,6 +103,13 @@ class Reader {
 		}
 	}
 	
+	/**
+	 * Create an array reflecting the directory structure at a given location.
+	 * 
+	 * @param string $dir file path to folder
+	 * 
+	 * @return array directory structure
+	 */
 	private function dirToArray ($dir) {
 		$result = array();
 		

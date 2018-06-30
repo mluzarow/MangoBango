@@ -25,7 +25,7 @@ class DisplaySeries {
 			FROM `manga_directories_series` AS `s`
 			JOIN `manga_directories_volumes` AS `v`
 				ON `s`.`manga_id` = `v`.`manga_id`
-			WHERE `s`.`manga_id` = '.$_GET['series'];
+			WHERE `s`.`manga_id` = '.$_GET['s'];
 		$r = \Core\Database::query ($q);
 		
 		if ($r === false) {
@@ -51,7 +51,7 @@ class DisplaySeries {
 			$ext = end ($file_segs);
 			
 			$view_parameters['volumes'][] = [
-				'link' => "/reader?series={$v['manga_id']}&volume={$v['sort']}&chapter=1",
+				'link' => "/reader?s={$v['manga_id']}&v={$v['sort']}&c=1",
 				'source' => "data:image/{$ext};base64,".base64_encode ($blob)
 			];
 		}

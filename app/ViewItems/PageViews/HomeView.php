@@ -58,6 +58,28 @@ class HomeView extends ViewAbstract {
 				text-align: center;
 				font-size: 3em;
 			}
+			
+			@media all and (max-width: 768px) {
+				.statbox_grid_display {
+					grid-template-columns: auto auto;
+				}
+			}
+			
+			@media all and (max-width: 500px) {
+				.statbox_grid_display {
+					padding: 25px;
+					grid-row-gap: 25px;
+					grid-template-columns: auto;
+				}
+				
+				.statbox_grid_display .statbox_wrap .title {
+					font-size: 1.6em;
+				}
+				
+				.statbox_grid_display .statbox_wrap .statbox_inner_wrap span {
+					font-size: 2.3em;
+				}
+			}
 		</style>';
 		
 		return ($output);

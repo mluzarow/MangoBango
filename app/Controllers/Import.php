@@ -101,7 +101,7 @@ class Import {
 				'name' => $series_name,
 				'name_original' => null,
 				'path' => $series_name,
-				'series_cover' => 'NULL',
+				'series_cover' => null,
 				'volumes' => []
 			];
 			
@@ -122,6 +122,9 @@ class Import {
 				
 				$new_manga['volumes'][$vol_number] = [
 					'filename' => $volume_name,
+					'cover' => null,
+					'spine' => null,
+					'index' => null,
 					'chapters' => []
 				];
 				
@@ -140,6 +143,17 @@ class Import {
 							$is_archive = 1;
 						} else {
 							// Is an image
+							if (strpos ($chapter_contents, 'cover') !== false) {
+								// Is a cover image
+								$new_manga['volumes'][$vol_number]['cover'] = $ext;
+							} else if (strpos ($chapter_contents, 'spine') !== false) {
+								// Is a spine image
+								$new_manga['volumes'][$vol_number]['spine'] = $ext;
+							} else if (strpos ($chapter_contents, 'index') !== false) {
+								// Is an index image
+								$new_manga['volumes'][$vol_number]['index'] = $ext;
+							}
+							
 							continue;
 						}
 					} else {
@@ -205,9 +219,16 @@ class Import {
 			foreach ($manga['volumes'] as $volume) {
 				$q = '
 					INSERT INTO `manga_directories_volumes`
-						(`sort`, `manga_id`, `filename`)
+						(`sort`, `manga_id`, `filename`, `cover`, `spine`, `index`)
 					VALUES
-						('.$vol_sort.', '.$max_id.', "'.$volume['filename'].'")';
+						(
+							'.$vol_sort.',
+							'.$max_id.',
+							"'.$volume['filename'].'",
+							"'.$volume['cover'].'",
+							"'.$volume['spine'].'",
+							"'.$volume['index'].'"
+						)';
 				$r = \Core\Database::query ($q);
 				
 				$chap_sort = 1;

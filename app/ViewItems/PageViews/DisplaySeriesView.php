@@ -14,10 +14,15 @@ class DisplaySeriesView extends ViewAbstract {
 		$output =
 		'<style>
 			.library_display_container .manga_volume_wrap {
-				margin: 10px;
+				margin: 5px;
+				padding: 10px;
 				width: 300px;
 				display: inline-block;
-				vertical-align: top;
+				background-color: #2b2b2b;
+			}
+			
+			.library_display_container .manga_volume_wrap:hover {
+				background-color: var(--hightlight_bg);
 			}
 			
 			.library_display_container .manga_volume_wrap a {
@@ -26,6 +31,8 @@ class DisplaySeriesView extends ViewAbstract {
 			
 			.library_display_container .manga_volume_wrap a img {
 				width: 100%;
+				height: 425px;
+				vertical-align: top;
 			}
 		</style>';
 		

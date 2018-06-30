@@ -133,12 +133,11 @@ class DisplayLibrary {
 	/**
 	 * Process series cover images into view-ready strings.
 	 * 
-	 * @param array  $series_data     dictionary of series covers
-	 * @param string $manga_directory manga directory
+	 * @param array $series_data dictionary of series covers
 	 * 
 	 * @return array view parameters dictionary
 	 */
-	private function processImagesCovers ($series_data, $manga_directory) {
+	private function processImagesCovers ($series_data) {
 		$view_parameters = [];
 		$view_parameters['series'] = [];
 		

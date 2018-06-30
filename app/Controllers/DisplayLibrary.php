@@ -12,7 +12,6 @@ class DisplayLibrary {
 		$r = \Core\Database::query ($q);
 		
 		$manga_directory = $r[0]['config_value'];
-		$directory_tree = $this->dirToArray ($manga_directory);
 		
 		// Check for library view type
 		$q = '
@@ -25,7 +24,7 @@ class DisplayLibrary {
 		if ($library_view_type === 1) {
 			// Display as series of covers
 			$series_data = $this->getImagesCovers ($manga_directory);
-			$view_parameters = $this->processImagesCovers ($series_data, $manga_directory);
+			$view_parameters = $this->processImagesCovers ($series_data);
 			$view = new DisplayLibraryView ($view_parameters);
 		} else if ($library_view_type === 2) {
 			// Display as bookcase
@@ -35,30 +34,6 @@ class DisplayLibrary {
 		}
 		
 		echo $view->render ();
-	}
-	
-	/**
-	 * Create an array reflecting the directory structure at a given location.
-	 * 
-	 * @param string $dir file path to folder
-	 * 
-	 * @return array directory structure
-	 */
-	private function dirToArray ($dir) {
-		$result = array();
-		
-		$cdir = scandir($dir);
-		foreach ($cdir as $key => $value) {
-			if (!in_array ($value, array ('.', '..'))) {
-				if (is_dir ($dir . DIRECTORY_SEPARATOR . $value)) {
-					$result[$value] = $this->dirToArray ($dir . DIRECTORY_SEPARATOR . $value);
-				} else {
-					$result[] = $value;
-				}
-			}
-		}
-		
-		return ($result);
 	}
 	
 	/**

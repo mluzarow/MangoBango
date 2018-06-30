@@ -101,12 +101,18 @@ class Import {
 				'name' => $series_name,
 				'name_original' => null,
 				'path' => $series_name,
+				'series_cover' => 'NULL',
 				'volumes' => []
 			];
 			
 			foreach ($series_contents as $volume_name => $volume_contents) {
 				if (is_string ($volume_contents)) {
 					// Is a file
+					if (strpos ($volume_contents, 'series_cover') !== false) {
+						$file_segs = explode ('.', $volume_contents);
+						$new_manga['series_cover'] = end ($file_segs);
+					}
+					
 					continue;
 				}
 				
@@ -190,9 +196,9 @@ class Import {
 			
 			$q = '
 				INSERT INTO `manga_directories_series`
-					(`manga_id`, `path`)
+					(`manga_id`, `path`, `series_cover`)
 				VALUES
-					('.$max_id.', "'.$manga['path'].'")';
+					('.$max_id.', "'.$manga['path'].'", "'.$manga['series_cover'].'")';
 			$r = \Core\Database::query ($q);
 			
 			$vol_sort = 1;

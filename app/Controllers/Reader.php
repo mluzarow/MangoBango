@@ -2,6 +2,7 @@
 namespace Controllers;
 
 use \ViewItems\PageViews\ReaderStripView;
+use \ViewItems\PageViews\ReaderPageView;
 
 class Reader {
 	public function __construct () {
@@ -68,7 +69,7 @@ class Reader {
 					continue;
 				}
 				
-				$image_list[] = '<img src="data:image/'.$ext.';base64,'.$blob.'" />';
+				$image_list[] = 'data:image/'.$ext.';base64,'.$blob;
 			}
 		} else {
 			// Reading list of images from a directory
@@ -84,7 +85,7 @@ class Reader {
 				$ext = explode ('.', $page);
 				$ext = end ($ext);
 				
-				$image_list[] = '<img src="data:image/'.$ext.';base64,'.base64_encode ($blob).'" />';
+				$image_list[] = 'data:image/'.$ext.';base64,'.base64_encode ($blob);
 			}
 		}
 		
@@ -114,6 +115,8 @@ class Reader {
 			echo $view->render ();
 		} else if ($reader_display_style === 1) {
 			// Display as a single page with left and right arrows
+			$view = new ReaderPageView ($view_parameters);
+			echo $view->render ();
 		}
 	}
 	

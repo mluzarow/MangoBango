@@ -54,7 +54,8 @@ class ReaderStripView extends ViewAbstract {
 		$output =
 		'<div class="strip_wrap">';
 			foreach ($this->getImageList () as $image) {
-				$output .= $image;
+				$output .=
+				'<img src="'.$image.'" />';
 			}
 			
 			if ($this->getNextChapterHtml () !== null) {

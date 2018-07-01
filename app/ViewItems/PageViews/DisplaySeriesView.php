@@ -13,6 +13,54 @@ class DisplaySeriesView extends ViewAbstract {
 	protected function constructCSS () {
 		$output =
 		'<style>
+			.library_metadata {
+				width: 25%;
+				min-height: 866px;
+				float: left;
+				background-color: #2b2b2b;
+				box-shadow: 0 0 4px 4px rgba(0, 0, 0,0.6);
+				color: #fff;
+				font-family: Consolas;
+			}
+			
+			.library_metadata .series_title {
+				display: block;
+				text-align: center;
+				font-size: 2em;
+			}
+			
+			.library_metadata .series_cover {
+				text-align: center;
+			}
+			
+			.library_metadata .series_cover img {
+				width: 50%;
+			}
+			
+			.library_metadata .section_header {
+				padding-top: 20px;
+				padding-left: 20px;
+				display: block;
+				font-size: 1.4em;
+			}
+			
+			.library_metadata .section_block {
+				padding: 10px 20px;
+				display: block;
+			}
+			
+			.library_metadata .section_block .tag_wrap {
+				padding: 2px 8px;
+				display: inline-block;
+				background-color: #007ab3;
+				border-radius: 4px;
+			}
+			
+			.library_display_container {
+				width: 75%;
+				float: right;
+			}
+			
 			.library_display_container .manga_volume_wrap {
 				margin: 5px;
 				padding: 10px;
@@ -44,7 +92,34 @@ class DisplaySeriesView extends ViewAbstract {
 	 */
 	protected function constructHTML () {
 		$output =
-		'<div class="library_display_container">';
+		'<div class="library_metadata">
+			<div class="series_title">
+				Arachnid
+			</div>
+			<div class="series_cover">
+				<img src="'.current ($this->getVolumes ())['source'].'" />
+			</div>
+			<div class="section_header">Summary</div>
+			<div class="section_block">
+				Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+				Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+				Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+				Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+			</div>
+			<div class="section_header">Tags</div>
+			<div class="section_block">
+				<div class="tag_wrap">
+					<span>Action</span>
+				</div>
+				<div class="tag_wrap">
+					<span>Drama</span>
+				</div>
+				<div class="tag_wrap">
+					<span>Shounen</span>
+				</div>
+			</div>
+		</div>
+		<div class="library_display_container">';
 			foreach ($this->getVolumes () as $volume) {
 				$output .=
 				'<div class="manga_volume_wrap">
@@ -54,7 +129,8 @@ class DisplaySeriesView extends ViewAbstract {
 				</div>';
 			}
 		$output .=
-		'</div>';
+		'</div>
+		<div style="clear: both"></div>';
 		
 		return ($output);
 	}

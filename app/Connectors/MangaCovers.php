@@ -14,6 +14,23 @@ class MangaCovers {
 	private $base_url = 'https://mcd.iosphe.re/api/v1/';
 	
 	/**
+	 * Search for manga metadata using the manga series name.
+	 * 
+	 * @param string $title series name string
+	 * 
+	 * @return array manga series metadata
+	 */
+	public function searchByTitle ($title) {
+		$url = $this->base_url.'search/';
+		
+		$args = [
+			'Title' => urlencode ($title)
+		];
+		
+		$result = json_decode ($this->requestPOST ($url, $args), true);
+	}
+	
+	/**
 	 * Performs a cURL GET request with the constructed URL.
 	 * 
 	 * @param string $url constructed URL to be used
@@ -46,10 +63,13 @@ class MangaCovers {
 		$curl = curl_init ();
 		
 		curl_setopt ($curl, CURLOPT_URL, $url);
-		curl_setopt ($curl, CURLOPT_POST, count ($post_vars));
 		curl_setopt ($curl, CURLOPT_POSTFIELDS, $post_vars);
+		curl_setopt ($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt ($curl, CURLOPT_SSL_VERIFYPEER, false);
 		
 		$response = curl_exec ($curl);
+		$error = curl_error ($curl);
+		$errno = curl_errno ($curl);
 		
 		curl_close ($curl);
 		

@@ -14,8 +14,9 @@ class DisplaySeriesView extends ViewAbstract {
 		$output =
 		'<style>
 			.library_metadata {
+				position: fixed;
 				width: 25%;
-				min-height: 866px;
+				min-height: 100%;
 				float: left;
 				background-color: #2b2b2b;
 				box-shadow: 0 0 4px 4px rgba(0, 0, 0,0.6);
@@ -24,6 +25,8 @@ class DisplaySeriesView extends ViewAbstract {
 			}
 			
 			.library_metadata .series_title {
+				padding-top: 10px;
+				padding-bottom: 5px;
 				display: block;
 				text-align: center;
 				font-size: 2em;
@@ -57,8 +60,10 @@ class DisplaySeriesView extends ViewAbstract {
 			}
 			
 			.library_display_container {
+				padding: 8px 10px 10px;
 				width: 75%;
 				float: right;
+				box-sizing: border-box;
 			}
 			
 			.library_display_container .manga_volume_wrap {
@@ -94,7 +99,7 @@ class DisplaySeriesView extends ViewAbstract {
 		$output =
 		'<div class="library_metadata">
 			<div class="series_title">
-				Arachnid
+				Series Title
 			</div>
 			<div class="series_cover">
 				<img src="'.current ($this->getVolumes ())['source'].'" />

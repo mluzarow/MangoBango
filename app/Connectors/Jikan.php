@@ -31,7 +31,7 @@ class Jikan extends Connector {
 			throw new \InvalidArgumentException ('Argument (Query) of searchByQueryString() must be a minimum of 3 letters.');
 		}
 		
-		$query = urldecode ($query);
+		$query = urlencode ($query);
 		
 		$url = $this->jikan_base_url.'search/manga/'.$query.'/1';
 		

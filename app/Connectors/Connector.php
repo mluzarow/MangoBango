@@ -1,6 +1,9 @@
 <?php
 namespace Connectors;
 
+/**
+ * Parent connector class from which all connectors extend.
+ */
 class Connector {
 	/**
 	 * Performs a cURL GET request with the constructed URL.

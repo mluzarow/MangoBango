@@ -9,40 +9,7 @@ class ReaderStripView extends ViewAbstract {
 	 */
 	protected function constructCSS () {
 		$output =
-		'<style>
-			.strip_wrap {
-				margin: 0 auto;
-				width: 1200px;
-				max-width: 100%;
-				background-color: #fff;
-				box-shadow: 0 0 25px 20px rgba(0, 0, 0, 0.3);
-			}
-			
-			.strip_wrap img {
-				margin: 0 auto;
-				max-width: 100%;
-				display: block;
-			}
-			
-			.strip_wrap .continue_btn {
-				display: block;
-				background-color: #d68100;
-			}
-			
-			.strip_wrap .continue_btn:hover {
-				background-color: #ffbb54;
-			}
-			
-			.strip_wrap .continue_btn a {
-				padding: 20px;
-				display: block;
-				color: #000;
-				text-align: center;
-				text-decoration: none;
-				font-family: Arial;
-				font-size: 2em;
-			}
-		</style>';
+		'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/ReaderStrip.css">';
 		
 		return ($output);
 	}

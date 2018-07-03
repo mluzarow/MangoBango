@@ -9,29 +9,7 @@ class ReaderPageView extends ViewAbstract {
 	 */
 	protected function constructCSS () {
 		$output =
-		'<style>
-			.reader_wrap {
-				margin: 0 auto;
-				width: 1200px;
-				max-width: 100%;
-				background-color: #fff;
-				box-shadow: 0 0 25px 20px rgba(0, 0, 0, 0.3);
-			}
-			
-			.reader_wrap .img_wrap {
-				cursor: pointer;
-			}
-			
-			.reader_wrap .img_wrap img {
-				margin: 0 auto;
-				max-width: 100%;
-				display: none;
-			}
-			
-			.reader_wrap .img_wrap img.selected_image {
-				display: block;
-			}
-		</style>';
+		'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/ReaderPage.css">';
 		
 		return ($output);
 	}

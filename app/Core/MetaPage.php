@@ -29,7 +29,6 @@ class MetaPage {
 	 * @param string $content script or css to append
 	 */
 	public static function appendHead ($content) {
-		
 		self::$head .= $content;
 	}
 	

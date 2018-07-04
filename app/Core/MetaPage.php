@@ -13,6 +13,10 @@ class MetaPage {
 	 * @var string page header content
 	 */
 	private static $head = '';
+	/**
+	 * @var string page title
+	 */
+	private static $title = '';
 	
 	/**
 	 * Appends the given HTML to the HTML to be printed.
@@ -46,6 +50,7 @@ class MetaPage {
 		'<!DOCTYPE html>
 		<html>
 			<head>
+				<title>'.self::$title.'</title>
 				'.self::$head.'
 			</head>
 			<body>
@@ -54,5 +59,14 @@ class MetaPage {
 		</html>';
 		
 		return ($output);
+	}
+	
+	/**
+	 * Sets the page title.
+	 * 
+	 * @param string $title page title
+	 */
+	public static function setTitle ($title) {
+		self::$title = $title;
 	}
 }

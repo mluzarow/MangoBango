@@ -128,7 +128,7 @@ body {
 	box-sizing: border-box;
 }
 
-@media all and (max-width: 500px) {
+@media all and (max-width: 768px) {
 	.topbar .icons_wrap .button {
 		display: none;
 	}

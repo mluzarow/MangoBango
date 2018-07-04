@@ -39,6 +39,6 @@ class Home {
 		];
 		
 		$view = new \ViewItems\PageViews\HomeView ($view_parameters);
-		echo $view->render ();
+		$view->render ();
 	}
 }

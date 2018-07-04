@@ -33,7 +33,7 @@ class DisplayLibrary {
 			$view = new DisplayLibraryBookcaseView ($view_parameters);
 		}
 		
-		echo $view->render ();
+		$view->render ();
 	}
 	
 	/**

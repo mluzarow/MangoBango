@@ -112,12 +112,12 @@ class Reader {
 		if ($reader_display_style === 2) {
 			// Display as a strip
 			$view = new ReaderStripView ($view_parameters);
-			echo $view->render ();
 		} else if ($reader_display_style === 1) {
 			// Display as a single page with left and right arrows
 			$view = new ReaderPageView ($view_parameters);
-			echo $view->render ();
 		}
+		
+		$view->render ();
 	}
 	
 	/**

@@ -33,7 +33,7 @@ class Config {
 		$view_parameters['library_view_type'] = $configs_dict['library_view_type'];
 		
 		$view = new ConfigView ($view_parameters);
-		echo $view->render ();
+		$view->render ();
 	}
 	
 	/**

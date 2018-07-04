@@ -57,7 +57,6 @@ class DisplaySeries {
 		}
 		
 		$view = new DisplaySeriesView ($view_parameters);
-		
-		echo $view->render ();
+		$view->render ();
 	}
 }

@@ -11,7 +11,10 @@ class LoginView extends ViewAbstract {
 	 * Constructs the CSS using the available properties.
 	 */
 	protected function constructCSS () {
-		return ('');
+		$output =
+		'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/Login.css">'
+		
+		return ($output);
 	}
 	
 	/**

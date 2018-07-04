@@ -6,13 +6,17 @@ namespace Core;
  */
 class MetaPage {
 	/**
+	 * @var string page HTML
+	 */
+	private static $body = '';
+	/**
 	 * @var string page header content
 	 */
 	private static $head = '';
 	/**
-	 * @var string page HTML
+	 * @var string page title
 	 */
-	private static $body = '';
+	private static $title = '';
 	
 	/**
 	 * Appends the given HTML to the HTML to be printed.
@@ -20,7 +24,11 @@ class MetaPage {
 	 * @param string $html page HTML
 	 */
 	public static function appendBody ($html) {
-		self::$body .= $html;
+		$body_halves = explode ('{appendHere}', self::$body);
+		
+		$body_halves[0] .= $html;
+		
+		self::$body = implode ('{appendHere}', $body_halves);
 	}
 	
 	/**
@@ -29,7 +37,6 @@ class MetaPage {
 	 * @param string $content script or css to append
 	 */
 	public static function appendHead ($content) {
-		
 		self::$head .= $content;
 	}
 	
@@ -43,68 +50,23 @@ class MetaPage {
 		'<!DOCTYPE html>
 		<html>
 			<head>
-				<script type="text/javascript" src="/External/Javascript/jquery-3.3.1.js"></script>
-				<script type="text/javascript" src="/ViewItems/JS/dropdown.js"></script>
-				<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/UIFrame.css">
+				<title>'.self::$title.'</title>
 				'.self::$head.'
 			</head>
 			<body>
-				<div class="topbar">
-					<div class="logo">
-						<a href="\">MangoBango</a>
-					</div>
-					<div class="icons_wrap">
-						<div class="button btn_burger dropdown_menu_button">
-							<img src="\resources\icons\burger.svg" />
-						</div>
-						<div class="burger_dropdown dropdown_menu">
-							<div class="menu_item">
-								<a href="/displaylibrary">
-									<img src="\resources\icons\bookshelf.svg" />
-									<span>Library</span>
-								</a>
-							</div>
-							<div class="menu_item">
-								<a href="/config">
-									<img src="\resources\icons\gears.svg" />
-									<span>Settings</span>
-								</a>
-							</div>
-							<div class="menu_item">
-								<a href="/db/dashboard">
-									<img src="\resources\icons\database.svg" />
-									<span>Database</span>
-								</a>
-							</div>
-						</div>
-						<div class="button btn_library">
-							<a href="/displaylibrary">
-								<img src="\resources\icons\bookshelf.svg" />
-							</a>
-						</div>
-						<div class="flyout library">
-							<div class="search_wrap">
-								<input class="search_box" type="text" autocomplete="off" />
-							</div>
-						</div>
-						<div class="button btn_config">
-							<a href="/config">
-								<img src="\resources\icons\gears.svg" />
-							</a>
-						</div>
-						<div class="button btn_db">
-							<a href="/db/dashboard">
-								<img src="\resources\icons\database.svg" />
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="display_container">
-					'.self::$body.'
-				</div>
+				'.str_replace ('{appendHere}', '', self::$body).'
 			</body>
 		</html>';
 		
 		return ($output);
+	}
+	
+	/**
+	 * Sets the page title.
+	 * 
+	 * @param string $title page title
+	 */
+	public static function setTitle ($title) {
+		self::$title = $title;
 	}
 }

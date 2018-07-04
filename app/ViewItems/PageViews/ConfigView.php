@@ -23,28 +23,32 @@ class ConfigView extends ViewAbstract {
 	protected function constructHTML () {
 		$output =
 		'<div class="config_list_wrap">
-			<h2 class="title">Server Settings</h2>
-			<form class="config_list">
-				<div class="config_wrap">
-					<label>Reader Display Style</label>
-					<select id="reader_display_style" autocomplete="off">
-						<option value="1" '.($this->getReaderDisplayStyle () === 1 ? 'selected' : '').'>Display as single panel</option>
-						<option value="2" '.($this->getReaderDisplayStyle () === 2 ? 'selected' : '').'>Display as continous strip</option>
-					</select>
+			<h2 class="title">Configuration</h2>
+			<div class="config_list">
+				<div class="config_section">
+					<div class="section_header">Library Settings</div>
+					<div class="config_wrap">
+						<div class="config_item">
+							<label>Reader Display Style</label>
+							<select id="reader_display_style" autocomplete="off">
+								<option value="1" '.($this->getReaderDisplayStyle () === 1 ? 'selected' : '').'>Display as single panel</option>
+								<option value="2" '.($this->getReaderDisplayStyle () === 2 ? 'selected' : '').'>Display as continous strip</option>
+							</select>
+						</div>
+						<div class="config_item">
+							<label>Manga directory</label>
+							<input id="manga_directory" value="'.$this->getMangaDirectory ().'" type="text" autocomplete="off" />
+						</div>
+						<div class="config_item">
+							<label>Library Display Style</label>
+							<select id="library_view_type" autocomplete="off">
+								<option value="1" '.($this->getLibraryViewType () === 1 ? 'selected' : '').'>Display as covers</option>
+								<option value="2" '.($this->getLibraryViewType () === 2 ? 'selected' : '').'>Display as bookcase</option>
+							</select>
+						</div>
+					</div>
 				</div>
-				<div class="config_wrap">
-					<label>Manga directory</label>
-					<input id="manga_directory" value="'.$this->getMangaDirectory ().'" type="text" autocomplete="off" />
-				</div>
-				<div class="config_wrap">
-					<label>Library Display Style</label>
-					<select id="library_view_type" autocomplete="off">
-						<option value="1" '.($this->getLibraryViewType () === 1 ? 'selected' : '').'>Display as covers</option>
-						<option value="2" '.($this->getLibraryViewType () === 2 ? 'selected' : '').'>Display as bookcase</option>
-					</select>
-				</div>
-			</form>
-			<div class="submit_btn">Save</div>
+			</div>
 		</div>';
 		
 		return ($output);

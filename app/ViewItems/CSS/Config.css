@@ -1,9 +1,13 @@
 /*
 	Styling for ConfigView page view.
  */
+.config_list_wrap {
+	font-family: Consolas;
+}
+
 .config_list_wrap .title {
+	margin-bottom: 0;
 	text-align: center;
-	font-family: Arial;
 	font-size: 2em;
 }
 
@@ -11,31 +15,35 @@
 	padding: 30px;
 }
 
-.config_list_wrap .config_list .config_wrap {
-	padding-bottom: 20px;
+.config_list_wrap .config_list .config_section {
+	background-color: #2b2b2b;
+	box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.4);
+	box-sizing: border-box;
+	color: #828282;
+}
+
+.config_list_wrap .config_list .config_section .section_header {
+	padding: 3px 15px;
+	background-color: var(--hightlight_bg);
+	color: #000;
+	font-size: 1.7em;
+}
+
+.config_list_wrap .config_list .config_section .config_wrap {
+	padding: 10px;
 	font-size: 1.5em;
 }
 
-.config_list_wrap .config_list .config_wrap select,
-.config_list_wrap .config_list .config_wrap input {
+.config_list_wrap .config_list .config_section .config_wrap .config_item {
+	padding: 10px;
+}
+
+.config_list_wrap .config_list .config_section .config_wrap select,
+.config_list_wrap .config_list .config_section .config_wrap input {
 	margin-left: 15px;
 	font-size: 0.9em;
 }
 
-.config_list_wrap .config_list .config_wrap input {
+.config_list_wrap .config_list .config_section .config_wrap input {
 	width: 550px;
-}
-
-.config_list_wrap .submit_btn {
-	margin-left: 20px;
-	padding: 10px 30px;
-	display: inline-block;
-	background-color: #d68100;
-	cursor: pointer;
-	font-family: Arial;
-	font-size: 1.5em;
-}
-
-.config_list_wrap .submit_btn:hover {
-	background-color: #ffaf00;
 }

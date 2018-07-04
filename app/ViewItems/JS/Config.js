@@ -1,19 +1,46 @@
 $(window).ready (function () {
-	$(".config_list_wrap .submit_btn").click (function () {
-		var configs = {};
-		
-		configs["reader_display_style"] = $("#reader_display_style").val ();
-		configs["manga_directory"] = $("#manga_directory").val ();
-		configs["library_view_type"] = $("#library_view_type").val ();
+	/**
+	 * Calls the AJAX update method of the config page controller in order to
+	 * save changes.
+	 * 
+	 * @param {Object} config dictionary of updated config(s)
+	 * @param {Node}   $this  control being used to update this config
+	 */
+	function ajaxUpdateConfigs (config, $this) {
+		$($this).attr ("disabled", true);
 		
 		$.ajax ({
 			url: "ajax/Controllers/Config/ajaxUpdateConfigs",
 			method: "POST",
 			data: {
-				configs: JSON.stringify (configs)
+				config: JSON.stringify (config)
 			}
 		}).done (function () {
-			location.reload ();
+			$($this).attr ("disabled", false);
 		});
+	}
+	
+	$("#reader_display_style").change (function () {
+		var config = {
+			"reader_display_style" : $("#reader_display_style").val ()
+		};
+		
+		ajaxUpdateConfigs (config, $(this));
+	});
+	
+	$("#manga_directory").focusout (function () {
+		var config = {
+			"manga_directory" : $("#manga_directory").val ()
+		};
+		
+		ajaxUpdateConfigs (config, $(this));
+	});
+	
+	$("#library_view_type").change (function () {
+		var config = {
+			"library_view_type" : $("#library_view_type").val ()
+		};
+		
+		ajaxUpdateConfigs (config, $(this));
 	});
 });

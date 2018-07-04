@@ -40,24 +40,30 @@ class Config {
 	 * AJAX method for saving updated configs to the DB.
 	 */
 	public function ajaxUpdateConfigs () {
-		$configs = json_decode ($_POST['configs'], true);
+		$configs = json_decode ($_POST['config'], true);
 		
-		$q = '
-			UPDATE `server_configs` 
-			SET `config_value` = '.$configs['reader_display_style'].' 
-			WHERE `config_name` = "reader_display_style"';
-		$r = \Core\Database::query ($q);
+		if (!empty ($configs['reader_display_style'])) {
+			$q = '
+				UPDATE `server_configs` 
+				SET `config_value` = '.$configs['reader_display_style'].' 
+				WHERE `config_name` = "reader_display_style"';
+			$r = \Core\Database::query ($q);
+		}
 		
-		$q = '
-			UPDATE `server_configs` 
-			SET `config_value` = "'.\Core\Database::sanitize ($configs['manga_directory']).'" 
-			WHERE `config_name` = "manga_directory"';
-		$r = \Core\Database::query ($q);
+		if (!empty ($configs['manga_directory'])) {
+			$q = '
+				UPDATE `server_configs` 
+				SET `config_value` = "'.\Core\Database::sanitize ($configs['manga_directory']).'" 
+				WHERE `config_name` = "manga_directory"';
+			$r = \Core\Database::query ($q);
+		}
 		
-		$q = '
-			UPDATE `server_configs` 
-			SET `config_value` = '.$configs['library_view_type'].' 
-			WHERE `config_name` = "library_view_type"';
-		$r = \Core\Database::query ($q);
+		if (!empty ($configs['manga_directory'])) {
+			$q = '
+				UPDATE `server_configs` 
+				SET `config_value` = '.$configs['library_view_type'].' 
+				WHERE `config_name` = "library_view_type"';
+			$r = \Core\Database::query ($q);
+		}
 	}
 }

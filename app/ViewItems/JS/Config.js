@@ -43,4 +43,16 @@ $(window).ready (function () {
 		
 		ajaxUpdateConfigs (config, $(this));
 	});
+	
+	$("#rescan_library_btn").click (function () {
+		var $btn = $(this);
+		$btn.html ("LOADING");
+		
+		$.ajax ({
+			url: "ajax/Controllers/Config/ajaxRescanLibrary",
+			success: function () {
+				$btn.html ("DONE!");
+			}
+		});
+	});
 });

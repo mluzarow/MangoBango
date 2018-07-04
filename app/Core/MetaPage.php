@@ -59,12 +59,6 @@ class MetaPage {
 						</div>
 						<div class="burger_dropdown dropdown_menu">
 							<div class="menu_item">
-								<a href="/import">
-									<img src="\resources\icons\upload.svg" />
-									<span>Importer</span>
-								</a>
-							</div>
-							<div class="menu_item">
 								<a href="/displaylibrary">
 									<img src="\resources\icons\bookshelf.svg" />
 									<span>Library</span>
@@ -82,11 +76,6 @@ class MetaPage {
 									<span>Database</span>
 								</a>
 							</div>
-						</div>
-						<div class="button btn_import">
-							<a href="/import">
-								<img src="\resources\icons\upload.svg" />
-							</a>
 						</div>
 						<div class="button btn_library">
 							<a href="/displaylibrary">

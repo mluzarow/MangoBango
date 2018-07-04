@@ -21,5 +21,7 @@ $(window).ready (function () {
 				$nextImage.addClass ("selected_image");
 			}
 		}
+		
+		$(window).scrollTop (0);
 	});
 });

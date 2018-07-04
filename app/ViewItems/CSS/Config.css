@@ -47,3 +47,12 @@
 .config_list_wrap .config_list .config_section .config_wrap input {
 	width: 550px;
 }
+
+.config_list_wrap .config_list .config_section .config_wrap #rescan_library_btn {
+	padding: 10px;
+	display: inline-block;
+	background-color: var(--hightlight_bg);
+	color: black;
+	cursor: pointer;
+}
+

@@ -40,32 +40,7 @@ class ReaderPageView extends ViewAbstract {
 	 */
 	protected function constructJavascript () {
 		$output =
-		'<script>
-			$(window).ready (function () {
-				$(".img_wrap").click (function (e) {
-					let x = e.clientX;
-					let $selected = $(this).find ("img.selected_image");
-					
-					if (x < $(this).width () / 2) {
-						// Go back
-						let $prevImage = $selected.prev ("img");
-						
-						if ($prevImage.length > 0) {
-							$selected.removeClass ("selected_image");
-							$prevImage.addClass ("selected_image");
-						}
-					} else {
-						// Go forwards
-						let $nextImage = $selected.next ("img");
-						
-						if ($nextImage.length > 0) {
-							$selected.removeClass ("selected_image");
-							$nextImage.addClass ("selected_image");
-						}
-					}
-				});
-			});
-		</script>';
+		'<script type="text/javascript" src="/ViewItems/JS/ReaderPage.js"></script>';
 		
 		return ($output);
 	}

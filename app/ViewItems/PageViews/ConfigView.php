@@ -46,6 +46,11 @@ class ConfigView extends ViewAbstract {
 								<option value="2" '.($this->getLibraryViewType () === 2 ? 'selected' : '').'>Display as bookcase</option>
 							</select>
 						</div>
+						<div class="config_item">
+							<div id="rescan_library_btn" ">
+								Rescan Manga Library
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

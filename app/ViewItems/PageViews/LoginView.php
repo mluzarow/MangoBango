@@ -18,7 +18,21 @@ class LoginView extends ViewAbstract {
 	 * Constructs the HTML using the available properties.
 	 */
 	protected function constructHTML () {
-		return ('');
+		$output =
+		'<div class="login_wrap">
+			<div class="login_box">
+				<form class="login_form">
+					<div class="title_strip">
+						<span>MangoBango</span>
+					</div>
+					<input id="username_field" type="text" autocomplete="off" />
+					<input id="password_field" type="text" autocomplete="off" />
+				</form>
+				<input id="login_btn" type="button" value="Log In" />
+			</div>
+		</div>';
+		
+		return ($output);
 	}
 	
 	/**

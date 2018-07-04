@@ -1,14 +1,24 @@
 <?php
 namespace ViewItems;
 
+use \Core\MetaPage;
+
 /**
  * View class template from which all views extend.
  */
 abstract class ViewAbstract {
 	/**
-	 * @var string constructed HTML output of view class
+	 * @var string CSS output
 	 */
-	protected $output;
+	protected $css_output;
+	/**
+	 * @var string HTML output
+	 */
+	protected $html_output;
+	/**
+	 * @var string JS output
+	 */
+	protected $js_output;
 	
 	/**
 	 * Constructor for view class.
@@ -22,28 +32,15 @@ abstract class ViewAbstract {
 	 */
 	public final function __construct (array $view_parameters) {
 		$this->processParameters ($view_parameters);
-		$this->finalizeView ();
 	}
 	
 	/**
-	 * Outputs the view HTML.
-	 * 
-	 * @return string constructed HTML output of view class
+	 * Saves the view content to the meta page.
 	 */
 	public final function render () {
-		return ($this->output);
-	}
-	
-	/**
-	 * Saves view to output so its ready to render.
-	 */
-	protected final function finalizeView () {
-		if (empty($this->output)) {
-			$this->output =
-				$this->constructCSS ().
-				$this->constructHTML ().
-				$this->constructJavascript ();
-		}
+		MetaPage::appendHead ($this->getCSS ());
+		MetaPage::appendHead ($this->getJS ());
+		MetaPage::appendBody ($this->getHTML ());
 	}
 	
 	/**
@@ -83,4 +80,43 @@ abstract class ViewAbstract {
 	 * Constructs the javascript using the available properties.
 	 */
 	abstract protected function constructJavascript ();
+	
+	/**
+	 * Gets the CSS output.
+	 * 
+	 * @return string CSS output
+	 */
+	private function getCSS () {
+		if (empty ($this->css_output)) {
+			$this->css_output = $this->constructCSS ();
+		}
+		
+		return ($this->css_output);
+	}
+	
+	/**
+	 * Gets the HTML output.
+	 * 
+	 * @return string HTML output
+	 */
+	private function getHTML () {
+		if (empty ($this->html_output)) {
+			$this->html_output = $this->constructHTML ();
+		}
+		
+		return ($this->html_output);
+	}
+	
+	/**
+	 * Gets the JS output.
+	 * 
+	 * @return string JS output
+	 */
+	private function getJS () {
+		if (empty ($this->js_output)) {
+			$this->js_output = $this->constructJavascript ();
+		}
+		
+		return ($this->js_output);
+	}
 }

@@ -6,13 +6,13 @@ namespace Core;
  */
 class MetaPage {
 	/**
-	 * @var string page header content
-	 */
-	private static $head = '';
-	/**
 	 * @var string page HTML
 	 */
 	private static $body = '';
+	/**
+	 * @var string page header content
+	 */
+	private static $head = '';
 	
 	/**
 	 * Appends the given HTML to the HTML to be printed.

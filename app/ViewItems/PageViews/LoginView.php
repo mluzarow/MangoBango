@@ -30,10 +30,10 @@ class LoginView extends ViewAbstract {
 				<div class="login_box_inner">
 					<form class="login_form">
 						<div class="input_wrap">
-							<input id="username_field" type="text" autocomplete="off" />
+							<input id="username_field" type="text" autocomplete="off" placeholder="Username" />
 						</div>
 						<div class="input_wrap">
-							<input id="password_field" type="text" autocomplete="off" />
+							<input id="password_field" type="password" autocomplete="off" placeholder="Password" />
 						</div>
 					</form>
 					<input id="login_btn" type="button" value="Log In" />

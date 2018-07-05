@@ -28,6 +28,9 @@ class LoginView extends ViewAbstract {
 					<span>MangoBango</span>
 				</div>
 				<div class="login_box_inner">
+					<div class="warning">
+						The username / password combination was incorrect.
+					</div>
 					<form class="login_form">
 						<div class="input_wrap">
 							<input id="username_field" type="text" autocomplete="off" placeholder="Username" />

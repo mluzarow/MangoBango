@@ -5,6 +5,6 @@ $(window).ready (function () {
 			'password' : $("#password_field").val ()
 		};
 		
-		
+		$(".login_box .warning").toggle (true);
 	});
 });

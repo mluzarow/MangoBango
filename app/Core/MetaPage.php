@@ -62,6 +62,24 @@ class MetaPage {
 	}
 	
 	/**
+	 * Overwrites the body with given HTML.
+	 * 
+	 * @param string $body body HTML
+	 */
+	public static function setBody ($body) {
+		self::$body = $body;
+	}
+	
+	/**
+	 * Overwrites the head with given HTML.
+	 * 
+	 * @param string $head head HTML
+	 */
+	public static function setHead ($head) {
+		self::$head = $head;
+	}
+	
+	/**
 	 * Sets the page title.
 	 * 
 	 * @param string $title page title

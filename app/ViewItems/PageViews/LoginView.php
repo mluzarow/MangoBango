@@ -48,6 +48,9 @@ class LoginView extends ViewAbstract {
 	 * Constructs the javascript using the available properties.
 	 */
 	protected function constructJavascript () {
-		return ('');
+		$output =
+		'<script type="text/javascript" src="/ViewItems/JS/Login.js"></script>';
+		
+		return ($output);
 	}
 }

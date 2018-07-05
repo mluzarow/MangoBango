@@ -12,7 +12,7 @@ class LoginView extends ViewAbstract {
 	 */
 	protected function constructCSS () {
 		$output =
-		'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/Login.css">'
+		'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/Login.css">';
 		
 		return ($output);
 	}
@@ -24,14 +24,20 @@ class LoginView extends ViewAbstract {
 		$output =
 		'<div class="login_wrap">
 			<div class="login_box">
-				<form class="login_form">
-					<div class="title_strip">
-						<span>MangoBango</span>
-					</div>
-					<input id="username_field" type="text" autocomplete="off" />
-					<input id="password_field" type="text" autocomplete="off" />
-				</form>
-				<input id="login_btn" type="button" value="Log In" />
+				<div class="title_strip">
+					<span>MangoBango</span>
+				</div>
+				<div class="login_box_inner">
+					<form class="login_form">
+						<div class="input_wrap">
+							<input id="username_field" type="text" autocomplete="off" />
+						</div>
+						<div class="input_wrap">
+							<input id="password_field" type="text" autocomplete="off" />
+						</div>
+					</form>
+					<input id="login_btn" type="button" value="Log In" />
+				</div>
 			</div>
 		</div>';
 		

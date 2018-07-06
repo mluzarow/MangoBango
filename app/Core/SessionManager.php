@@ -23,7 +23,7 @@ class SessionManager {
 		// Get saved value
 		$q = '
 			SELECT `username`, `password` FROM `users`
-			WHERE `username` = "'.$_POST['username'].'"';
+			WHERE `username` = "'.\Core\Database::sanitize ($_POST['username']).'"';
 		$r = \Core\Database::query ($q);
 		
 		if (empty ($r)) {

@@ -69,4 +69,12 @@ class SessionManager {
 	public function setSessionItem (string $key, string $value) {
 		$_SESSION[$key] = $value;
 	}
+	
+	/**
+	 * Unload a user's session.
+	 */
+	public function unloadSession () {
+		session_unset ();
+		session_destroy ();
+	}
 }

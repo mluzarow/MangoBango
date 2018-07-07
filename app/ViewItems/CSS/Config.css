@@ -57,3 +57,30 @@
 	cursor: pointer;
 }
 
+/*
+	User config section
+ */
+.config_wrap .user_header {
+	display: block;
+	border-bottom: 2px solid grey;
+}
+
+.config_wrap .user_header .header_item,
+.config_wrap .user_list .user_column {
+	display: inline-block;
+}
+
+.config_wrap .user_header .header_item.header_username,
+.config_wrap .user_list .user_column.column_username {
+	width: 80%;
+}
+
+.config_wrap .user_header .header_item.header_type,
+.config_wrap .user_list .user_column.column_type {
+	width: 20%;
+}
+
+.config_wrap .user_list {
+	display: block;
+}
+

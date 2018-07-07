@@ -66,18 +66,22 @@ class ConfigView extends ViewAbstract {
 								foreach ($this->getUsers () as $user) {
 									$output .=
 									'<div class="user_item">
-										<div class="username">
-											'.$user['username'].'
-										</div>
-										<div class="user_editor_btn change_name_btn">Change Name</div>
-										<div class="user_editor_btn change_pass_btn">Change Password</div>
-										<select>';
-											foreach ($this->getUserTypes () as $type) {
-												$output .=
-												'<option value="'.$type['type_name'].'" '.($user['type'] === $type['type_name'] ? 'selected' : '').'>'.$type['type_name'].'</option>';
-											}
+										<div class="user_column column_username">
+											<div class="username">
+												'.$user['username'].'
+											</div>
+											<div class="user_editor_btn change_name_btn">Change Name</div>
+											<div class="user_editor_btn change_pass_btn">Change Password</div>
+										</div><!--
+									 --><div class="user_column column_type">
+											<select>';
+												foreach ($this->getUserTypes () as $type) {
+													$output .=
+													'<option value="'.$type['type_name'].'" '.($user['type'] === $type['type_name'] ? 'selected' : '').'>'.$type['type_name'].'</option>';
+												}
 									$output .=
-										'</select>
+											'</select>
+										</div>
 									</div>';
 								}
 					$output .=

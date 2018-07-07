@@ -23,6 +23,8 @@ class AJAXProcessor {
 	
 	/**
 	 * Constructs the class and method call with the path given by the segments.
+	 * 
+	 * @return mixed return value of the called AJAX method
 	 */
 	public function fireTargetMethod () {
 		// Construct the method call.
@@ -34,7 +36,9 @@ class AJAXProcessor {
 		
 		$method = $this->getURLSegments ()[$i];
 		
-		(new $namespace)->$method ();
+		$result = (new $namespace)->$method ();
+		
+		return ($result);
 	}
 	
 	/**

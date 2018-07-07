@@ -104,7 +104,10 @@ if (!empty($current_segs)) {
 		$current_segs = array_values ($current_segs);
 		
 		$ajax = new AJAXProcessor ($current_segs);
-		$ajax->fireTargetMethod ();
+		$result = $ajax->fireTargetMethod ();
+		
+		echo $result;
+		return;
 	} else if ($current_segs[0] === 'db') {
 		// Use the DBViewer files
 		$namespace = '\DBViewer\PageControllers';

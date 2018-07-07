@@ -93,6 +93,7 @@
 }
 
 .config_wrap .user_list .user_item .user_column .user_editor_btn {
+	margin-right: 10px;
 	padding: 4px 8px;
 	display: inline-block;
 	float: right;
@@ -105,8 +106,3 @@
 .config_wrap .user_list .user_item .user_column .user_editor_btn:hover {
 	background-color: #0065cc;
 }
-
-.config_wrap .user_list .user_item .user_column .user_editor_btn:last-child {
-	margin-right: 10px;
-}
-

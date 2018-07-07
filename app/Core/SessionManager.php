@@ -34,9 +34,39 @@ class SessionManager {
 		$pass_valid = password_verify($_POST['password'], $r[0]['password']);
 		
 		if ($pass_valid === true) {
+			$this->setSessionItem ('username', $_POST['username']);
+			
 			return (1);
 		} else {
 			return (0);
 		}
+	}
+	
+	/**
+	 * Gets all session data for the current user's session.
+	 * 
+	 * @return array user session data
+	 */
+	public function getSessionData () {
+		return ($_SESSION);
+	}
+	
+	/**
+	 * Loads a user's session.
+	 */
+	public function loadSession () {
+		session_start ();
+	}
+	
+	/**
+	 * Updates user session data with give key value pair.
+	 * 
+	 * @param string $key   session array key
+	 * @param string $value session data value for given key
+	 * 
+	 * @throws TypeError on non-string parameters
+	 */
+	public function setSessionItem (string $key, string $value) {
+		$_SESSION[$key] = $value;
 	}
 }

@@ -20,6 +20,10 @@ spl_autoload_register(function ($className) {
 
 \Core\Database::initialize ();
 
+// Load user session
+$user_session = new \Core\SessionManager ();
+$user_session->loadSession ();
+
 // Parse the URL here
 $url_split = explode ('?', $_SERVER['REQUEST_URI']);
 

@@ -210,13 +210,16 @@ class ConfigView extends ViewAbstract {
 	 * @param array $users list of users
 	 * 
 	 * @throws TypeError on non-array parameter
-	 * @throws InvalidArgumentException on missing user keys
+	 * @throws InvalidArgumentException on missing user keys or non-string items
 	 */
 	protected function setUsers (array $users) {
 		foreach ($users as $user) {
 			foreach (['username', 'type'] as $key) {
 				if (!array_key_exists ($key, $user)) {
 					throw new \InvalidArgumentException ('Argument (Users) items must each have key "'.$key.'".');
+				}
+				if (!is_string ($user[$key])) {
+					throw new \InvalidArgumentException ('Argument (Users) items must all be strings; '.gettype ($user[$key]).' given.');
 				}
 			}
 		}
@@ -228,7 +231,7 @@ class ConfigView extends ViewAbstract {
 	 * Sets currently logged in user's type.
 	 * 
 	 * @param string $user_type user's type
-	 *
+	 * 
 	 * @throws TypeError on non-string parameter
 	 */
 	protected function setUserType (string $user_type) {
@@ -239,14 +242,17 @@ class ConfigView extends ViewAbstract {
 	 * Sets list of server user types.
 	 * 
 	 * @param array $user_types list of user types
-	 *
+	 * 
 	 * @throws TypeError on non-array parameter
-	 * @throws InvalidArgumentException on missing user type keys
+	 * @throws InvalidArgumentException on missing user type keys or non-string items
 	 */
 	protected function setUserTypes (array $user_types) {
 		foreach ($user_types as $user_type) {
 			if (!array_key_exists ('user_type', $user_type)) {
 				throw new \InvalidArgumentException ('Argument (Users Types) items must each have key "user_type".');
+			}
+			if (!is_string ($user_type['user_type'])) {
+				throw new \InvalidArgumentException ('Argument (User Types) items must all be strings; '.gettype ($user_type['user_type']).' given.');
 			}
 		}
 		

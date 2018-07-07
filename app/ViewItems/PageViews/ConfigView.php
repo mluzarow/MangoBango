@@ -205,6 +205,14 @@ class ConfigView extends ViewAbstract {
 	}
 	
 	protected function setUsers (array $users) {
+		foreach ($users as $user) {
+			foreach (['username', 'type'] as $key) {
+				if (!array_key_exists ($key, $users)) {
+					throw new \InvalidArgumentException ('Argument (Users) items must each have key "'.$key.'".');
+				}
+			}
+		}
+		
 		$this->users = $users;
 	}
 	
@@ -213,6 +221,12 @@ class ConfigView extends ViewAbstract {
 	}
 	
 	protected function setUserTypes (array $user_types) {
+		foreach ($user_types as $user_type) {
+			if (!array_key_exists ('user_type', $users)) {
+				throw new \InvalidArgumentException ('Argument (Users Types) items must each have key "user_type".');
+			}
+		}
+		
 		$this->user_types = $user_types;
 	}
 }

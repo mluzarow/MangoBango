@@ -204,6 +204,14 @@ class ConfigView extends ViewAbstract {
 		$this->reader_display_style = $config;
 	}
 	
+	/**
+	 * Sets list of server users.
+	 * 
+	 * @param array $users list of users
+	 * 
+	 * @throws TypeError on non-array parameter
+	 * @throws InvalidArgumentException on missing user keys
+	 */
 	protected function setUsers (array $users) {
 		foreach ($users as $user) {
 			foreach (['username', 'type'] as $key) {
@@ -216,10 +224,25 @@ class ConfigView extends ViewAbstract {
 		$this->users = $users;
 	}
 	
+	/**
+	 * Sets currently logged in user's type.
+	 * 
+	 * @param string $user_type user's type
+	 *
+	 * @throws TypeError on non-string parameter
+	 */
 	protected function setUserType (string $user_type) {
 		$this->user_type = $user_type;
 	}
 	
+	/**
+	 * Sets list of server user types.
+	 * 
+	 * @param array $user_types list of user types
+	 *
+	 * @throws TypeError on non-array parameter
+	 * @throws InvalidArgumentException on missing user type keys
+	 */
 	protected function setUserTypes (array $user_types) {
 		foreach ($user_types as $user_type) {
 			if (!array_key_exists ('user_type', $user_type)) {

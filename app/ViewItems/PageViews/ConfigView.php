@@ -92,6 +92,25 @@ class ConfigView extends ViewAbstract {
 				}
 		$output .=
 			'</div>
+		</div>
+		<div class="clones" style="display: none;">
+			<div class="user_item new_user_row">
+			<div class="user_column column_username">
+				<div class="username">
+					<input type="text" autocomplete="off" placeholder="New Username" />
+				</div>
+				<div class="user_editor_btn change_pass_btn">Change Password</div>
+				<div class="user_editor_btn change_name_btn">Change Name</div>
+			</div><!--
+		 --><div class="user_column column_type">
+				<select>';
+					foreach ($this->getUserTypes () as $type) {
+						$output .=
+						'<option value="'.$type['type_name'].'">'.$type['type_name'].'</option>';
+					}
+		$output .=
+				'</select>
+			</div>
 		</div>';
 		
 		return ($output);

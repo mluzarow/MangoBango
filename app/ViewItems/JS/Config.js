@@ -55,4 +55,19 @@ $(window).ready (function () {
 			}
 		});
 	});
+	
+	$(".new_user_row input").keypress (function (e) {
+		if (e.which === 13) {
+			let $parent = $(this).parent ();
+			let value = $(this).val ();
+			$(this).remove ();
+			$parent.html (value);
+		}
+	});
+	
+	$(".add_user_btn").click (function () {
+		let userRow = $(".clones .new_user_row").clone (true);
+		
+		$(".user_list").append (userRow);
+	});
 });

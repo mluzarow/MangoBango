@@ -86,6 +86,7 @@ class ConfigView extends ViewAbstract {
 								}
 					$output .=
 							'</div>
+							<div class="add_user_btn">Add User</div>
 						</div>
 					</div>';
 				}

@@ -103,6 +103,16 @@
 	font-size: 0.7em;
 }
 
-.config_wrap .user_list .user_item .user_column .user_editor_btn:hover {
-	background-color: #0065cc;
+.config_wrap .add_user_btn {
+	margin-top: 10px;
+	padding: 5px 12px;
+	display: inline-block;
+	background-color: #00733b;
+	color: #000;
+	cursor: pointer;
+	font-size: 0.9em;
+}
+
+.config_wrap .add_user_btn:hover {
+	background-color: #00cc68;
 }

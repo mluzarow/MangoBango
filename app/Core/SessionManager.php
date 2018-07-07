@@ -31,7 +31,7 @@ class SessionManager {
 			return (0);
 		}
 		
-		$pass_valid = password_verify($_POST['password'], $r[0]['password'];);
+		$pass_valid = password_verify($_POST['password'], $r[0]['password']);
 		
 		if ($pass_valid === true) {
 			return (1);

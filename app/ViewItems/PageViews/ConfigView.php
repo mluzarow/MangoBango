@@ -52,8 +52,39 @@ class ConfigView extends ViewAbstract {
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</div>';
+				if ($this->getUserType () === 'admin') {
+					$output .=
+					'<div class="config_section">
+						<div class="section_header">User Settings (Admin)</div>
+						<div class="user_header">
+							<div class="header_item header_username">Username</div>
+							<div class="header_item header_type">User Type</div>
+						</div>
+						<div class="user_list">';
+							foreach ($this->getUsers () as $user) {
+								$output .=
+								'<div class="user_item">
+									<div class="username">
+										'.$user['username'].'
+									</div>
+									<div class="user_editor_btn change_name_btn">Change Name</div>
+									<div class="user_editor_btn change_pass_btn">Change Password</div>
+									<select>';
+										foreach ($this->getUserTypes () as $type) {
+											$output .=
+											'<option value="'.$type['type_name'].'" '.($user['type'] === $type['type_name'] ? 'selected' : '').'>'.$type['type_name'].'</option>';
+										}
+								$output .=
+									'</select>
+								</div>';
+							}
+					$output .=
+						'</div>
+					</div>';
+				}
+		$output .=
+			'</div>
 		</div>';
 		
 		return ($output);
@@ -94,6 +125,33 @@ class ConfigView extends ViewAbstract {
 	 */
 	protected function getReaderDisplayStyle () {
 		return ($this->reader_display_style);
+	}
+	
+	/**
+	 * Gets the list of users.
+	 * 
+	 * @return array list of users
+	 */
+	protected function getUsers () {
+		return ($this->users);
+	}
+	
+	/**
+	 * Gets the currently logged in user's type.
+	 * 
+	 * @return string user's type
+	 */
+	protected function getUserType () {
+		return ($this->user_type);
+	}
+	
+	/**
+	 * Gets list of all available user types.
+	 * 
+	 * @return array list of user types
+	 */
+	protected function getUserTypes () {
+		return ($this->user_types);
 	}
 	
 	/**
@@ -144,5 +202,17 @@ class ConfigView extends ViewAbstract {
 		}
 		
 		$this->reader_display_style = $config;
+	}
+	
+	protected function setUsers ($users) {
+		$this->users = $users;
+	}
+	
+	protected function setUserType ($user_type) {
+		$this->user_type = $user_type;
+	}
+	
+	protected function setUserTypes ($user_types) {
+		$this->user_types = $user_types;
 	}
 }

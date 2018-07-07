@@ -32,6 +32,22 @@ class Config {
 		$view_parameters['manga_directory'] = $configs_dict['manga_directory'];
 		$view_parameters['library_view_type'] = $configs_dict['library_view_type'];
 		
+		$q = '
+			SELECT *
+			FROM `user_types`';
+		$r = \Core\Database::query ($q);
+		
+		$view_parameters['user_types'] = $r;
+		
+		$q = '
+			SELECT *
+			FROM `users`';
+		$r = \Core\Database::query ($q);
+		
+		$view_parameters['users'] = $r;
+		
+		$view_parameters['user_type'] = (new \Core\SessionManager ())->getSessionItem ('user_type');
+		
 		$view = new ConfigView ($view_parameters);
 		$view->render ();
 	}

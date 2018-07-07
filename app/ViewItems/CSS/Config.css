@@ -16,6 +16,7 @@
 }
 
 .config_list_wrap .config_list .config_section {
+	margin-bottom: 35px;
 	background-color: #2b2b2b;
 	box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.4);
 	box-sizing: border-box;

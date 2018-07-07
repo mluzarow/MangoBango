@@ -52,6 +52,25 @@ class SessionManager {
 	}
 	
 	/**
+	 * Gets session value for the given key.
+	 * 
+	 * @param  string $key session dictionary key
+	 * 
+	 * @return string session dictionary value for given key
+	 *
+	 * @throws TypeError on non-string parameter & non-string return
+	 */
+	public function getSessionItem (string $key) : string {
+		if (array_key_exists ($key, $_SESSION)) {
+			$value = $_SESSION[$key];
+		} else {
+			$value = '';
+		}
+		
+		return ($value);
+	}
+	
+	/**
 	 * Loads a user's session.
 	 */
 	public function loadSession () {
@@ -61,8 +80,8 @@ class SessionManager {
 	/**
 	 * Updates user session data with give key value pair.
 	 * 
-	 * @param string $key   session array key
-	 * @param string $value session data value for given key
+	 * @param string $key   session dictionary key
+	 * @param string $value session dictionary value for given key
 	 * 
 	 * @throws TypeError on non-string parameters
 	 */

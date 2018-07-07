@@ -9,7 +9,7 @@ class SessionManager {
 	 * AJAX method validates the given username / password given via the login
 	 * form.
 	 * 
-	 * @return bool login success status
+	 * @return int login success status
 	 */
 	public function ajaxValidateLogin () {
 		if (
@@ -17,7 +17,7 @@ class SessionManager {
 			empty ($_POST['password'])
 		) {
 			// Missing POST data
-			return (false);
+			return (0);
 		}
 		
 		// Get saved value
@@ -28,16 +28,15 @@ class SessionManager {
 		
 		if (empty ($r)) {
 			// No matching username found
-			return (false);
+			return (0);
 		}
 		
-		$saved_pass = $r[0]['password'];
-		$user_pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
+		$pass_valid = password_verify($_POST['password'], $r[0]['password'];);
 		
-		if ($user_pass === $saved_pass) {
-			return (true);
+		if ($pass_valid === true) {
+			return (1);
 		} else {
-			return (false);
+			return (0);
 		}
 	}
 }

@@ -57,30 +57,32 @@ class ConfigView extends ViewAbstract {
 					$output .=
 					'<div class="config_section">
 						<div class="section_header">User Settings (Admin)</div>
-						<div class="user_header">
-							<div class="header_item header_username">Username</div>
-							<div class="header_item header_type">User Type</div>
-						</div>
-						<div class="user_list">';
-							foreach ($this->getUsers () as $user) {
-								$output .=
-								'<div class="user_item">
-									<div class="username">
-										'.$user['username'].'
-									</div>
-									<div class="user_editor_btn change_name_btn">Change Name</div>
-									<div class="user_editor_btn change_pass_btn">Change Password</div>
-									<select>';
-										foreach ($this->getUserTypes () as $type) {
-											$output .=
-											'<option value="'.$type['type_name'].'" '.($user['type'] === $type['type_name'] ? 'selected' : '').'>'.$type['type_name'].'</option>';
-										}
-								$output .=
-									'</select>
-								</div>';
-							}
+						<div class="config_wrap">
+							<div class="user_header">
+								<div class="header_item header_username">Username</div><!--
+							 --><div class="header_item header_type">User Type</div>
+							</div>
+							<div class="user_list">';
+								foreach ($this->getUsers () as $user) {
+									$output .=
+									'<div class="user_item">
+										<div class="username">
+											'.$user['username'].'
+										</div>
+										<div class="user_editor_btn change_name_btn">Change Name</div>
+										<div class="user_editor_btn change_pass_btn">Change Password</div>
+										<select>';
+											foreach ($this->getUserTypes () as $type) {
+												$output .=
+												'<option value="'.$type['type_name'].'" '.($user['type'] === $type['type_name'] ? 'selected' : '').'>'.$type['type_name'].'</option>';
+											}
+									$output .=
+										'</select>
+									</div>';
+								}
 					$output .=
-						'</div>
+							'</div>
+						</div>
 					</div>';
 				}
 		$output .=

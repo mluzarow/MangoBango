@@ -22,7 +22,8 @@ class SessionManager {
 		
 		// Get saved value
 		$q = '
-			SELECT `username`, `password` FROM `users`
+			SELECT `username`, `password`, `type`
+			FROM `users`
 			WHERE `username` = "'.\Core\Database::sanitize ($_POST['username']).'"';
 		$r = \Core\Database::query ($q);
 		
@@ -35,6 +36,7 @@ class SessionManager {
 		
 		if ($pass_valid === true) {
 			$this->setSessionItem ('username', $_POST['username']);
+			$this->setSessionItem ('user_type', $r[0]['type']);
 			
 			return (1);
 		} else {

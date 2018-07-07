@@ -52,7 +52,64 @@ class ConfigView extends ViewAbstract {
 							</div>
 						</div>
 					</div>
+				</div>';
+				if ($this->getUserType () === 'admin') {
+					$output .=
+					'<div class="config_section">
+						<div class="section_header">User Settings (Admin)</div>
+						<div class="config_wrap">
+							<div class="user_header">
+								<div class="header_item header_username">Username</div><!--
+							 --><div class="header_item header_type">User Type</div>
+							</div>
+							<div class="user_list">';
+								foreach ($this->getUsers () as $user) {
+									$output .=
+									'<div class="user_item">
+										<div class="user_column column_username">
+											<div class="username">
+												'.$user['username'].'
+											</div>
+											<div class="user_editor_btn change_pass_btn">Change Password</div>
+											<div class="user_editor_btn change_name_btn">Change Name</div>
+										</div><!--
+									 --><div class="user_column column_type">
+											<select>';
+												foreach ($this->getUserTypes () as $type) {
+													$output .=
+													'<option value="'.$type['type_name'].'" '.($user['type'] === $type['type_name'] ? 'selected' : '').'>'.$type['type_name'].'</option>';
+												}
+									$output .=
+											'</select>
+										</div>
+									</div>';
+								}
+					$output .=
+							'</div>
+							<div class="add_user_btn">Add User</div>
+						</div>
+					</div>';
+				}
+		$output .=
+			'</div>
+		</div>
+		<div class="clones" style="display: none;">
+			<div class="user_item new_user_row">
+			<div class="user_column column_username">
+				<div class="username">
+					<input type="text" autocomplete="off" placeholder="New Username" />
 				</div>
+				<div class="user_editor_btn change_pass_btn">Change Password</div>
+				<div class="user_editor_btn change_name_btn">Change Name</div>
+			</div><!--
+		 --><div class="user_column column_type">
+				<select>';
+					foreach ($this->getUserTypes () as $type) {
+						$output .=
+						'<option value="'.$type['type_name'].'">'.$type['type_name'].'</option>';
+					}
+		$output .=
+				'</select>
 			</div>
 		</div>';
 		
@@ -94,6 +151,33 @@ class ConfigView extends ViewAbstract {
 	 */
 	protected function getReaderDisplayStyle () {
 		return ($this->reader_display_style);
+	}
+	
+	/**
+	 * Gets the list of users.
+	 * 
+	 * @return array list of users
+	 */
+	protected function getUsers () {
+		return ($this->users);
+	}
+	
+	/**
+	 * Gets the currently logged in user's type.
+	 * 
+	 * @return string user's type
+	 */
+	protected function getUserType () {
+		return ($this->user_type);
+	}
+	
+	/**
+	 * Gets list of all available user types.
+	 * 
+	 * @return array list of user types
+	 */
+	protected function getUserTypes () {
+		return ($this->user_types);
 	}
 	
 	/**
@@ -144,5 +228,60 @@ class ConfigView extends ViewAbstract {
 		}
 		
 		$this->reader_display_style = $config;
+	}
+	
+	/**
+	 * Sets list of server users.
+	 * 
+	 * @param array $users list of users
+	 * 
+	 * @throws TypeError on non-array parameter
+	 * @throws InvalidArgumentException on missing user keys or non-string items
+	 */
+	protected function setUsers (array $users) {
+		foreach ($users as $user) {
+			foreach (['username', 'type'] as $key) {
+				if (!array_key_exists ($key, $user)) {
+					throw new \InvalidArgumentException ('Argument (Users) items must each have key "'.$key.'".');
+				}
+				if (!is_string ($user[$key])) {
+					throw new \InvalidArgumentException ('Argument (Users) items must all be strings; '.gettype ($user[$key]).' given.');
+				}
+			}
+		}
+		
+		$this->users = $users;
+	}
+	
+	/**
+	 * Sets currently logged in user's type.
+	 * 
+	 * @param string $user_type user's type
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	protected function setUserType (string $user_type) {
+		$this->user_type = $user_type;
+	}
+	
+	/**
+	 * Sets list of server user types.
+	 * 
+	 * @param array $user_types list of user types
+	 * 
+	 * @throws TypeError on non-array parameter
+	 * @throws InvalidArgumentException on missing user type keys or non-string items
+	 */
+	protected function setUserTypes (array $user_types) {
+		foreach ($user_types as $user_type) {
+			if (!array_key_exists ('type_name', $user_type)) {
+				throw new \InvalidArgumentException ('Argument (Users Types) items must each have key "type_name".');
+			}
+			if (!is_string ($user_type['type_name'])) {
+				throw new \InvalidArgumentException ('Argument (User Types) items must all be strings; '.gettype ($user_type['type_name']).' given.');
+			}
+		}
+		
+		$this->user_types = $user_types;
 	}
 }

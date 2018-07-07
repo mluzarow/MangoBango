@@ -16,6 +16,7 @@
 }
 
 .config_list_wrap .config_list .config_section {
+	margin-bottom: 35px;
 	background-color: #2b2b2b;
 	box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.4);
 	box-sizing: border-box;
@@ -56,3 +57,62 @@
 	cursor: pointer;
 }
 
+/*
+	User config section
+ */
+.config_wrap .user_header {
+	display: block;
+	border-bottom: 2px solid grey;
+}
+
+.config_wrap .user_header .header_item,
+.config_wrap .user_list .user_column {
+	display: inline-block;
+}
+
+.config_wrap .user_header .header_item.header_username,
+.config_wrap .user_list .user_column.column_username {
+	width: 80%;
+}
+
+.config_wrap .user_header .header_item.header_type,
+.config_wrap .user_list .user_column.column_type {
+	width: 20%;
+}
+
+.config_wrap .user_list {
+	display: block;
+}
+
+.config_wrap .user_list .user_item {
+	padding: 5px;
+}
+
+.config_wrap .user_list .user_item .user_column .username {
+	display: inline-block;
+}
+
+.config_wrap .user_list .user_item .user_column .user_editor_btn {
+	margin-right: 10px;
+	padding: 4px 8px;
+	display: inline-block;
+	float: right;
+	background-color: #1c4870;
+	cursor: pointer;
+	color: #fff;
+	font-size: 0.7em;
+}
+
+.config_wrap .add_user_btn {
+	margin-top: 10px;
+	padding: 5px 12px;
+	display: inline-block;
+	background-color: #00733b;
+	color: #000;
+	cursor: pointer;
+	font-size: 0.9em;
+}
+
+.config_wrap .add_user_btn:hover {
+	background-color: #00cc68;
+}

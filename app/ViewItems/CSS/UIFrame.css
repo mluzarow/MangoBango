@@ -71,6 +71,8 @@ body {
 }
 
 .topbar .login_wrap {
+	position: relative;
+	min-width: 140px;
 	height: 39px;
 	display: inline-block;
 	vertical-align: top;
@@ -79,7 +81,13 @@ body {
 
 .topbar .login_wrap .login_text {
 	width: 85%;
+	height: 39px;
 	float: left;
+	display: block;
+}
+
+.topbar .login_wrap .login_text span {
+	display: block;
 }
 
 .topbar .login_wrap .login_text .login_name {
@@ -90,8 +98,16 @@ body {
 	padding: 8px 0;
 	width: 15%;
 	float: right;
+	display: block;
 	cursor: pointer;
 	text-align: center;
+}
+
+.topbar .login_wrap .dropdown_menu {
+	position: absolute;
+	top: calc(100% + 5px);
+	right: -4px;
+	width: 100%;
 }
 
 .topbar .icons_wrap .burger_dropdown {

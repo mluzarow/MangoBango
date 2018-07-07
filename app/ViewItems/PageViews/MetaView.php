@@ -82,7 +82,10 @@ class MetaView extends ViewAbstract {
 						<span>Logged in as</span>
 						<span class="login_name">'.$this->getUsername ().'</span>
 					</div>
-					<div class="expand_arrow">▾</div>
+					<div class="dropdown_menu_button expand_arrow">▾</div>
+					<div class="dropdown_menu">
+						<div class="logout_btn">Log Out</div>
+					</div>
 				</div>
 			</div>
 		</div>

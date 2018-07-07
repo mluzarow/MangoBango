@@ -31,6 +31,13 @@ class MetaView extends ViewAbstract {
 					<img src="\resources\icons\burger.svg" />
 				</div>
 				<div class="burger_dropdown dropdown_menu">
+					<div class="menu_item login_wrap_mobile">
+						<div class="login_text">
+							<span>Logged in as</span>
+							<span class="login_name">'.$this->getUsername ().'</span>
+						</div>
+						<div class="logout_btn">Log Out</div>
+					</div>
 					<div class="menu_item">
 						<a href="/displaylibrary">
 							<img src="\resources\icons\bookshelf.svg" />
@@ -70,6 +77,13 @@ class MetaView extends ViewAbstract {
 						<img src="\resources\icons\database.svg" />
 					</a>
 				</div>
+				<div class="login_wrap">
+					<div class="login_text">
+						<span>Logged in as</span>
+						<span class="login_name">'.$this->getUsername ().'</span>
+					</div>
+					<div class="expand_arrow">▾</div>
+				</div>
 			</div>
 		</div>
 		<div class="display_container">
@@ -88,5 +102,13 @@ class MetaView extends ViewAbstract {
 		<script type="text/javascript" src="/ViewItems/JS/dropdown.js"></script>';
 		
 		return ($output);
+	}
+	
+	protected function setUsername (string $username) {
+		$this->username = $username;
+	}
+	
+	private function getUsername () {
+		return ($this->username);
 	}
 }

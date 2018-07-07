@@ -59,6 +59,41 @@ body {
 	width: 100%;
 }
 
+.topbar .icons_wrap .logout_btn {
+	background-color: green;
+	cursor: pointer;
+	font-family: Consolas;
+	text-align: center;
+}
+
+.topbar .icons_wrap .logout_btn:hover {
+	background-color: lightgreen;
+}
+
+.topbar .login_wrap {
+	height: 39px;
+	display: inline-block;
+	vertical-align: top;
+	font-family: Arial;
+}
+
+.topbar .login_wrap .login_text {
+	width: 85%;
+	float: left;
+}
+
+.topbar .login_wrap .login_text .login_name {
+	font-weight: bold;
+}
+
+.topbar .login_wrap .expand_arrow {
+	padding: 8px 0;
+	width: 15%;
+	float: right;
+	cursor: pointer;
+	text-align: center;
+}
+
 .topbar .icons_wrap .burger_dropdown {
 	position: absolute;
 	top: 50px;
@@ -80,6 +115,28 @@ body {
 
 .topbar .icons_wrap .burger_dropdown .menu_item:hover {
 	background-color: #ffef94;
+}
+
+.topbar .icons_wrap .burger_dropdown .menu_item.login_wrap_mobile:hover {
+	background-color: transparent;
+}
+
+.topbar .icons_wrap .burger_dropdown .login_wrap_mobile {
+	padding: 11px 0;
+	font-family: Arial;
+}
+
+.topbar .icons_wrap .burger_dropdown .login_wrap_mobile .login_text {
+	display: inline-block;
+}
+
+.topbar .icons_wrap .burger_dropdown .login_wrap_mobile .login_text .login_name {
+	font-weight: bold;
+}
+
+.topbar .icons_wrap .burger_dropdown .login_wrap_mobile .logout_btn {
+	padding: 6px;
+	display: inline-block;
 }
 
 .topbar .icons_wrap .burger_dropdown .menu_item a {
@@ -129,6 +186,7 @@ body {
 }
 
 @media all and (max-width: 768px) {
+	.topbar .login_wrap,
 	.topbar .icons_wrap .button {
 		display: none;
 	}

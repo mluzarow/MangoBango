@@ -70,8 +70,8 @@ class ConfigView extends ViewAbstract {
 											<div class="username">
 												'.$user['username'].'
 											</div>
-											<div class="user_editor_btn change_name_btn">Change Name</div>
 											<div class="user_editor_btn change_pass_btn">Change Password</div>
+											<div class="user_editor_btn change_name_btn">Change Name</div>
 										</div><!--
 									 --><div class="user_column column_type">
 											<select>';

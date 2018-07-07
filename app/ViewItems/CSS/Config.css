@@ -84,3 +84,29 @@
 	display: block;
 }
 
+.config_wrap .user_list .user_item {
+	padding: 5px;
+}
+
+.config_wrap .user_list .user_item .user_column .username {
+	display: inline-block;
+}
+
+.config_wrap .user_list .user_item .user_column .user_editor_btn {
+	padding: 4px 8px;
+	display: inline-block;
+	float: right;
+	background-color: #1c4870;
+	cursor: pointer;
+	color: #fff;
+	font-size: 0.7em;
+}
+
+.config_wrap .user_list .user_item .user_column .user_editor_btn:hover {
+	background-color: #0065cc;
+}
+
+.config_wrap .user_list .user_item .user_column .user_editor_btn:last-child {
+	margin-right: 10px;
+}
+

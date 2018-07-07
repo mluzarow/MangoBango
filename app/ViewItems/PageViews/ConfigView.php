@@ -254,11 +254,11 @@ class ConfigView extends ViewAbstract {
 	 */
 	protected function setUserTypes (array $user_types) {
 		foreach ($user_types as $user_type) {
-			if (!array_key_exists ('user_type', $user_type)) {
-				throw new \InvalidArgumentException ('Argument (Users Types) items must each have key "user_type".');
+			if (!array_key_exists ('type_name', $user_type)) {
+				throw new \InvalidArgumentException ('Argument (Users Types) items must each have key "type_name".');
 			}
-			if (!is_string ($user_type['user_type'])) {
-				throw new \InvalidArgumentException ('Argument (User Types) items must all be strings; '.gettype ($user_type['user_type']).' given.');
+			if (!is_string ($user_type['type_name'])) {
+				throw new \InvalidArgumentException ('Argument (User Types) items must all be strings; '.gettype ($user_type['type_name']).' given.');
 			}
 		}
 		

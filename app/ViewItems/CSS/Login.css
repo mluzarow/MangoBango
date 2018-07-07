@@ -77,3 +77,11 @@ body {
 .login_wrap .login_box .login_box_inner #login_btn:hover {
 	background-color: #fff576;
 }
+
+@media all and (max-width: 768px) {
+	.login_wrap .login_box {
+		position: relative;
+		left: -2.3px;
+		width: calc(100% - 4.6px);
+	}
+}

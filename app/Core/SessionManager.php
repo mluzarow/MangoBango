@@ -71,6 +71,19 @@ class SessionManager {
 	}
 	
 	/**
+	 * Checks if user is logged in.
+	 * 
+	 * @return bool user logged in flag
+	 */
+	public function isLoggedIn () {
+		if (!empty ($_SESSION['username'])) {
+			return (true);
+		} else {
+			return (false);
+		}
+	}
+	
+	/**
 	 * Loads a user's session.
 	 */
 	public function loadSession () {

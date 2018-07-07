@@ -204,15 +204,15 @@ class ConfigView extends ViewAbstract {
 		$this->reader_display_style = $config;
 	}
 	
-	protected function setUsers ($users) {
+	protected function setUsers (array $users) {
 		$this->users = $users;
 	}
 	
-	protected function setUserType ($user_type) {
+	protected function setUserType (string $user_type) {
 		$this->user_type = $user_type;
 	}
 	
-	protected function setUserTypes ($user_types) {
+	protected function setUserTypes (array $user_types) {
 		$this->user_types = $user_types;
 	}
 }

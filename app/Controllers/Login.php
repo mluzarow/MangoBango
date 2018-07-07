@@ -11,6 +11,17 @@ class Login {
 	 * Constructor for page controller Login.
 	 */
 	public function __construct () {
+		if ((new \Core\SessionManager ())->isLoggedIn () === true) {
+			// Route user to home page
+			\Core\MetaPage::setHead ('
+				<script>
+					window.location = "/";
+				</script>
+			');
+			\Core\MetaPage::setBody ('');
+			return;
+		}
+		
 		\Core\MetaPage::setTitle ('Login');
 		\Core\MetaPage::setHead ('');
 		\Core\MetaPage::setBody ('');

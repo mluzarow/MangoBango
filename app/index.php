@@ -38,13 +38,16 @@ if (count ($current_segs) === 1) {
 	}
 }
 
-$user_login = $user_session->getSessionItem ('username');
-
-if (!empty ($user_login)) {
-	if (!empty($current_segs)) {
+if ((new \Core\SessionManager ())->isLoggedIn () === false) {
+	// Not logged in; should only be able to ajax request
+	// SessionManager::ajaxValidateLogin and Controllers/Login
+	$uri = strtolower (implode ('/', $current_segs));
+	
+	if (
+		$uri === 'ajax/core/sessionmanager/ajaxvalidatelogin' ||
+		$uri === 'login'
+	) {
 		if ($current_segs[0] === 'ajax') {
-			// If the first segment is ajax, pass the rest of the data to the ajax
-			// controller so it can decide what methods to run.
 			unset ($current_segs[0]);
 			$current_segs = array_values ($current_segs);
 			
@@ -53,48 +56,71 @@ if (!empty ($user_login)) {
 			
 			echo $result;
 			return;
-		} else if ($current_segs[0] === 'db') {
-			// Use the DBViewer files
-			$namespace = '\DBViewer\PageControllers';
-			for ($i = 1; $i < count ($current_segs); $i++) {
-				$namespace .= '\\'.$current_segs[$i];
-			}
-			
-			(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
-			
-			try {
-				new $namespace ();
-			} catch (Error $e) {
-				echo $e->getMessage ();
-			}
 		} else {
-			$namespace = '\Controllers';
-			
-			for ($i = 0; $i < count ($current_segs); $i++) {
-				$namespace .= '\\'.$current_segs[$i];
-			}
-			
-			(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
-			
-			try {
-				new $namespace ();
-			} catch (Error $e) {
-				echo $e->getMessage ();
-			}
+			new \Controllers\Login ();
 		}
 	} else {
-		// Empty so its just the home page.
-		(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
-		new \Controllers\Home ();
+		// Load the reroute script
+		\Core\MetaPage::setHead ('
+			<script>
+				window.location = "/login";
+			</script>
+		');
+		\Core\MetaPage::setBody ('');
 	}
 	
 	echo \Core\MetaPage::render ();
-} else {
-	// Not active session, so go to the login screen.
-	\Core\MetaPage::setHead ('
-		<script>
-			window.location = "/login";
-		</script>
-	');
-	\Core\MetaPage::setBody ('');
+	return;
 }
+
+if (!empty($current_segs)) {
+	if ($current_segs[0] === 'ajax') {
+		// If the first segment is ajax, pass the rest of the data to the ajax
+		// controller so it can decide what methods to run.
+		unset ($current_segs[0]);
+		$current_segs = array_values ($current_segs);
+		
+		$ajax = new AJAXProcessor ($current_segs);
+		$result = $ajax->fireTargetMethod ();
+		
+		echo $result;
+		return;
+	} else if ($current_segs[0] === 'db') {
+		// Use the DBViewer files
+		$namespace = '\DBViewer\PageControllers';
+		for ($i = 1; $i < count ($current_segs); $i++) {
+			$namespace .= '\\'.$current_segs[$i];
+		}
+		
+		$user_login = $user_session->getSessionItem ('username');
+		(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
+		
+		try {
+			new $namespace ();
+		} catch (Error $e) {
+			echo $e->getMessage ();
+		}
+	} else {
+		$namespace = '\Controllers';
+		
+		for ($i = 0; $i < count ($current_segs); $i++) {
+			$namespace .= '\\'.$current_segs[$i];
+		}
+		
+		$user_login = $user_session->getSessionItem ('username');
+		(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
+		
+		try {
+			new $namespace ();
+		} catch (Error $e) {
+			echo $e->getMessage ();
+		}
+	}
+} else {
+	// Empty so its just the home page.
+	$user_login = $user_session->getSessionItem ('username');
+	(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
+	new \Controllers\Home ();
+}
+
+echo \Core\MetaPage::render ();

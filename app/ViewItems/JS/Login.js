@@ -8,7 +8,7 @@ $(window).ready (function () {
 				password: $("#password_field").val ()
 			}
 		}).done (function (response) {
-			if (response === true) {
+			if (response === "1") {
 				window.location = "/";
 			} else {
 				$(".login_box .warning").toggle (true);

@@ -43,6 +43,18 @@ body {
 	font-size: 0.7em;
 }
 
+.setup_wrap .setup_inner_wrap .setup_start_btn {
+	padding: 5px 10px;
+	display: inline-block;
+	background-color: var(--hightlight_bg);
+	color: #000;
+	cursor: pointer;
+}
+
+.setup_wrap .setup_inner_wrap .setup_start_btn:hover {
+	background-color: #ffff36;
+}
+
 @media all and (max-width: 768px) {
 	.setup_wrap {
 		width: 100%;

@@ -11,6 +11,10 @@ class FirstTimeSetup {
 	 * Constructor for page controller FirstTimeSetup.
 	 */
 	public function __construct () {
+		if (!empty ($_POST)) {
+			return;
+		}
+		
 		\Core\MetaPage::setTitle ('First Time Setup');
 		\Core\MetaPage::setHead ('');
 		\Core\MetaPage::setBody ('');
@@ -26,7 +30,7 @@ class FirstTimeSetup {
 	 * 
 	 * @throws TypeError on non-array returned messages list
 	 */
-	public function ajaxCreateDatabase () : array {
+	public function ajaxCreateDatabases () : array {
 		$messages = [];
 		
 		$q = '
@@ -113,7 +117,7 @@ class FirstTimeSetup {
 		$messages[] = $this->createMessage ($r, 'statistics');
 		
 		$q = '
-			CREATE TABLE `users` (
+			CREATE TABLE IF NOT EXISTS `users` (
 				`user_id` INT(10) NOT NULL AUTO_INCREMENT,
 				`username` VARCHAR(50) NOT NULL,
 				`password` VARCHAR(255) NOT NULL,
@@ -128,7 +132,7 @@ class FirstTimeSetup {
 		$messages[] = $this->createMessage ($r, 'users');
 		
 		$q = '
-			CREATE TABLE `user_types` (
+			CREATE TABLE IF NOT EXISTS `user_types` (
 				`type_name` VARCHAR(255) NOT NULL,
 				`permissions` VARCHAR(255) NULL DEFAULT NULL,
 				PRIMARY KEY (`type_name`)

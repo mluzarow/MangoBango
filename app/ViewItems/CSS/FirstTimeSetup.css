@@ -36,10 +36,10 @@ body {
 	font-size: 1.5em;
 }
 
-/* .setup_wrap .setup_inner_wrap .section_two,
+.setup_wrap .setup_inner_wrap .section_two,
 .setup_wrap .setup_inner_wrap .section_three {
 	display: none;
-} */
+}
 
 .setup_wrap .setup_inner_wrap .setup_message {
 	margin-bottom: 20px;

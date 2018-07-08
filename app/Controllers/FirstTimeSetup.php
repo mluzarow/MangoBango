@@ -14,8 +14,14 @@ class FirstTimeSetup {
 	
 	/**
 	 * Creates all the necessary tables for the server.
+	 * 
+	 * @return array list of status messages
+	 * 
+	 * @throws TypeError on non-array returned messages list
 	 */
-	public function ajaxCreateDatabase () {
+	public function ajaxCreateDatabase () : array {
+		$messages = [];
+		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
 				`sort` INT(10) NOT NULL AUTO_INCREMENT,
@@ -28,7 +34,8 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		\Core\Database::query ($q);
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_series` (
@@ -40,7 +47,8 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		\Core\Database::query ($q);
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'manga_directories_series');
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_volumes` (
@@ -55,7 +63,8 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		\Core\Database::query ($q);
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'manga_directories_volumes');
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_metadata` (
@@ -67,7 +76,8 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		\Core\Database::query ($q);
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'manga_metadata');
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `server_configs` (
@@ -79,7 +89,8 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		\Core\Database::query ($q);
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'server_configs');
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `statistics` (
@@ -91,7 +102,8 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		\Core\Database::query ($q);
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'statistics');
 		
 		$q = '
 			CREATE TABLE `users` (
@@ -105,7 +117,8 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		\Core\Database::query ($q);
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'users');
 		
 		$q = '
 			CREATE TABLE `user_types` (
@@ -115,6 +128,39 @@ class FirstTimeSetup {
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB';
-		\Core\Database::query ($q);
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'user_types');
+		
+		return ($messages);
+	}
+	
+	/**
+	 * Creates a table creation message.
+	 * 
+	 * @param bool   $success status of table creation
+	 * @param string $table   table name
+	 * 
+	 * @return array created message
+	 * 
+	 * @throws TypeError on:
+	 *         - Non-bool success flag
+	 *         - Non-string table name
+	 *         - Non-array returned message
+	 */
+	private function createMessage (bool $success, string $table) : array {
+		if ($success === true) {
+			$code = 1;
+			$msg = "Created table `{$table}`";
+		} else {
+			$code = 0;
+			$msg = "Failed creating table `{$table}`";
+		}
+		
+		$message = [
+			'code' => $code,
+			'message' => $msg
+		];
+		
+		return ($message);
 	}
 }

@@ -11,9 +11,17 @@ class Table {
 	 * Constructor for page controller Table.
 	 */
 	public function __construct () {
-		$q = "SELECT * FROM `{$_GET['table_name']}`";
+		$view_parameters = [];
+		$view_parameters['table_name'] = $_GET['table_name'];
+		
+		$q = '
+			SELECT *
+			FROM `'.$_GET['table_name'].'`';
 		$r = \Core\Database::query ($q);
 		
-		new TableView ($r);
+		$view_parameters['table_rows'] = $r;
+		
+		$view = new TableView ($view_parameters);
+		$view->render ();
 	}
 }

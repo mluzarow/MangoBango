@@ -28,6 +28,10 @@ class ReaderPageView extends ViewAbstract {
 					
 					$first_image_class = '';
 				}
+				if (!empty ($this->getNextChapterLink ())) {
+					$output .=
+					'<a class="next_chapter" href="'.$this->getNextChapterLink ().'" />';
+				}
 		$output .=
 			'</div>
 		</div>';
@@ -67,20 +71,20 @@ class ReaderPageView extends ViewAbstract {
 	}
 	
 	/**
-	 * Sets next chapter anchor HTML.
+	 * Sets next chapter anchor link.
 	 * 
-	 * @param string|null $next_chapter_html next chapter anchor HTML or null if no next chapter
+	 * @param string|null $next_chapter_link next chapter anchor link or null if no next chapter
 	 */
-	protected function setNextChapterHtml (string $next_chapter_html = null) {
-		if ($next_chapter_html !== null) {
-			$next_chapter_html = trim ($next_chapter_html);
+	protected function setNextChapterLink (string $next_chapter_link = null) {
+		if ($next_chapter_link !== null) {
+			$next_chapter_link = trim ($next_chapter_link);
 			
-			if (empty ($next_chapter_html)) {
-				throw new InvalidArgumentException ('Argument (Next Chapter HTML) can not be empty string.');
+			if (empty ($next_chapter_link)) {
+				throw new InvalidArgumentException ('Argument (Next Chapter link) can not be empty string.');
 			}
 		}
 		
-		$this->next_chapter_html = $next_chapter_html;
+		$this->next_chapter_link = $next_chapter_link;
 	}
 	
 	/**
@@ -93,11 +97,11 @@ class ReaderPageView extends ViewAbstract {
 	}
 	
 	/**
-	 * Gets next chapter anchor HTML.
+	 * Gets next chapter anchor link.
 	 * 
-	 * @return string|null next chapter anchor HTML or null if no next chapter
+	 * @return string|null next chapter anchor link or null if no next chapter
 	 */
-	protected function getNextChapterHtml () {
-		return ($this->next_chapter_html);
+	protected function getNextChapterLink () {
+		return ($this->next_chapter_link);
 	}
 }

@@ -19,6 +19,14 @@ $(window).ready (function () {
 			if ($nextImage.length > 0) {
 				$selected.removeClass ("selected_image");
 				$nextImage.addClass ("selected_image");
+			} else {
+				// If there is no next image BUT there is a next chapter, reload
+				// page with new chapter
+				let nextChapter = $(".next_chapter").attr ("href");
+				
+				if (nextChapter.length > 0) {
+					window.location = nextChapter;
+				}
 			}
 		}
 		

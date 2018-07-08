@@ -101,6 +101,13 @@ class TableView extends ViewAbstract {
 	}
 	
 	/**
+	 * Constructs the javascript using the available properties.
+	 */
+	protected function constructJavascript () {
+		return ('');
+	}
+	
+	/**
 	 * Sets the table name.
 	 * 
 	 * @param string $table_name table name

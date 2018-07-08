@@ -91,7 +91,7 @@ class SessionManager {
 				(`username`, `password`, `type`)
 			VALUES
 				("'.$username.'", "'.$pass_hash.'", "'.$type.'")';
-		$r = \Core\Database::query ($r);
+		$r = \Core\Database::query ($q);
 		
 		if ($r === false) {
 			return (false);

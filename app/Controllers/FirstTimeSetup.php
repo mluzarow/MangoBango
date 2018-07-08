@@ -9,6 +9,10 @@ class FirstTimeSetup {
 	 * Constructor for page controller FirstTimeSetup.
 	 */
 	public function __construct () {
+		\Core\MetaPage::setTitle ('First Time Setup');
+		\Core\MetaPage::setHead ('');
+		\Core\MetaPage::setBody ('');
+		
 		
 	}
 	

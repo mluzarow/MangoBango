@@ -31,6 +31,18 @@ body {
 	font-size: 1.7em;
 }
 
+.setup_wrap .setup_inner_wrap {
+	padding: 10px;
+	font-size: 1.5em;
+}
+
+.setup_wrap .setup_inner_wrap .setup_message {
+	margin-bottom: 20px;
+	padding: 20px;
+	background-color: #262626;
+	font-size: 0.7em;
+}
+
 @media all and (max-width: 768px) {
 	.setup_wrap {
 		width: 100%;

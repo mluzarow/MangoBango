@@ -98,7 +98,25 @@ class TableView extends ViewAbstract {
 		echo $output;
 	}
 	
-	private function setTableRows (array $table_rows) {
+	/**
+	 * Sets the table name.
+	 * 
+	 * @param string $table_name table name
+	 * 
+	 * @throws TypeErro on non-string parameter
+	 */
+	protected function setTableName (string $table_name) {
+		$this->table_name = $table_name;
+	}
+	
+	/**
+	 * Sets table row content list.
+	 * 
+	 * @param array $table_rows list of table rows
+	 * 
+	 * @throws TypeError on non-array parameter
+	 */
+	protected function setTableRows (array $table_rows) {
 		$this->table_rows = $table_rows;
 	}
 	

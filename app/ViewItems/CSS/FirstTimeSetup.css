@@ -11,3 +11,24 @@ body {
 	min-height: 100%;
 	background-color: #2b2b2b;
 }
+
+.setup_wrap {
+	margin: 30px auto 0 auto;
+	width: 60%;
+	min-width: 600px;
+	display: block;
+	background-color: #2b2b2b;
+	box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.4);
+	box-sizing: border-box;
+	color: #828282;
+	font-family: Consolas;
+}
+
+@media all and (max-width: 768px) {
+	.setup_wrap {
+		width: 100%;
+		min-width: 0;
+	}
+}
+
+

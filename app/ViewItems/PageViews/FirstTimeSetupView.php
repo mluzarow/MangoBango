@@ -22,7 +22,21 @@ class FirstTimeSetupView extends ViewAbstract {
 	 */
 	protected function constructHTML () {
 		$output =
-		'';
+		'<div class="setup_wrap">
+			<div class="header">Library Settings</div>
+			<div class="setup_inner_wrap">
+				<div class="setup_message">
+					This setup utility will guide you through the process of
+					performing a first time setup of the manga server.
+					<br>
+					<br>
+					Any configurations set here can be edited freely in the future
+					from the "configs" page, accessable through the top navigation
+					bar.
+				</div>
+				<div class="setup_start_btn">Run Setup</div>
+			</div>
+		</div>';
 		
 		return ($output);
 	}

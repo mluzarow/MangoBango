@@ -22,3 +22,7 @@
 .reader_wrap .img_wrap img.selected_image {
 	display: block;
 }
+
+.reader_wrap .img_wrap .next_chapter {
+	display: none;
+}

@@ -93,12 +93,9 @@ class Reader {
 		$view_parameters['image_list'] = $image_list;
 		
 		if ($next_chapter !== null) {
-			$view_parameters['next_chapter_html'] =
-			'<a href="\reader?s='.$_GET['s'].'&v='.$_GET['v'].'&c='.$next_chapter.'">
-				Continue to next chaper.
-			</a>';
+			$view_parameters['next_chapter_link'] = "\\reader?s={$_GET['s']}&v={$_GET['v']}&c={$next_chapter}";
 		} else {
-			$view_parameters['next_chapter_html'] = null;
+			$view_parameters['next_chapter_link'] = null;
 		}
 		
 		// Get the reader view style

@@ -45,7 +45,7 @@ class FirstTimeSetupView extends ViewAbstract {
 					<input id="username" type="text" autocomplete="off" placeholder="Username" />
 					<input id="password" type="text" autocomplete="off" placeholder="Password" />
 				</div>
-				<div class="setup_btn add_user section_two">Add User</div>
+				<div class="setup_btn add_user_btn section_two">Add User</div>
 				<div class="divider section_three"></div>
 				<div class="setup_message section_three">
 					Congradulations! You are all set up! Redirecting you to the

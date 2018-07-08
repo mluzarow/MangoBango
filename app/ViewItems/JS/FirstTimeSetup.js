@@ -7,11 +7,24 @@ $(window).ready (function () {
 				ajax: 1
 			}
 		}).done (function (response) {
-			generateMessageList (response);
+			$(".section_two").removeClass ("section_two");
 		});
 	});
 	
-	function generateMessageList (msgList) {
-		alert (msgList);
-	}
+	$(".add_user_btn").click (function () {
+		$.ajax ({
+			url: "ajax/Core/SessionManager/ajaxCreateUser",
+			method: "POST",
+			data: {
+				username: $("#username").val (),
+				password: $("#password").val ()
+			}
+		}).done (function (response) {
+			$(".section_three").removeClass ("section_three");
+			
+			setTimeout (function () {
+				window.location = "/login";
+			}, 10000);
+		});
+	});
 });

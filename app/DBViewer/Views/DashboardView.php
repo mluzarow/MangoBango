@@ -84,7 +84,7 @@ class DashboardView extends ViewAbstract {
 			<div class="header">Tables</div>
 			<div class="inner_wrap">';
 				foreach ($this->getTables () as $table) {
-					$output .= 
+					$output .=
 					'<a href="/db/table?table_name='.$table.'">
 						'.$table.'
 					</a>';

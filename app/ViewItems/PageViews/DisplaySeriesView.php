@@ -23,32 +23,46 @@ class DisplaySeriesView extends ViewAbstract {
 	protected function constructHTML () {
 		$output =
 		'<div class="library_metadata">
-			<div class="series_title">
-				Series Title
-			</div>
-			<div class="series_cover">
-				<img src="'.current ($this->getVolumes ())['source'].'" />
-			</div>
-			<div class="section_header">Summary</div>
-			<div class="section_block">
-				Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-				Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-				Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-				Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-			</div>
-			<div class="section_header">Tags</div>
-			<div class="section_block">
-				<div class="tag_wrap">
-					<span>Action</span>
+			<div class="section_left">
+				<div class="series_title">
+					Series Title
 				</div>
-				<div class="tag_wrap">
-					<span>Drama</span>
-				</div>
-				<div class="tag_wrap">
-					<span>Shounen</span>
+				<div class="series_cover">
+					<img src="'.current ($this->getVolumes ())['source'].'" />
 				</div>
 			</div>
+			<div class="section_middle">
+				<div class="section_header">Summary</div>
+				<div class="section_block">
+					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+				</div>
+			</div>
+			<div class="section_right">
+				<div class="section_header">Tags</div>
+				<div class="section_block">
+					<div class="tag_wrap">
+						<span>Action</span>
+					</div>
+					<div class="tag_wrap">
+						<span>Drama</span>
+					</div>
+					<div class="tag_wrap">
+						<span>Shounen</span>
+					</div>
+				</div>
+			</div>
+			<div style="clear: both;"></div>
 		</div>
+		<div class="chapter_container">';
+			foreach ($this->getChapters () as $chapter) {
+				$output .=
+				'<a href="'.$chapter['link'].'">'.$chapter['title'].'</a>';
+			}
+		$output .=
+		'</div>
 		<div class="library_display_container">';
 			foreach ($this->getVolumes () as $volume) {
 				$output .=
@@ -70,6 +84,44 @@ class DisplaySeriesView extends ViewAbstract {
 	 */
 	protected function constructJavascript () {
 		return ('');
+	}
+	
+	/**
+	 * Sets chapter anchor data list.
+	 * 
+	 * @param array $chapters chapter data list
+	 * 
+	 * @throws TypeError on non-array parameter
+	 * @throws InvalidArgumentException on:
+	 *         - Non-array chapter data
+	 *         - Missing chapter data keys (title|link)
+	 *         - Non-string chapter data title or link
+	 *         - Empty chapter data title or lin
+	 */
+	protected function setChapters (array $chapters) {
+		foreach ($chapters as &$chapter) {
+			if (!is_array ($chapter)) {
+				throw new \InvalidArgumentException ('Argument (Chapters) items must be arrays.');
+			}
+			
+			foreach (['title', 'link'] as $key) {
+				if (!array_key_exists ($key, $chapter)) {
+					throw new \InvalidArgumentException ('Argument (Chapters) items must have key "'.$key.'".');
+				}
+				
+				if (!is_string ($chapter[$key])) {
+					throw new \InvalidArgumentException ('Argument (Chapters) items must be strings.');
+				}
+				
+				$chapter[$key] = trim ($chapter[$key]);
+				
+				if (empty ($chapter[$key])) {
+					throw new \InvalidArgumentException ('Argument (Chapters) items cannot be empty.');
+				}
+				
+				$this->chapters = $chapters;
+			}
+		}
 	}
 	
 	/**
@@ -111,6 +163,15 @@ class DisplaySeriesView extends ViewAbstract {
 		}
 		
 		$this->volumes = $volumes;
+	}
+	
+	/**
+	 * Gets chapter anchor data list.
+	 * 
+	 * @return array chapter data list
+	 */
+	private function getChapters () {
+		return ($this->chapters);
 	}
 	
 	/**

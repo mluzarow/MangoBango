@@ -2,14 +2,30 @@
 	Styling for DisplaySeriesView page view.
  */
 .library_metadata {
-	position: fixed;
-	width: 25%;
-	min-height: 100%;
-	float: left;
+	padding-bottom: 10px;
+	display: block;
 	background-color: #2b2b2b;
 	box-shadow: 0 0 4px 4px rgba(0, 0, 0,0.6);
 	color: #fff;
 	font-family: Consolas;
+}
+
+.library_metadata .section_left {
+	width: 25%;
+	display: block;
+	float: left;
+}
+
+.library_metadata .section_middle {
+	width: 50%;
+	display: block;
+	float: left;
+}
+
+.library_metadata .section_right {
+	width: 25%;
+	display: block;
+	float: left;
 }
 
 .library_metadata .series_title {
@@ -25,7 +41,7 @@
 }
 
 .library_metadata .series_cover img {
-	width: 50%;
+	width: 35%;
 }
 
 .library_metadata .section_header {
@@ -41,10 +57,16 @@
 }
 
 .library_metadata .section_block .tag_wrap {
+	margin-bottom: 10px;
 	padding: 2px 8px;
 	display: inline-block;
 	background-color: #007ab3;
 	border-radius: 4px;
+}
+
+.chapter_container {
+	width: 25%;
+	float: left;
 }
 
 .library_display_container {

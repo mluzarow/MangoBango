@@ -7,37 +7,12 @@ use \ViewItems\ViewAbstract;
  * Page view for table contents list.
  */
 class TableView extends ViewAbstract {
-	private $table_rows;
-	
-	public function __construct (array $table_rows) {
-		$this->setTableRows ($table_rows);
-		
+	/**
+	 * Constructs the CSS using the available properties.
+	 */
+	protected function constructCSS () {
 		$output =
-		'<html>
-		<head>
-			<script type="text/javascript" src="/External/Javascript/jquery-3.3.1.js"></script>
-		</head>
-		<body>
-		<div class="row_list">
-			<div class="header">Table: '.$_GET['table_name'].'</div>
-			<div class="inner_wrap">
-				<div class="result_table">
-					<div class="table_header">';
-						foreach (array_keys (current ($table_rows)) as $key) {
-							$output .= '<div>'.$key.'</div>';
-						}
-					$output .=
-					'</div>';
-						foreach ($table_rows as $row) {
-							$output .=
-							'<div class="table_row">
-								<div>'.implode ('</div><div>', $row).'</div>
-							</div>';
-						}
-	$output .=	'</div>
-			</div>
-		</div>
-		<style>
+		'<style>
 			html, body {
 				margin: 0;
 				padding: 0;
@@ -91,11 +66,38 @@ class TableView extends ViewAbstract {
 				padding: 5px;
 				display: table-cell;
 			}
-			
-		</body>
-		</html>';
+		</style>';
 		
-		echo $output;
+		return ($output);
+	}
+	
+	/**
+	 * Constructs the HTML using the available properties.
+	 */
+	protected function constructHTML () {
+		$output =
+		'<div class="row_list">
+			<div class="header">Table: '.$_GET['table_name'].'</div>
+			<div class="inner_wrap">
+				<div class="result_table">
+					<div class="table_header">';
+						foreach (array_keys (current ($table_rows)) as $key) {
+							$output .= '<div>'.$key.'</div>';
+						}
+					$output .=
+					'</div>';
+						foreach ($table_rows as $row) {
+							$output .=
+							'<div class="table_row">
+								<div>'.implode ('</div><div>', $row).'</div>
+							</div>';
+						}
+		$output .=
+				'</div>
+			</div>
+		</div>';
+		
+		return ($output);
 	}
 	
 	/**

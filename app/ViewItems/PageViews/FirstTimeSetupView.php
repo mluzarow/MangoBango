@@ -46,7 +46,7 @@ class FirstTimeSetupView extends ViewAbstract {
 	 */
 	protected function constructJavascript () {
 		$output =
-		'';
+		'<script type="text/javascript" src="/ViewItems/JS/FirstTimeSetup.js"></script>';
 		
 		return ($output);
 	}

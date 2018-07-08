@@ -6,6 +6,32 @@ namespace Core;
  */
 class SessionManager {
 	/**
+	 * AJAX method for creating a new user.
+	 * 
+	 * @return int creation success code
+	 * 
+	 * @throws TypeError on non-int return code
+	 */
+	public function ajaxCreateUser () : int {
+		if (
+			empty ($_POST['username']) ||
+			empty ($_POST['password'])
+		) {
+			// Missing POST data
+			return (0);
+		}
+		
+		$status = $this->createUser ($_POST['username'], $_POST['password'], 'admin');
+		
+		if ($status === true) {
+			return (1);
+		} else {
+			// Failed to create user
+			return (0);
+		}
+	}
+	
+	/**
 	 * AJAX method validates the given username / password given via the login
 	 * form.
 	 * 
@@ -39,6 +65,38 @@ class SessionManager {
 			return (1);
 		} else {
 			return (0);
+		}
+	}
+	
+	/**
+	 * Creates a new user and updated the database with said user.
+	 * 
+	 * @param string $username new user's username
+	 * @param string $password new user's plaintext password
+	 * @param string $type     new user's user type
+	 * 
+	 * @return bool creation success flag
+	 * 
+	 * @throws TypeError on:
+	 *         - Non-string username
+	 *         - Non-string password
+	 *         - Non-string user type
+	 *         - Non-bool return success flag
+	 */
+	public function createUser (string $username, string $password, string $type) : bool {
+		$pass_hash = password_hash ($password, PASSWORD_DEFAULT);
+		
+		$q = '
+			INSERT INTO `users`
+				(`username`, `password`, `type`)
+			VALUES
+				("'.$username.'", "'.$pass_hash.'", "'.$type.'")';
+		$r = \Core\Database::query ($q);
+		
+		if ($r === false) {
+			return (false);
+		} else {
+			return (true);
 		}
 	}
 	

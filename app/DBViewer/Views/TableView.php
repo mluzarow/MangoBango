@@ -1,6 +1,9 @@
 <?php
 namespace DBViewer\Views;
 
+/**
+ * Page view for table contents list.
+ */
 class TableView {
 	private $table_rows;
 	

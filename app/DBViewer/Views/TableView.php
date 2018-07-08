@@ -77,21 +77,21 @@ class TableView extends ViewAbstract {
 	protected function constructHTML () {
 		$output =
 		'<div class="row_list">
-			<div class="header">Table: '.$_GET['table_name'].'</div>
+			<div class="header">Table: '.$this->getTableName ().'</div>
 			<div class="inner_wrap">
 				<div class="result_table">
 					<div class="table_header">';
-						foreach (array_keys (current ($table_rows)) as $key) {
+						foreach ($this->getTableRowKeys () as $key) {
 							$output .= '<div>'.$key.'</div>';
 						}
 					$output .=
 					'</div>';
-						foreach ($table_rows as $row) {
-							$output .=
-							'<div class="table_row">
-								<div>'.implode ('</div><div>', $row).'</div>
-							</div>';
-						}
+					foreach ($this->getTableRows () as $row) {
+						$output .=
+						'<div class="table_row">
+							<div>'.implode ('</div><div>', $row).'</div>
+						</div>';
+					}
 		$output .=
 				'</div>
 			</div>
@@ -145,5 +145,22 @@ class TableView extends ViewAbstract {
 	 */
 	private function getTableRows () {
 		return ($this->table_rows);
+	}
+	
+	/**
+	 * Gets list of table row keys.
+	 * 
+	 * @return array table row keys
+	 */
+	private function getTableRowKeys () {
+		$table_rows = $this->getTableRows ();
+		
+		if (!empty ($table_rows)) {
+			$table_keys = array_keys (current ($table_rows));
+		} else {
+			$table_keys = [];
+		}
+		
+		return ($table_keys);
 	}
 }

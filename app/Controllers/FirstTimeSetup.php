@@ -1,6 +1,8 @@
 <?php
 namespace Controllers;
 
+use \ViewItems\PageViews\FirstTimeSetupView;
+
 /**
  * Page controller for setting up the server for the first time.
  */
@@ -13,7 +15,8 @@ class FirstTimeSetup {
 		\Core\MetaPage::setHead ('');
 		\Core\MetaPage::setBody ('');
 		
-		
+		$view = new FirstTimeSetupView ([]);
+		$view->render ();
 	}
 	
 	/**

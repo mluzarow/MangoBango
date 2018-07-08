@@ -1,38 +1,18 @@
 <?php
 namespace DBViewer\Views;
 
-class TableView {
-	private $table_rows;
-	
-	public function __construct (array $table_rows) {
-		$this->setTableRows ($table_rows);
-		
+use \ViewItems\ViewAbstract;
+
+/**
+ * Page view for table contents list.
+ */
+class TableView extends ViewAbstract {
+	/**
+	 * Constructs the CSS using the available properties.
+	 */
+	protected function constructCSS () {
 		$output =
-		'<html>
-		<head>
-			<script type="text/javascript" src="/External/Javascript/jquery-3.3.1.js"></script>
-		</head>
-		<body>
-		<div class="row_list">
-			<div class="header">Table: '.$_GET['table_name'].'</div>
-			<div class="inner_wrap">
-				<div class="result_table">
-					<div class="table_header">';
-						foreach (array_keys (current ($table_rows)) as $key) {
-							$output .= '<div>'.$key.'</div>';
-						}
-					$output .=
-					'</div>';
-						foreach ($table_rows as $row) {
-							$output .=
-							'<div class="table_row">
-								<div>'.implode ('</div><div>', $row).'</div>
-							</div>';
-						}
-	$output .=	'</div>
-			</div>
-		</div>
-		<style>
+		'<style>
 			html, body {
 				margin: 0;
 				padding: 0;
@@ -86,18 +66,101 @@ class TableView {
 				padding: 5px;
 				display: table-cell;
 			}
-			
-		</body>
-		</html>';
+		</style>';
 		
-		echo $output;
+		return ($output);
 	}
 	
+	/**
+	 * Constructs the HTML using the available properties.
+	 */
+	protected function constructHTML () {
+		$output =
+		'<div class="row_list">
+			<div class="header">Table: '.$this->getTableName ().'</div>
+			<div class="inner_wrap">
+				<div class="result_table">
+					<div class="table_header">';
+						foreach ($this->getTableRowKeys () as $key) {
+							$output .= '<div>'.$key.'</div>';
+						}
+					$output .=
+					'</div>';
+					foreach ($this->getTableRows () as $row) {
+						$output .=
+						'<div class="table_row">
+							<div>'.implode ('</div><div>', $row).'</div>
+						</div>';
+					}
+		$output .=
+				'</div>
+			</div>
+		</div>';
+		
+		return ($output);
+	}
+	
+	/**
+	 * Constructs the javascript using the available properties.
+	 */
+	protected function constructJavascript () {
+		return ('');
+	}
+	
+	/**
+	 * Sets the table name.
+	 * 
+	 * @param string $table_name table name
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	protected function setTableName (string $table_name) {
+		$this->table_name = $table_name;
+	}
+	
+	/**
+	 * Sets table row content list.
+	 * 
+	 * @param array $table_rows list of table rows
+	 * 
+	 * @throws TypeError on non-array parameter
+	 */
+	protected function setTableRows (array $table_rows) {
+		$this->table_rows = $table_rows;
+	}
+	
+	/**
+	 * Gets table name.
+	 * 
+	 * @return string table name
+	 */
+	private function getTableName () {
+		return ($this->table_name);
+	}
+	
+	/**
+	 * Gets list of table rows.
+	 * 
+	 * @return array list of table rows
+	 */
 	private function getTableRows () {
 		return ($this->table_rows);
 	}
 	
-	private function setTableRows (array $table_rows) {
-		$this->table_rows = $table_rows;
+	/**
+	 * Gets list of table row keys.
+	 * 
+	 * @return array table row keys
+	 */
+	private function getTableRowKeys () {
+		$table_rows = $this->getTableRows ();
+		
+		if (!empty ($table_rows)) {
+			$table_keys = array_keys (current ($table_rows));
+		} else {
+			$table_keys = [];
+		}
+		
+		return ($table_keys);
 	}
 }

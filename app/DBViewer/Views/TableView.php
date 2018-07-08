@@ -96,11 +96,25 @@ class TableView {
 		echo $output;
 	}
 	
-	private function getTableRows () {
-		return ($this->table_rows);
-	}
-	
 	private function setTableRows (array $table_rows) {
 		$this->table_rows = $table_rows;
+	}
+	
+	/**
+	 * Gets table name.
+	 * 
+	 * @return string table name
+	 */
+	private function getTableName () {
+		return ($this->table_name);
+	}
+	
+	/**
+	 * Gets list of table rows.
+	 * 
+	 * @return array list of table rows
+	 */
+	private function getTableRows () {
+		return ($this->table_rows);
 	}
 }

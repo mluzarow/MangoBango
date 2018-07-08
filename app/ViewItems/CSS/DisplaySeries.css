@@ -74,7 +74,9 @@
 .sticky_glue {
 	position: relative;
 	z-index: 3;
-	width: 100%;
+	margin-top: 15px;
+	margin-left: 3%;
+	width: 97%;
 	height: 8px;
 	background-color: var(--hightlight_bg);
 }
@@ -82,7 +84,8 @@
 .chapter_container {
 	position: relative;
 	z-index: 1;
-	width: 100%;
+	margin-left: 3%;
+	width: 97%;
 	background-color: #2b2b2b;
 	box-shadow: 0 0 4px 4px rgba(0, 0, 0,0.5);
 	box-sizing: border-box;

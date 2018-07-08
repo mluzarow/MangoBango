@@ -56,13 +56,17 @@ class DisplaySeriesView extends ViewAbstract {
 			</div>
 			<div style="clear: both;"></div>
 		</div>
-		<div class="chapter_container">';
-			foreach ($this->getChapters () as $chapter) {
-				$output .=
-				'<a href="'.$chapter['link'].'">'.$chapter['title'].'</a>';
-			}
+		<div class="left_wrap">
+			<div class="sticky_glue"></div>
+			<div class="chapter_container">
+				<div class="header">Chapter List</div>';
+				foreach ($this->getChapters () as $chapter) {
+					$output .=
+					'<a href="'.$chapter['link'].'">'.$chapter['title'].'</a>';
+				}
 		$output .=
-		'</div>
+			'</div>
+		</div>
 		<div class="library_display_container">';
 			foreach ($this->getVolumes () as $volume) {
 				$output .=

@@ -41,6 +41,10 @@ class FirstTimeSetupView extends ViewAbstract {
 					change your username, password, or permissions on the config
 					page.
 				</div>
+				<div class="input_wrap section_two">
+					<input id="username" type="text" autocomplete="off" placeholder="Username" />
+					<input id="password" type="text" autocomplete="off" placeholder="Password" />
+				</div>
 				<div class="setup_btn add_user section_two">Add User</div>
 				<div class="divider section_three"></div>
 				<div class="setup_message section_three">

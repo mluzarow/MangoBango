@@ -36,6 +36,11 @@ body {
 	font-size: 1.5em;
 }
 
+/* .setup_wrap .setup_inner_wrap .section_two,
+.setup_wrap .setup_inner_wrap .section_three {
+	display: none;
+} */
+
 .setup_wrap .setup_inner_wrap .setup_message {
 	margin-bottom: 20px;
 	padding: 20px;
@@ -43,7 +48,7 @@ body {
 	font-size: 0.7em;
 }
 
-.setup_wrap .setup_inner_wrap .setup_start_btn {
+.setup_wrap .setup_inner_wrap .setup_btn {
 	padding: 5px 10px;
 	display: inline-block;
 	background-color: var(--hightlight_bg);
@@ -51,13 +56,43 @@ body {
 	cursor: pointer;
 }
 
-.setup_wrap .setup_inner_wrap .setup_start_btn:hover {
+.setup_wrap .setup_inner_wrap .setup_btn:hover {
 	background-color: #ffff36;
+}
+
+.setup_wrap .setup_inner_wrap .divider {
+	margin: 30px 0 10px 0;
+	display: block;
+	border-bottom: 2px solid var(--hightlight_bg);
+}
+
+.setup_wrap .setup_inner_wrap .input_wrap {
+	margin-bottom: 20px;
+}
+
+#username,
+#password {
+	padding: 5px 10px;
+	width: 33%;
+	display: inline-block;
+	border: none;
+	font-size: 1.1em;
 }
 
 @media all and (max-width: 768px) {
 	.setup_wrap {
 		width: 100%;
 		min-width: 0;
+	}
+}
+
+@media all and (max-width: 500px) {
+	#username,
+	#password {
+		padding: 5px 10px;
+		width: 100%;
+		display: block;
+		border: none;
+		font-size: 1.1em;
 	}
 }

@@ -24,11 +24,16 @@ body {
 	font-family: Consolas;
 }
 
+.setup_wrap .header {
+	padding: 3px 15px;
+	background-color: var(--hightlight_bg);
+	color: #000;
+	font-size: 1.7em;
+}
+
 @media all and (max-width: 768px) {
 	.setup_wrap {
 		width: 100%;
 		min-width: 0;
 	}
 }
-
-

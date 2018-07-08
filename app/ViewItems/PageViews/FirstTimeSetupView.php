@@ -23,7 +23,7 @@ class FirstTimeSetupView extends ViewAbstract {
 	protected function constructHTML () {
 		$output =
 		'<div class="setup_wrap">
-			<div class="header">Library Settings</div>
+			<div class="header">First Time Setup</div>
 			<div class="setup_inner_wrap">
 				<div class="setup_message">
 					This setup utility will guide you through the process of

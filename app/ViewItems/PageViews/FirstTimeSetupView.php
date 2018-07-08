@@ -34,7 +34,19 @@ class FirstTimeSetupView extends ViewAbstract {
 					from the "configs" page, accessable through the top navigation
 					bar.
 				</div>
-				<div class="setup_start_btn">Run Setup</div>
+				<div class="setup_btn setup_start_btn">Run Setup</div>
+				<div class="divider section_two"></div>
+				<div class="setup_message section_two">
+					Create a user below to use as the admin user. You can later 
+					change your username, password, or permissions on the config
+					page.
+				</div>
+				<div class="setup_btn add_user section_two">Add User</div>
+				<div class="divider section_three"></div>
+				<div class="setup_message section_three">
+					Congradulations! You are all set up! Redirecting you to the
+					login page in 10 seconds...
+				</div>
 			</div>
 		</div>';
 		

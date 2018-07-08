@@ -112,7 +112,7 @@ class TableView extends ViewAbstract {
 	 * 
 	 * @param string $table_name table name
 	 * 
-	 * @throws TypeErro on non-string parameter
+	 * @throws TypeError on non-string parameter
 	 */
 	protected function setTableName (string $table_name) {
 		$this->table_name = $table_name;

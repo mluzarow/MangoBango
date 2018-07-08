@@ -21,7 +21,7 @@ body {
 	background-color: var(--hightlight_bg);
 	box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3);
 	box-sizing: border-box;
-	z-index: 3;
+	z-index: 4;
 }
 
 .topbar .logo {

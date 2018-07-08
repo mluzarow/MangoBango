@@ -7,7 +7,7 @@ $(window).ready (function () {
 				ajax: 1
 			}
 		}).done (function (response) {
-			generateMessageList (repsonse);
+			generateMessageList (response);
 		});
 	});
 	

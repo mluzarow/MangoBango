@@ -1,10 +1,12 @@
 <?php
 namespace DBViewer\Views;
 
+use \ViewItems\ViewAbstract;
+
 /**
  * Page view for table contents list.
  */
-class TableView {
+class TableView extends ViewAbstract {
 	private $table_rows;
 	
 	public function __construct (array $table_rows) {

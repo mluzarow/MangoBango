@@ -1,0 +1,13 @@
+/*
+	Styling for first time setup page.
+ */
+:root {
+	--hightlight_bg: #ffc800;
+}
+
+html,
+body {
+	margin: 0 auto;
+	height: 100%;
+	background-color: #2b2b2b;
+}

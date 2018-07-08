@@ -12,7 +12,7 @@ class FirstTimeSetupView extends ViewAbstract {
 	 */
 	protected function constructCSS () {
 		$output =
-		'';
+		'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/FirstTimeSetup.css">';
 		
 		return ($output);
 	}

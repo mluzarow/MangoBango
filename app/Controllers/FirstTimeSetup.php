@@ -26,11 +26,11 @@ class FirstTimeSetup {
 	/**
 	 * Creates all the necessary tables for the server.
 	 * 
-	 * @return array list of status messages
+	 * @return string JSON list of status messages
 	 * 
-	 * @throws TypeError on non-array returned messages list
+	 * @throws TypeError on non-string returned JSON messages list
 	 */
-	public function ajaxCreateDatabases () : array {
+	public function ajaxCreateDatabases () : string {
 		$messages = [];
 		
 		$q = '
@@ -142,7 +142,7 @@ class FirstTimeSetup {
 		$r = \Core\Database::query ($q);
 		$messages[] = $this->createMessage ($r, 'user_types');
 		
-		return ($messages);
+		return (json_encode ($messages));
 	}
 	
 	/**

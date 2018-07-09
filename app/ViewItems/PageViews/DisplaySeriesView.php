@@ -87,7 +87,23 @@ class DisplaySeriesView extends ViewAbstract {
 	 * Constructs the javascript using the available properties.
 	 */
 	protected function constructJavascript () {
-		return ('');
+		return ('
+			<script>
+				// Fix for height of chapter list to always reach the bottom of
+				// the viewport no matter what
+				$(window).ready (function () {
+					let chapterTop = $(".chapter_container").offset ().top;
+					let chapterHeight = $(".chapter_container").height ();
+					let viewportHeight = $(window).height ();
+					let volumeHeight = $(".library_display_container").height ();
+					
+					if (viewportHeight > (chapterTop + chapterHeight)) {
+						$(".chapter_container").height (viewportHeight - chapterTop);
+					} else if (volumeHeight > chapterHeight) {
+						$(".chapter_container").height (volumeHeight);
+					}
+				});
+			</script>');
 	}
 	
 	/**

@@ -2,14 +2,32 @@
 	Styling for DisplaySeriesView page view.
  */
 .library_metadata {
-	position: fixed;
-	width: 25%;
-	min-height: 100%;
-	float: left;
+	position: relative;
+	z-index: 2;
+	padding-bottom: 10px;
+	display: block;
 	background-color: #2b2b2b;
 	box-shadow: 0 0 4px 4px rgba(0, 0, 0,0.6);
 	color: #fff;
 	font-family: Consolas;
+}
+
+.library_metadata .section_left {
+	width: 25%;
+	display: block;
+	float: left;
+}
+
+.library_metadata .section_middle {
+	width: 50%;
+	display: block;
+	float: left;
+}
+
+.library_metadata .section_right {
+	width: 25%;
+	display: block;
+	float: left;
 }
 
 .library_metadata .series_title {
@@ -25,7 +43,7 @@
 }
 
 .library_metadata .series_cover img {
-	width: 50%;
+	width: 35%;
 }
 
 .library_metadata .section_header {
@@ -41,10 +59,64 @@
 }
 
 .library_metadata .section_block .tag_wrap {
+	margin-bottom: 10px;
 	padding: 2px 8px;
 	display: inline-block;
 	background-color: #007ab3;
 	border-radius: 4px;
+}
+
+.left_wrap {
+	width: 25%;
+	float: left;
+}
+
+.sticky_glue {
+	position: relative;
+	z-index: 3;
+	margin-top: 15px;
+	margin-left: 3%;
+	width: 97%;
+	height: 8px;
+	background-color: var(--hightlight_bg);
+}
+
+.chapter_container {
+	position: relative;
+	z-index: 1;
+	margin-left: 3%;
+	width: 97%;
+	background-color: #2b2b2b;
+	box-shadow: 0 0 4px 4px rgba(0, 0, 0,0.5);
+	box-sizing: border-box;
+	font-family: Consolas;
+}
+
+.chapter_container .header {
+	padding-bottom: 6px;
+	color: #000;
+	background-color: var(--hightlight_bg);
+	text-align: center;
+	font-size: 1.5em;
+}
+
+.chapter_container a {
+	padding: 5px;
+	display: block;
+	background-color: #373737;
+	color: #fff;
+	text-align: center;
+	text-decoration: none;
+}
+
+.chapter_container a:nth-child(2n) {
+	background-color: #2b2b2b;
+}
+
+.chapter_container a:hover,
+.chapter_container a:nth-child(2n):hover {
+	background-color: var(--hightlight_bg);
+	color: #000;
 }
 
 .library_display_container {

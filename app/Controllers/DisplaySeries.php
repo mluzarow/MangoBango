@@ -56,6 +56,30 @@ class DisplaySeries {
 			];
 		}
 		
+		$q = '
+			SELECT
+				`sort` AS `chapter_sort`,
+				`volume_sort`
+			FROM `manga_directories_chapters`
+			WHERE `manga_id` = '.$_GET['s'];
+		$r = \Core\Database::query ($q);
+		
+		if ($r === false) {
+			return;
+		}
+		
+		$view_parameters['chapters'] = [];
+		foreach ($r as $row) {
+			$key = "{$row['volume_sort']}{$row['chapter_sort']}";
+			
+			$view_parameters['chapters'][$key] = [
+				'title' => "Volume {$row['volume_sort']} Chapter {$row['chapter_sort']}",
+				'link' => "\\reader?s={$_GET['s']}&v={$row['volume_sort']}&c={$row['chapter_sort']}"
+			];
+		}
+		
+		ksort ($view_parameters['chapters']);
+		
 		$view = new DisplaySeriesView ($view_parameters);
 		$view->render ();
 	}

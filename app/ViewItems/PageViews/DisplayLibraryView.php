@@ -29,6 +29,13 @@ class DisplayLibraryView extends ViewAbstract {
 					</a>
 				</div>';
 			}
+			
+			if (count ($this->getSeries ()) === 0) {
+				$output .=
+				'<div class="nothing_to_show">
+					No manga in your library :<
+				</div>';
+			}
 		$output .=
 		'</div>';
 		

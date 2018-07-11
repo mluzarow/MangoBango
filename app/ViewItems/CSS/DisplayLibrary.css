@@ -52,6 +52,19 @@
 	vertical-align: top;
 }
 
+.nothing_to_show {
+	position: absolute;
+	top: calc(49px + 50% - 2em);
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 0 20px;
+	color: #676767;
+	text-align: center;
+	font-family: Consolas;
+	font-size: 4em;
+}
+
 @media all and (max-width: 2000px) {
 	.library_display_container {
 		display: grid;
@@ -112,6 +125,11 @@
 	.library_display_container .manga_series_wrap a img {
 		height: 37.66vw;
 	}
+	
+	.nothing_to_show {
+		top: calc(50% - 1.5em);
+		font-size: 3em;
+	}
 }
 
 @media all and (max-width: 500px) {
@@ -126,6 +144,11 @@
 	
 	.library_display_container .manga_series_wrap a img {
 		height: 53.24vw;
+	}
+	
+	.nothing_to_show {
+		top: calc(50% - 1em);
+		font-size: 2em;
 	}
 }
 

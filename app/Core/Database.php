@@ -1,7 +1,7 @@
 <?php
 namespace Core;
 $config_data = parse_ini_file("dbconfig.ini");
-print_r($ini_array);
+
 /**
  * Database helper for interacting with the MariaDB database.
  */

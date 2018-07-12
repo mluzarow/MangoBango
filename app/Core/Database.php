@@ -19,7 +19,7 @@ class Database {
 			'server_info' => self::$database->server_info,
 			'server_version' => self::$database->server_version
 		];
-	
+		
 		return ($details);
 	}
 	
@@ -36,7 +36,7 @@ class Database {
 			$config_data['user'],
 			$config_data['password']
 		);
-	
+		
 		$server_active = self::$database->query ('use `server`');
 		
 		return ($server_active);

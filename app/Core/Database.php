@@ -9,7 +9,7 @@ class Database {
 	 * @var mysqli current DB connection
 	 */
 	private static $database;
-
+	
 	public static function getConnectionData () {
 		$details = [
 			'client_info' => self::$database->client_info,

@@ -30,7 +30,7 @@ class Database {
 	 */
 	public static function initialize () : bool {
 		$config_data = parse_ini_file ('../app/server.ini');
-	
+		
 		self::$database = new \mysqli (
 			$config_data['host'].':'.$config_data['port'],
 			$config_data['user'],

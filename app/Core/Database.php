@@ -9,7 +9,7 @@ class Database {
 	 * @var mysqli current DB connection
 	 */
 	private static $database;
-	
+
 	public static function getConnectionData () {
 		$details = [
 			'client_info' => self::$database->client_info,
@@ -19,7 +19,7 @@ class Database {
 			'server_info' => self::$database->server_info,
 			'server_version' => self::$database->server_version
 		];
-		
+	
 		return ($details);
 	}
 	
@@ -30,13 +30,13 @@ class Database {
 	 */
 	public static function initialize () : bool {
 		$config_data = parse_ini_file ('../app/server.ini');
-
+	
 		self::$database = new \mysqli (
 			$config_data['host'].':'.$config_data['port'],
 			$config_data['user'],
 			$config_data['password']
 		);
-		
+	
 		$server_active = self::$database->query ('use `server`');
 		
 		return ($server_active);

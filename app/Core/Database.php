@@ -1,6 +1,7 @@
 <?php
 namespace Core;
-
+$config_data = parse_ini_file("dbconfig.ini");
+print_r($ini_array);
 /**
  * Database helper for interacting with the MariaDB database.
  */
@@ -29,7 +30,7 @@ class Database {
 	 * @return bool database status flag
 	 */
 	public static function initialize () : bool {
-		self::$database = new \mysqli ('localhost:3306', 'root', 'glitch123');
+		self::$database = new \mysqli ($config_data['location'], $config_data['user'], $config_data['password']);
 		
 		$server_active = self::$database->query ('use `server`');
 		

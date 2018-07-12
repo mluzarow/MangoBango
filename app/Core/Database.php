@@ -25,9 +25,15 @@ class Database {
 	
 	/**
 	 * Initializes the database connection.
+	 * 
+	 * @return bool database status flag
 	 */
-	public static function initialize () {
-		self::$database = new \mysqli ('localhost:3306', 'root', 'glitch123', 'server');
+	public static function initialize () : bool {
+		self::$database = new \mysqli ('localhost:3306', 'root', 'glitch123');
+		
+		$server_active = self::$database->query ('use `server`');
+		
+		return ($server_active);
 	}
 	
 	/**

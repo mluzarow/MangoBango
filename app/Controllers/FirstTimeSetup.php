@@ -33,6 +33,22 @@ class FirstTimeSetup {
 	public function ajaxCreateDatabases () : string {
 		$messages = [];
 		
+		$q = 'CREATE DATABASE `server`';
+		$r = \Core\Database::query ($q);
+		
+		if ($r === false) {
+			// Error creating database
+			$messages[] = [
+				$code => 0,
+				$msg => 'Failed creating database `server`.'
+			];
+			
+			return (json_encode ($messages));
+		}
+		
+		$q = 'use `server`';
+		$r = \Core\Database::query ($q);
+		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
 				`sort` INT(10) NOT NULL AUTO_INCREMENT,
@@ -95,7 +111,8 @@ class FirstTimeSetup {
 				`config_id` INT(11) NOT NULL AUTO_INCREMENT,
 				`config_name` VARCHAR(255) NOT NULL,
 				`config_value` VARCHAR(255) NOT NULL,
-				PRIMARY KEY (`config_id`)
+				PRIMARY KEY (`config_id`),
+				UNIQUE INDEX `config_name` (`config_name`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
@@ -141,6 +158,16 @@ class FirstTimeSetup {
 			ENGINE = InnoDB';
 		$r = \Core\Database::query ($q);
 		$messages[] = $this->createMessage ($r, 'user_types');
+		
+		// Create default configs
+		$q = '
+			INSERT INTO `server_configs`
+				(`config_name`, `config_value`)
+			VALUES
+				("reader_display_style", 2),
+				("manga_directory", ""),
+				("library_view_type", 1)';
+		$r = \Core\Database::query ($q);
 		
 		return (json_encode ($messages));
 	}

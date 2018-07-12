@@ -35,7 +35,7 @@ class Database {
 			$config_data['host'].':'.$config_data['port'],
 			$config_data['user'],
 			$config_data['password']
-			);
+		);
 		
 		$server_active = self::$database->query ('use `server`');
 		

@@ -116,18 +116,11 @@ class ConfigView extends ViewAbstract {
 	 * Sets the manga directory setting.
 	 * 
 	 * @param string $config manga directory setting
-	 *
+	 * 
 	 * @throws TypeError on non-string config value
-	 * @throws InvalidArgumentException on empty config value
 	 */
 	protected function setMangaDirectory (string $config) {
-		$config = trim ($config);
-		
-		if (empty ($config)) {
-			throw new InvalidArgumentException ('Argument (Manga Directory) can not be empty.');
-		}
-		
-		$this->manga_directory = $config;
+		$this->manga_directory = trim ($config);
 	}
 	
 	/**

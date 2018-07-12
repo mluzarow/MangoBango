@@ -18,7 +18,7 @@ spl_autoload_register(function ($className) {
 	}
 });
 
-\Core\Database::initialize ();
+$db_status = \Core\Database::initialize ();
 
 // Load user session
 $user_session = new \Core\SessionManager ();
@@ -36,6 +36,53 @@ if (count ($current_segs) === 1) {
 		unset ($current_segs[0]);
 		$current_segs = array_values ($current_segs);
 	}
+}
+
+if ($db_status === false) {
+	// DB is not set up; ignore everything and route to the first time setup page
+	$uri = strtolower (implode ('/', $current_segs));
+	
+	if (
+		$uri === 'firsttimesetup' ||
+		$uri === 'ajax/core/sessionmanager/ajaxCreateUser' ||
+		$uri === 'ajax/controllers/firsttimesetup/ajaxcreatedatabases'
+	) {
+		if ($current_segs[0] === 'ajax') {
+			unset ($current_segs[0]);
+			$current_segs = array_values ($current_segs);
+			
+			$ajax = new AJAXProcessor ($current_segs);
+			$result = $ajax->fireTargetMethod ();
+			
+			echo $result;
+			return;
+		} else {
+			new \Controllers\FirstTimeSetup ();
+		}
+	} else {
+		// Load the reroute script
+		\Core\MetaPage::setHead ('
+			<script>
+				window.location = "/firsttimesetup";
+			</script>
+		');
+		\Core\MetaPage::setBody ('');
+	}
+	
+	echo \Core\MetaPage::render ();
+	return;
+} else if (in_array ('firsttimesetup', $current_segs)) {
+	// Database is set up, so do not allow access to this script again.
+	// Load the reroute script
+	\Core\MetaPage::setHead ('
+		<script>
+			window.location = "/login";
+		</script>
+	');
+	\Core\MetaPage::setBody ('');
+	
+	echo \Core\MetaPage::render ();
+	return;
 }
 
 if ((new \Core\SessionManager ())->isLoggedIn () === false) {

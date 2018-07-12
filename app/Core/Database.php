@@ -29,7 +29,7 @@ class Database {
 	 * @return bool database status flag
 	 */
 	public static function initialize () : bool {
-		$config_data = parse_ini_file("serverconfig.ini");
+		$config_data = parse_ini_file("../serverconfig.ini");
 
 		self::$database = new \mysqli ($config_data['location'].':'.$config_data['port'], $config_data['user'], $config_data['password']);
 		

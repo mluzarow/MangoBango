@@ -71,6 +71,18 @@ if ($db_status === false) {
 	
 	echo \Core\MetaPage::render ();
 	return;
+} else if (in_array ('firsttimesetup', $current_segs)) {
+	// Database is set up, so do not allow access to this script again.
+	// Load the reroute script
+	\Core\MetaPage::setHead ('
+		<script>
+			window.location = "/login";
+		</script>
+	');
+	\Core\MetaPage::setBody ('');
+	
+	echo \Core\MetaPage::render ();
+	return;
 }
 
 if ((new \Core\SessionManager ())->isLoggedIn () === false) {

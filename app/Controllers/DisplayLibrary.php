@@ -40,10 +40,9 @@ class DisplayLibrary {
 	 * @param string $manga_directory manga directory
 	 * 
 	 * @return array dictionary of series data in the following structure:
-	 *  [manga ID]         int    manga ID
-	 *    => array
-	 *        ├── ['path'] string path to cover image
-	 *        └── ['name'] string meta name of series
+	 *  [manga ID]     int    manga ID
+	 *    ├── ['path'] string path to cover image
+	 *    └── ['name'] string meta name of series
 	 */
 	private function getImagesCovers ($manga_directory) {
 		$q = '

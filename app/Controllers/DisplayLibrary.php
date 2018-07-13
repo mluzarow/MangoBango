@@ -41,6 +41,7 @@ class DisplayLibrary {
 	 * 
 	 * @return array dictionary of series data in the following structure:
 	 *  [manga ID]     int    manga ID
+	 *    ├── ['link'] string link to the series page for this manga
 	 *    ├── ['path'] string path to cover image
 	 *    └── ['name'] string meta name of series
 	 */
@@ -64,9 +65,10 @@ class DisplayLibrary {
 				$path = "{$manga_directory}\\{$series['path']}\\series_cover.{$series['series_cover']}";
 			}
 			
-			$series_data[$series['manga_id']] = [
+			$series_data[] = [
+				'link' => "/displaySeries?s={$series['manga_id']}",
 				'path' => $path,
-				'name' => $series['name']
+				'title' => $series['name']
 			];
 		}
 		

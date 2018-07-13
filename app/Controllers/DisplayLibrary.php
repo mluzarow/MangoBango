@@ -62,7 +62,7 @@ class DisplayLibrary {
 		$series_data = [];
 		foreach ($r as $series) {
 			if (empty ($series['series_cover'])) {
-				$path = null;
+				$path = '';
 			} else {
 				$path = "{$manga_directory}\\{$series['path']}\\series_cover.{$series['series_cover']}";
 			}

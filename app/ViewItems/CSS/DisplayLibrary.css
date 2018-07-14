@@ -52,6 +52,15 @@
 	vertical-align: top;
 }
 
+.library_display_container .manga_series_wrap a .placeholder {
+	border: 2px dashed grey;
+	text-align: center;
+}
+
+.library_display_container .manga_series_wrap a .placeholder img {
+	width: 50%;
+}
+
 .nothing_to_show {
 	position: absolute;
 	top: calc(49px + 50% - 2em);

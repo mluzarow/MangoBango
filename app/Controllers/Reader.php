@@ -62,6 +62,10 @@ class Reader {
 			$files = array_keys (\Core\ZipManager::readFiles ($path));
 			
 			foreach ($files as $file) {
+				if (substr ($file, -1) === '/') {
+					continue;
+				}
+				
 				$file_paths[] = "{$path}#{$file}";
 			}
 		} else {

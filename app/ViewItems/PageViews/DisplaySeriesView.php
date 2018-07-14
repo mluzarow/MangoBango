@@ -72,7 +72,9 @@ class DisplaySeriesView extends ViewAbstract {
 				$output .=
 				'<div class="manga_volume_wrap">
 					<a href="'.$volume['link'].'">
-						<img src="'.$volume['source'].'" />
+						<div class="placeholder" data-origin="'.$volume['source'].'">
+							<img src="\resources\icons\loading-3s-200px.svg" />
+						</div>
 					</a>
 				</div>';
 			}
@@ -178,6 +180,10 @@ class DisplaySeriesView extends ViewAbstract {
 				
 				if (!is_string ($volume[$key])) {
 					throw new InvalidArgumentException ("Argument (Volumes) items key \"{$key}\" must be of type string.");
+				}
+				
+				if (empty($volume[$key])) {
+					throw new \InvalidArgumentException ("Argument (Volumes) items key \"{$key}\" cannot be empty.");
 				}
 			}
 		}

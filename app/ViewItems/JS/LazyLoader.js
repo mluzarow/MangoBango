@@ -25,9 +25,9 @@ class LazyLoader {
 	 * Request images for all placeholders on the page.
 	 */
 	replacePlaceholders () {
-		$.each (this.$placeholders, function ($placeholder, index) {
-			this.requestImage ($placeholder);
-		});
+		$.each (this.$placeholders, function (index, $placeholder) {
+			this.requestImage ($($placeholder));
+		}.bind (this));
 	}
 	
 	/**
@@ -38,7 +38,7 @@ class LazyLoader {
 	 * @param  {Node} $placeholder jQuery node of the placeholder
 	 */
 	requestImage ($placeholder) {
-		let filepath = $placeholder.attr ("data-origin");
+		let filePath = $placeholder.attr ("data-origin");
 		
 		$.ajax({
 			url: "ajax/Core/LazyLoader/ajaxRequestImage",
@@ -46,15 +46,17 @@ class LazyLoader {
 			data: {
 				filepath: filePath
 			},
-			success: function (imageData) {
+			success: function ($placeholder, imageData) {
 				if (imageData.length > 0) {
-					$($placeholder)
+					let classList = $placeholder[0].classList;
+					
+					$placeholder
 						.replaceWith ("<img>")
 						.attr ("src", imageData)
-						.addClass ($placeholder[0].classList)
+						.addClass (classList)
 						.removeClass (this.placeholder);
 				}
-			}
+			}.bind (this, $placeholder)
 		});
 	}
 }

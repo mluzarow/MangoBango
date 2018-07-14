@@ -46,6 +46,7 @@ class LazyLoader {
 			data: {
 				filepath: filePath
 			},
+			timeout: 10000,
 			success: function ($placeholder, imageData) {
 				if (imageData.length > 0) {
 					let newNode = $("<img>")

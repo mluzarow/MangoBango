@@ -148,12 +148,12 @@
 	vertical-align: top;
 }
 
-.library_display_container .manga_series_wrap a .placeholder {
+.library_display_container .manga_volume_wrap a .placeholder {
 	height: 425px;
 	text-align: center;
 }
 
-.library_display_container .manga_series_wrap a .placeholder::before {
+.library_display_container .manga_volume_wrap a .placeholder::before {
 	width: 0;
 	height: 100%;
 	display: inline-block;
@@ -161,7 +161,7 @@
 	content: '';
 }
 
-.library_display_container .manga_series_wrap a .placeholder img {
+.library_display_container .manga_volume_wrap a .placeholder img {
 	width: 65%;
 	height: auto;
 	display: inline-block;

@@ -68,7 +68,7 @@ class LazyLoader {
 			$file_segs = explode ('.', $image_path);
 			$ext = end ($file_segs);
 			
-			$image_data = "data:image/{$ext};base64,".base64_encode ($blob);
+			$image_data = "data:image/{$ext};base64,".$blob;
 		}
 		
 		return ($image_data);

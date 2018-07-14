@@ -6,7 +6,7 @@ $(window).ready (function () {
 		
 		if (x < $(this).width () / 2) {
 			// Go back
-			let $prevImage = $selected.prev ("img");
+			let $prevImage = $selected.prev ();
 			
 			if ($prevImage.length > 0) {
 				$selected.removeClass ("selected_image");
@@ -14,7 +14,7 @@ $(window).ready (function () {
 			}
 		} else {
 			// Go forwards
-			let $nextImage = $selected.next ("img");
+			let $nextImage = $selected.next ();
 			
 			if ($nextImage.length > 0) {
 				$selected.removeClass ("selected_image");
@@ -22,10 +22,10 @@ $(window).ready (function () {
 			} else {
 				// If there is no next image BUT there is a next chapter, reload
 				// page with new chapter
-				let nextChapter = $(".next_chapter").attr ("href");
+				let nextChapter = $(".next_chapter");
 				
 				if (nextChapter.length > 0) {
-					window.location = nextChapter;
+					window.location = nextChapter.attr ("href");
 				}
 			}
 		}

@@ -2,7 +2,7 @@ $(window).ready (function () {
 	$(".img_wrap").click (function (e) {
 		let x = e.clientX - $(this).offset ().left;
 		
-		let $selected = $(this).find ("img.selected_image");
+		let $selected = $(this).find (".selected_image");
 		
 		if (x < $(this).width () / 2) {
 			// Go back

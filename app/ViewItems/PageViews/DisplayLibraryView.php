@@ -48,7 +48,10 @@ class DisplayLibraryView extends ViewAbstract {
 	 * Constructs the javascript using the available properties.
 	 */
 	protected function constructJavascript () {
-		return ('');
+		$output =
+		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>';
+		
+		return ($output);
 	}
 	
 	/**

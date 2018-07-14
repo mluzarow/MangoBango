@@ -49,7 +49,8 @@ class DisplayLibraryView extends ViewAbstract {
 	 */
 	protected function constructJavascript () {
 		$output =
-		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>';
+		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/DisplayLibrary.js"></script>';
 		
 		return ($output);
 	}

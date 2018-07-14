@@ -20,17 +20,19 @@ class DisplayLibraryView extends ViewAbstract {
 	protected function constructHTML () {
 		$output =
 		'<div class="library_display_container">';
-			foreach ($this->getSeries () as $series) {
+			foreach ($this->getMangaData () as $manga) {
 				$output .=
 				'<div class="manga_series_wrap">
-					<h2 class="title">'.$series['title'].'</h2>
-					<a href="'.$series['link'].'">
-						<img src="'.$series['source'].'" />
+					<h2 class="title">'.$manga['title'].'</h2>
+					<a href="'.$manga['link'].'">
+						<div class="placeholder" data-origin="'.$manga['path'].'">
+							<img src="\resources\icons\placeholder.svg" />
+						</div>
 					</a>
 				</div>';
 			}
 			
-			if (count ($this->getSeries ()) === 0) {
+			if (empty ($this->getMangaData ())) {
 				$output .=
 				'<div class="nothing_to_show">
 					No manga in your library :<
@@ -51,52 +53,45 @@ class DisplayLibraryView extends ViewAbstract {
 	
 	/**
 	 * Sets display data for each series.
-	 *
-	 * Uses the following array structure:
-	 * array
-	 *   ├── [0]
-	 *   │    ├── ['link']    string  series title
-	 *   │    ├── ['link']    string  href reader link for the manga series
-	 *   │    └── ['source']  string  image source for the series cover
-	 *   │    .
-	 *   │    .
-	 *   └── [n]
 	 * 
-	 * @param array $series display data for each series
+	 * @param array $manga_data dictionary of manga data in the following structure:
+	 *  [manga ID]     int    manga ID
+	 *    ├── ['link'] string link to the series page for this manga
+	 *    ├── ['path'] string path to cover image
+	 *    └── ['name'] string meta name of series
 	 * 
 	 * @throws TypeError on non-array parameter
 	 * @throws InvalidArgumentException on:
-	 *         - non-array items
 	 *         - missing array item keys
 	 *         - non string array items
 	 *         - empty array items
 	 */
-	protected function setSeries (array $series) {
-		foreach ($series as $item) {
-			if (!is_array ($item)) {
-				throw new InvalidArgumentException ('Argument (Series) items must be of type array.');
-			}
-			
-			foreach (['title', 'link', 'source'] as $key) {
-				if (!array_key_exists ($key, $item)) {
-					throw new InvalidArgumentException ("Argument (Series) items must have key \"{$key}\"");
+	protected function setMangaData (array $manga_data) {
+		foreach ($manga_data as $manga) {
+			foreach (['link', 'path', 'name'] as $key) {
+				if (!array_key_exists ($key, $manga)) {
+					throw new \InvalidArgumentException ("Argument (Manga Data) items must have key \"{$key}\"");
 				}
 				
-				if (!is_string ($item[$key])) {
-					throw new InvalidArgumentException ("Argument (Series) items key \"{$key}\" must be of type string.");
+				if (!is_string ($manga[$key])) {
+					throw new \InvalidArgumentException ("Argument (Manga Data) item at key \"{$key}\" must be of type string.");
+				}
+				
+				if (empty ($manga[$key])) {
+					throw new \InvalidArgumentException ("Argument (Manga Data) item at key \"{$key}\" cannot be empty.");
 				}
 			}
 		}
 		
-		$this->series = $series;
+		$this->manga_data = $manga_data;
 	}
 	
 	/**
 	 * Gets display data for each series.
 	 * 
-	 * @return array display data for each series
+	 * @return array dictionary of manga data
 	 */
-	private function getSeries () {
-		return ($this->series);
+	private function getMangaData () {
+		return ($this->manga_data);
 	}
 }

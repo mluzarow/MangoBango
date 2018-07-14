@@ -15,6 +15,24 @@
 	display: block;
 }
 
+.strip_wrap .placeholder {
+	height: 100vh;
+	text-align: center;
+}
+
+.strip_wrap .placeholder::before {
+	width: 0;
+	height: 100%;
+	display: inline-block;
+	vertical-align: middle;
+	content: '';
+}
+
+.strip_wrap .placeholder img {
+	display: inline-block;
+	vertical-align: middle;
+}
+
 .strip_wrap .continue_btn {
 	display: block;
 	background-color: #d68100;

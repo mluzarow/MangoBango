@@ -55,7 +55,7 @@
 
 .library_display_container .manga_series_wrap a .placeholder {
 	height: 20vw;
-	border: 2px dashed grey;
+	border: 2px dashed #b28c00;
 	text-align: center;
 }
 

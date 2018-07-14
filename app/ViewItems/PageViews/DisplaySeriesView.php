@@ -72,7 +72,9 @@ class DisplaySeriesView extends ViewAbstract {
 				$output .=
 				'<div class="manga_volume_wrap">
 					<a href="'.$volume['link'].'">
-						<img src="'.$volume['source'].'" />
+						<div class="placeholder" data-origin="'.$volume['source'].'">
+							<img src="\resources\icons\loading-3s-200px.svg" />
+						</div>
 					</a>
 				</div>';
 			}
@@ -87,23 +89,11 @@ class DisplaySeriesView extends ViewAbstract {
 	 * Constructs the javascript using the available properties.
 	 */
 	protected function constructJavascript () {
-		return ('
-			<script>
-				// Fix for height of chapter list to always reach the bottom of
-				// the viewport no matter what
-				$(window).ready (function () {
-					let chapterTop = $(".chapter_container").offset ().top;
-					let chapterHeight = $(".chapter_container").height ();
-					let viewportHeight = $(window).height ();
-					let volumeHeight = $(".library_display_container").height ();
-					
-					if (viewportHeight > (chapterTop + chapterHeight)) {
-						$(".chapter_container").height (viewportHeight - chapterTop);
-					} else if (volumeHeight > chapterHeight) {
-						$(".chapter_container").height (volumeHeight);
-					}
-				});
-			</script>');
+		$output =
+		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/DisplaySeries.js"></script>';
+		
+		return ($output);
 	}
 	
 	/**
@@ -178,6 +168,10 @@ class DisplaySeriesView extends ViewAbstract {
 				
 				if (!is_string ($volume[$key])) {
 					throw new InvalidArgumentException ("Argument (Volumes) items key \"{$key}\" must be of type string.");
+				}
+				
+				if (empty($volume[$key])) {
+					throw new \InvalidArgumentException ("Argument (Volumes) items key \"{$key}\" cannot be empty.");
 				}
 			}
 		}

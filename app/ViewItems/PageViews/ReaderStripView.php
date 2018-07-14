@@ -20,9 +20,11 @@ class ReaderStripView extends ViewAbstract {
 	protected function constructHTML () {
 		$output =
 		'<div class="strip_wrap">';
-			foreach ($this->getImageList () as $image) {
+			foreach ($this->getFilePaths () as $path) {
 				$output .=
-				'<img src="'.$image.'" />';
+				'<div class="placeholder" data-origin="'.$path.'">
+					<img src="\resources\icons\loading-3s-200px.svg" />
+				</div>';
 			}
 			
 			if ($this->getNextChapterLink () !== null) {
@@ -43,28 +45,32 @@ class ReaderStripView extends ViewAbstract {
 	 * Constructs the javascript using the available properties.
 	 */
 	protected function constructJavascript () {
-		return ('');
+		$output =
+		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/ReaderStrip.js"></script>';
+		
+		return ($output);
 	}
 	
 	/**
-	 * Sets list of image elements.
+	 * Sets list of image paths.
 	 * 
-	 * @param array $image_list list of image elements
+	 * @param array $file_paths list of image paths
 	 */
-	protected function setImageList (array $image_list) {
-		foreach ($image_list as $image) {
-			if (!is_string ($image)) {
-				throw new InvalidArgumentException ('Argument (Image List) items must all be strings; '.gettype ($image).' given.');
+	protected function setFilePaths (array $file_paths) {
+		foreach ($file_paths as $path) {
+			if (!is_string ($path)) {
+				throw new \InvalidArgumentException ('Argument (File Paths) items must all be strings; '.gettype ($path).' given.');
 			}
 			
-			$image = trim ($image);
+			$path = trim ($path);
 			
-			if (empty ($image)) {
-				throw new InvalidArgumentException ('Argument (Image List) items can not be empty.');
+			if (empty ($path)) {
+				throw new \InvalidArgumentException ('Argument (File Paths) items can not be empty.');
 			}
 		}
 		
-		$this->image_list = $image_list;
+		$this->file_paths = $file_paths;
 	}
 	
 	/**
@@ -77,7 +83,7 @@ class ReaderStripView extends ViewAbstract {
 			$next_chapter_link = trim ($next_chapter_link);
 			
 			if (empty ($next_chapter_link)) {
-				throw new InvalidArgumentException ('Argument (Next Chapter Link) can not be empty string.');
+				throw new \InvalidArgumentException ('Argument (Next Chapter Link) can not be empty string.');
 			}
 		}
 		
@@ -85,12 +91,12 @@ class ReaderStripView extends ViewAbstract {
 	}
 	
 	/**
-	 * Gets list of image elements.
+	 * Gets list of image paths.
 	 * 
-	 * @return array list of image elements
+	 * @return array list of image paths
 	 */
-	protected function getImageList () {
-		return ($this->image_list);
+	protected function getFilePaths () {
+		return ($this->file_paths);
 	}
 	
 	/**

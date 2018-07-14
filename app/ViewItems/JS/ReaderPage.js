@@ -33,3 +33,10 @@ $(window).ready (function () {
 		$(window).scrollTop (0);
 	});
 });
+
+$(window).on ("load", function () {
+	var lazyLoader = new LazyLoader ("placeholder");
+	
+	lazyLoader.findPlaceholders ();
+	lazyLoader.replacePlaceholders ();
+});

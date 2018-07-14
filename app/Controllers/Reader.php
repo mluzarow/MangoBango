@@ -57,40 +57,28 @@ class Reader {
 		
 		$path = "{$manga_directory}\\{$manga_info['series_folder']}\\{$manga_info['volume_folder']}\\{$manga_info['chapter']}";
 			
-		$image_list = [];
+		$file_paths = [];
 		if ($manga_info['is_archive'] === '1') {
-			$zip_dict = \Core\ZipManager::readFiles ($path);
+			$files = array_keys (\Core\ZipManager::readFiles ($path));
 			
-			foreach ($zip_dict as $filename => $blob) {
-				$ext = explode ('.', $filename);
-				$ext = end ($ext);
-				
-				if ($ext !== 'jpg' && $ext !== 'png') {
+			foreach ($files as $file) {
+				if (substr ($file, -1) === '/') {
 					continue;
 				}
 				
-				$image_list[] = 'data:image/'.$ext.';base64,'.$blob;
+				$file_paths[] = "{$path}#{$file}";
 			}
 		} else {
 			// Reading list of images from a directory
-			$chapter_dir_tree = $this->dirToArray($path);
+			$files = array_values ($this->dirToArray($path));
 			
-			foreach ($chapter_dir_tree as $page) {
-				$file_path = "{$path}\\{$page}";
-			
-				$f = fopen ($file_path, 'r');
-				$blob = fread ($f, filesize ($file_path));
-				fclose ($f);
-			
-				$ext = explode ('.', $page);
-				$ext = end ($ext);
-				
-				$image_list[] = 'data:image/'.$ext.';base64,'.base64_encode ($blob);
+			foreach ($files as $file) {
+				$file_paths[] = "{$path}\\{$file}";
 			}
 		}
 		
 		$view_parameters = [];
-		$view_parameters['image_list'] = $image_list;
+		$view_parameters['file_paths'] = $file_paths;
 		
 		if ($next_chapter !== null) {
 			$view_parameters['next_chapter_link'] = "\\reader?s={$_GET['s']}&v={$_GET['v']}&c={$next_chapter}";

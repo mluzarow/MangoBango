@@ -23,13 +23,11 @@ class DisplayLibrary {
 		
 		if ($library_view_type === 1) {
 			// Display as series of covers
-			$series_data = $this->getImagesCovers ($manga_directory);
-			$view_parameters = $this->processImagesCovers ($series_data);
+			$view_parameters['manga_data'] = $this->getImagesCovers ($manga_directory);
 			$view = new DisplayLibraryView ($view_parameters);
 		} else if ($library_view_type === 2) {
 			// Display as bookcase
-			$series_data = $this->getImagesSpines ($directory_tree);
-			$view_parameters = $this->processImagesSpines ($series_data, $manga_directory);
+			$view_parameters['manga_data'] = $this->getImagesSpines ($directory_tree);
 			$view = new DisplayLibraryBookcaseView ($view_parameters);
 		}
 		
@@ -42,10 +40,10 @@ class DisplayLibrary {
 	 * @param string $manga_directory manga directory
 	 * 
 	 * @return array dictionary of series data in the following structure:
-	 *  [manga ID]         int    manga ID
-	 *    => array
-	 *        ├── ['path'] string path to cover image
-	 *        └── ['name'] string meta name of series
+	 *  [manga ID]      int    manga ID
+	 *    ├── ['link']  string link to the series page for this manga
+	 *    ├── ['path']  string path to cover image
+	 *    └── ['title'] string meta name of series
 	 */
 	private function getImagesCovers ($manga_directory) {
 		$q = '
@@ -62,14 +60,15 @@ class DisplayLibrary {
 		$series_data = [];
 		foreach ($r as $series) {
 			if (empty ($series['series_cover'])) {
-				$path = null;
+				$path = '';
 			} else {
 				$path = "{$manga_directory}\\{$series['path']}\\series_cover.{$series['series_cover']}";
 			}
 			
-			$series_data[$series['manga_id']] = [
+			$series_data[] = [
+				'link' => "/displaySeries?s={$series['manga_id']}",
 				'path' => $path,
-				'name' => $series['name']
+				'title' => $series['name']
 			];
 		}
 		
@@ -79,30 +78,66 @@ class DisplayLibrary {
 	/**
 	 * Collects volume spine image locations.
 	 * 
-	 * @param array $directory_tree manga directory tree
+	 * @param string $manga_directory manga directory
 	 * 
-	 * @return array dictionary of series spines by volume
+	 * @return array dictionary of series data in the following structure:
+	 *  [manga ID]         int    manga ID
+	 *    ├── ['basepath'] string path to this manga's folder
+	 *    ├── ['link']     string link to the series page for this manga
+	 *    ├── ['name']     string meta name of series
+	 *    └── ['paths']    array  list of spine paths keyed by volume sort order
+	 *         ├── [0]     string path to this volume's spine image (if exists)
+	 *         |    .
+	 *         └── [n]
 	 */
-	private function getImagesSpines ($directory_tree) {
-		$series_data = [];
+	private function getImagesSpines ($manga_directory) {
+		$q = '
+			SELECT `s`.`path`, `m`.`manga_id`, `m`.`name`
+			FROM `manga_directories_series` AS `s`
+			JOIN `manga_metadata` AS `m`
+				ON `s`.`manga_id` = `m`.`manga_id`';
+		$r = \Core\Database::query ($q);
 		
-		foreach ($directory_tree as $series_folder => $series) {
-			$series_data[$series_folder] = [];
+		if ($r === false) {
+			return ([]);
+		}
+		
+		$manga_data = [];
+		foreach ($r as $row) {
+			$manga_data[$row['manga_id']] = [
+				'basepath' => $row['path'],
+				'link' => "/displaySeries?s={$row['manga_id']}",
+				'name' => $row['name'],
+				'paths' => []
+			];
+		}
+		
+		$q = '
+			SELECT `sort`, `manga_id`, `filename`, `spine`
+			FROM `manga_directories_volumes`';
+		$r = \Core\Database::query ($q);
+		
+		if ($r === false) {
+			return ([]);
+		}
+		
+		foreach ($r as $row) {
+			if (empty ($manga_data[$row['manga_id']])) {
+				continue;
+			}
 			
-			foreach ($series as $volume_folder => $volume) {
-				if (is_string($volume)) {
-					continue;
-				}
-				
-				foreach ($volume as $chapter_folder => $contents) {
-					if (is_string ($contents) && strpos ($contents, 'spine') !== false) {
-						$series_data[$series_folder][$volume_folder] = $contents;
-					}
-				}
+			if (empty ($row['spine'])) {
+				$manga_data[$row['manga_id']]['paths'][$row['sort']] = '';
+			} else {
+				$manga_data[$row['manga_id']]['paths'][$row['sort']] =
+					$manga_directory.'\\'.
+					$manga_data[$row['manga_id']]['basepath'].'\\'.
+					$row['filename'].'\\'.
+					'spine.'.$row['spine'];
 			}
 		}
 		
-		return ($series_data);
+		return ($manga_data);
 	}
 	
 	/**

@@ -37,22 +37,14 @@ class DisplaySeries {
 		
 		foreach ($r as $v) {
 			if (empty($v['cover'])) {
-				// @TODO Should probably include a placeholder cover image.
-				throw new Exception('NO COVER FOR '.$v['path']);
+				$path = '';
+			} else {
+				$path = "{$manga_directory}\\{$v['path']}\\{$v['filename']}\\cover.{$v['cover']}";
 			}
-			
-			$file_path = "{$manga_directory}\\{$v['path']}\\{$v['filename']}\\cover.{$v['cover']}";
-			
-			$f = fopen ($file_path, 'r');
-			$blob = fread ($f, filesize ($file_path));
-			fclose ($f);
-			
-			$file_segs = explode ('.', $v['path']);
-			$ext = end ($file_segs);
 			
 			$view_parameters['volumes'][] = [
 				'link' => "/reader?s={$v['manga_id']}&v={$v['sort']}&c=1",
-				'source' => "data:image/{$ext};base64,".base64_encode ($blob)
+				'source' => $path
 			];
 		}
 		

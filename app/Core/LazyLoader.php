@@ -57,7 +57,7 @@ class LazyLoader {
 	 */
 	private function loadArchiveImage ($archive_path, $image_path) {
 		// Open the archive
-		$file_list = \Core\ZipManager::readFiles ($archive_path));
+		$file_list = \Core\ZipManager::readFiles ($archive_path);
 		
 		if (empty ($file_list[$image_path])) {
 			// No image could be loaded

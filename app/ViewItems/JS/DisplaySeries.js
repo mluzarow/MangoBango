@@ -16,7 +16,7 @@ $(window).ready (function () {
 	}
 });
 
-$(window).load (function () {
+$(window).on ("load", function () {
 	var lazyLoader = new LazyLoader ("placeholder");
 	
 	lazyLoader.findPlaceholders ();

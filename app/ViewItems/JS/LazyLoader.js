@@ -48,13 +48,12 @@ class LazyLoader {
 			},
 			success: function ($placeholder, imageData) {
 				if (imageData.length > 0) {
-					let classList = $placeholder[0].classList;
-					
-					$placeholder
-						.replaceWith ("<img>")
+					let newNode = $("<img>")
 						.attr ("src", imageData)
-						.addClass (classList)
+						.addClass ($placeholder[0].classList)
 						.removeClass (this.placeholder);
+					
+					$placeholder.replaceWith (newNode);
 				}
 			}.bind (this, $placeholder)
 		});

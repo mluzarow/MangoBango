@@ -26,7 +26,7 @@ class DisplayLibraryView extends ViewAbstract {
 					<h2 class="title">'.$manga['title'].'</h2>
 					<a href="'.$manga['link'].'">
 						<div class="placeholder" data-origin="'.$manga['path'].'">
-							<img src="\resources\icons\loading_spinner_200px.gif" />
+							<img src="\resources\icons\loading-3s-200px.svg" />
 						</div>
 					</a>
 				</div>';

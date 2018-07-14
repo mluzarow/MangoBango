@@ -23,11 +23,11 @@ class DisplayLibrary {
 		
 		if ($library_view_type === 1) {
 			// Display as series of covers
-			$view_parameters = $this->getImagesCovers ($manga_directory);
+			$view_parameters['manga_data'] = $this->getImagesCovers ($manga_directory);
 			$view = new DisplayLibraryView ($view_parameters);
 		} else if ($library_view_type === 2) {
 			// Display as bookcase
-			$view_parameters = $this->getImagesSpines ($directory_tree);
+			$view_parameters['manga_data'] = $this->getImagesSpines ($directory_tree);
 			$view = new DisplayLibraryBookcaseView ($view_parameters);
 		}
 		

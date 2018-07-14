@@ -1,7 +1,7 @@
 /*
 	Page JS for view DisplayLibraryView.
  */
-$(window).ready (function () {
+$(window).on ("load", function () {
 	var lazyLoader = new LazyLoader ("placeholder");
 	
 	lazyLoader.findPlaceholders ();

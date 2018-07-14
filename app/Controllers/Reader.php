@@ -66,7 +66,7 @@ class Reader {
 			}
 		} else {
 			// Reading list of images from a directory
-			$files = array_keys ($this->dirToArray($path));
+			$files = array_values ($this->dirToArray($path));
 			
 			foreach ($files as $file) {
 				$file_paths[] = "{$path}\\{$file}";

@@ -59,10 +59,18 @@ class Reader {
 			
 		$file_paths = [];
 		if ($manga_info['is_archive'] === '1') {
-			$file_paths[] = array_keys (\Core\ZipManager::readFiles ($path));
+			$files = array_keys (\Core\ZipManager::readFiles ($path));
+			
+			foreach ($files as $file) {
+				$file_paths[] = "{$path}#{$file}";
+			}
 		} else {
 			// Reading list of images from a directory
-			$file_paths[] = array_values ($this->dirToArray($path));
+			$files = array_keys ($this->dirToArray($path));
+			
+			foreach ($files as $file) {
+				$file_paths[] = "{$path}\\{$file}";
+			}
 		}
 		
 		$view_parameters = [];

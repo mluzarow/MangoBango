@@ -46,7 +46,8 @@ class ReaderStripView extends ViewAbstract {
 	 */
 	protected function constructJavascript () {
 		$output =
-		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>';
+		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/ReaderStrip.js"></script>';
 		
 		return ($output);
 	}

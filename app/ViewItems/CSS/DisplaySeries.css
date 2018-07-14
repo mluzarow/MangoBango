@@ -140,6 +140,7 @@
 
 .library_display_container .manga_volume_wrap a {
 	display: block;
+	text-decoration: none;
 }
 
 .library_display_container .manga_volume_wrap a img {

@@ -57,13 +57,13 @@ class ReaderPageView extends ViewAbstract {
 	protected function setImageList (array $image_list) {
 		foreach ($image_list as $image) {
 			if (!is_string ($image)) {
-				throw new InvalidArgumentException ('Argument (Image List) items must all be strings; '.gettype ($image).' given.');
+				throw new \InvalidArgumentException ('Argument (Image List) items must all be strings; '.gettype ($image).' given.');
 			}
 			
 			$image = trim ($image);
 			
 			if (empty ($image)) {
-				throw new InvalidArgumentException ('Argument (Image List) items can not be empty.');
+				throw new \InvalidArgumentException ('Argument (Image List) items can not be empty.');
 			}
 		}
 		
@@ -80,7 +80,7 @@ class ReaderPageView extends ViewAbstract {
 			$next_chapter_link = trim ($next_chapter_link);
 			
 			if (empty ($next_chapter_link)) {
-				throw new InvalidArgumentException ('Argument (Next Chapter link) can not be empty string.');
+				throw new \InvalidArgumentException ('Argument (Next Chapter link) can not be empty string.');
 			}
 		}
 		

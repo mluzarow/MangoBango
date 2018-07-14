@@ -55,10 +55,10 @@ class DisplayLibraryView extends ViewAbstract {
 	 * Sets display data for each series.
 	 * 
 	 * @param array $manga_data dictionary of manga data in the following structure:
-	 *  [manga ID]     int    manga ID
-	 *    ├── ['link'] string link to the series page for this manga
-	 *    ├── ['path'] string path to cover image
-	 *    └── ['name'] string meta name of series
+	 *  [manga ID]      int    manga ID
+	 *    ├── ['link']  string link to the series page for this manga
+	 *    ├── ['path']  string path to cover image
+	 *    └── ['title'] string meta name of series
 	 * 
 	 * @throws TypeError on non-array parameter
 	 * @throws InvalidArgumentException on:
@@ -68,7 +68,7 @@ class DisplayLibraryView extends ViewAbstract {
 	 */
 	protected function setMangaData (array $manga_data) {
 		foreach ($manga_data as $manga) {
-			foreach (['link', 'path', 'name'] as $key) {
+			foreach (['link', 'path', 'title'] as $key) {
 				if (!array_key_exists ($key, $manga)) {
 					throw new \InvalidArgumentException ("Argument (Manga Data) items must have key \"{$key}\"");
 				}

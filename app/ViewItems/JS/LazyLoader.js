@@ -51,7 +51,7 @@ class LazyLoader {
 				if (imageData.length > 0) {
 					let newNode = $("<img>")
 						.attr ("src", imageData)
-						.addClass ($placeholder[0].classList)
+						.addClass ($placeholder[0].classList.value)
 						.removeClass (this.placeholder);
 					
 					$placeholder.replaceWith (newNode);

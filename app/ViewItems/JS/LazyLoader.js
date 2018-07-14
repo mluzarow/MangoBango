@@ -4,5 +4,57 @@
  * on said placeholder div.
  */
 class LazyLoader {
+	/**
+	 * Constructor for lazy loader controller.
+	 * 
+	 * @param {String} placeholder CSS class of placeholder
+	 */
+	constructor (placeholder) {
+		this.placeholder = placeholder;
+		this.$placeholders = [];
+	}
 	
+	/**
+	 * Finds all the placeholders on the page.
+	 */
+	findPlaceholders () {
+		this.$placeholders = $("." + this.placeholder);
+	}
+	
+	/**
+	 * Request images for all placeholders on the page.
+	 */
+	replacePlaceholders () {
+		$.each (this.$placeholders, function ($placeholder, index) {
+			this.requestImage ($placeholder);
+		});
+	}
+	
+	/**
+	 * Requests an image from the LazyLoader controller using the data-origin
+	 * attribute of the given jQuery node & replaces the given node with the
+	 * received image.
+	 * 
+	 * @param  {Node} $placeholder jQuery node of the placeholder
+	 */
+	requestImage ($placeholder) {
+		let filepath = $placeholder.attr ("data-origin");
+		
+		$.ajax({
+			url: "ajax/Core/LazyLoader/ajaxRequestImage",
+			method: "POST",
+			data: {
+				filepath: filePath
+			},
+			success: function (imageData) {
+				if (imageData.length > 0) {
+					$($placeholder)
+						.replaceWith ("<img>")
+						.attr ("src", imageData)
+						.addClass ($placeholder[0].classList)
+						.removeClass (this.placeholder);
+				}
+			}
+		});
+	}
 }

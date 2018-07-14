@@ -21,10 +21,12 @@ class ReaderPageView extends ViewAbstract {
 		$output =
 		'<div class="reader_wrap">
 			<div class="img_wrap">';
-				$first_image_class = 'class="selected_image"';
-				foreach ($this->getImageList() as $image) {
+				$first_image_class = 'selected_image';
+				foreach ($this->getFilePaths() as $path) {
 					$output .=
-					'<img '.$first_image_class.' src="'.$image.'" />';
+					'<div class="placeholder '.$first_image_class.'" data-origin="'.$path.'">
+						<img src="\resources\icons\loading-3s-200px.svg" />
+					</div>';
 					
 					$first_image_class = '';
 				}

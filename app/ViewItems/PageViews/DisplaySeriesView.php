@@ -135,6 +135,39 @@ class DisplaySeriesView extends ViewAbstract {
 	}
 	
 	/**
+	 * Sets list of series genre tags.
+	 * 
+	 * @param array $genres list of series genres
+	 * 
+	 * @throws TypeError on non-string parameter
+	 * @throws InvalidArgumentException on non-string or empty array items
+	 */
+	protected function setGenres (array $genres) {
+		foreach ($genres as $genre) {
+			if (!is_string ($genre)) {
+				throw new \InvalidArgumentException ('Argument (Genres) items must be strings.');
+			}
+			
+			if (empty ($genre)) {
+				throw new \InvalidArgumentException ('Argument (Genres) items cannot be empty.');
+			}
+		}
+		
+		$this->genres = $genres;
+	}
+	
+	/**
+	 * Sets series summary.
+	 * 
+	 * @var string series summary
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	protected setSummary (string $summary) {
+		$this->summary = $summary;
+	}
+	
+	/**
 	 * Sets display data for each volume.
 	 *
 	 * Uses the following array structure:
@@ -186,6 +219,24 @@ class DisplaySeriesView extends ViewAbstract {
 	 */
 	private function getChapters () {
 		return ($this->chapters);
+	}
+	
+	/**
+	 * Gets list of series genres.
+	 * 
+	 * @return array list of series genres
+	 */
+	private function getGenres () {
+		return ($this->genres);
+	}
+	
+	/**
+	 * Gets series summary.
+	 * 
+	 * @return string series summary
+	 */
+	private function getSummary () {
+		return ($this->summary);
 	}
 	
 	/**

@@ -34,10 +34,7 @@ class DisplaySeriesView extends ViewAbstract {
 			<div class="section_middle">
 				<div class="section_header">Summary</div>
 				<div class="section_block">
-					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+					'.$this->getSummary ().'
 				</div>
 			</div>
 			<div class="section_right">
@@ -236,7 +233,13 @@ class DisplaySeriesView extends ViewAbstract {
 	 * @return string series summary
 	 */
 	private function getSummary () {
-		return ($this->summary);
+		if (empty ($this->summary)) {
+			$summary = '<i>No summary available.</i>';
+		} else {
+			$summary = $this->summary;
+		}
+		
+		return ($summary);
 	}
 	
 	/**

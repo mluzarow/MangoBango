@@ -25,7 +25,7 @@ class DisplaySeriesView extends ViewAbstract {
 		'<div class="library_metadata">
 			<div class="section_left">
 				<div class="series_title">
-					Series Title
+					'.$this->getTitle ().'
 				</div>
 				<div class="series_cover">
 					<img src="'.current ($this->getVolumes ())['source'].'" />

@@ -65,12 +65,14 @@ class DisplayLibrary {
 				$path = "{$manga_directory}\\{$series['path']}\\series_cover.{$series['series_cover']}";
 			}
 			
-			$series_data[] = [
+			$series_data[$series['name']] = [
 				'link' => "/displaySeries?s={$series['manga_id']}",
 				'path' => $path,
 				'title' => $series['name']
 			];
 		}
+		
+		ksort ($series_data);
 		
 		return ($series_data);
 	}

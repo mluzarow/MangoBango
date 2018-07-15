@@ -132,6 +132,7 @@
 	width: 300px;
 	display: inline-block;
 	background-color: #2b2b2b;
+	vertical-align: top;
 }
 
 .library_display_container .manga_volume_wrap:hover {

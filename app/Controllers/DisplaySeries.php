@@ -72,6 +72,22 @@ class DisplaySeries {
 		
 		ksort ($view_parameters['chapters']);
 		
+		$q = '
+			SELECT `name`, `summary`, `genre`
+			FROM `manga_metadata`
+			WHERE `manga_id` = '.$_GET['s'];
+		$r = \Core\Database::query ($q);
+		
+		$view_parameters['summary'] = '';
+		$view_parameters['genres'] = [];
+		
+		if ($r !== false) {
+			$row = current ($r);
+			
+			$view_parameters['summary'] = $row['summary'];
+			$view_parameters['genres'] = json_decode ($row['genre']);
+		}
+		
 		$view = new DisplaySeriesView ($view_parameters);
 		$view->render ();
 	}

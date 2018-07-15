@@ -39,17 +39,20 @@ class DisplaySeriesView extends ViewAbstract {
 			</div>
 			<div class="section_right">
 				<div class="section_header">Tags</div>
-				<div class="section_block">
-					<div class="tag_wrap">
-						<span>Action</span>
-					</div>
-					<div class="tag_wrap">
-						<span>Drama</span>
-					</div>
-					<div class="tag_wrap">
-						<span>Shounen</span>
-					</div>
-				</div>
+				<div class="section_block">';
+					foreach ($this->getGenres () as $genre) {
+						$output .=
+						'<div class="tag_wrap">
+							<span>'.$genre.'</span>
+						</div>';
+					}
+					
+					if (empty ($this->getGenres ())) {
+						$output .=
+						'<i>No tags available</i>';
+					}
+		$output .=
+				'</div>
 			</div>
 			<div style="clear: both;"></div>
 		</div>

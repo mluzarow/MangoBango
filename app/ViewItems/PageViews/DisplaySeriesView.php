@@ -41,8 +41,8 @@ class DisplaySeriesView extends ViewAbstract {
 				<div class="section_header">Tags</div>
 				<div class="section_block">';
 					foreach ($this->getGenres () as $genre) {
-						$output .=
-						'<div class="tag_wrap">
+						$output .= '
+						<div class="tag_wrap">
 							<span>'.$genre.'</span>
 						</div>';
 					}

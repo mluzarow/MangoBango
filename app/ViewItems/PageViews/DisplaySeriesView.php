@@ -163,7 +163,7 @@ class DisplaySeriesView extends ViewAbstract {
 	 * 
 	 * @throws TypeError on non-string parameter
 	 */
-	protected setSummary (string $summary) {
+	protected function setSummary (string $summary) {
 		$this->summary = $summary;
 	}
 	

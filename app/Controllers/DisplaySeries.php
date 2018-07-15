@@ -80,12 +80,14 @@ class DisplaySeries {
 		
 		$view_parameters['summary'] = '';
 		$view_parameters['genres'] = [];
+		$view_parameters['title'] = '';
 		
 		if ($r !== false) {
 			$row = current ($r);
 			
 			$view_parameters['summary'] = empty ($row['summary']) ? '' : $row['summary'];
 			$view_parameters['genres'] = json_decode ($row['genre']);
+			$view_parameters['title'] = empty ($row['title']) ? '' : $row['title'];
 		}
 		
 		$view = new DisplaySeriesView ($view_parameters);

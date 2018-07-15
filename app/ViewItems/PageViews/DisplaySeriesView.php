@@ -168,6 +168,17 @@ class DisplaySeriesView extends ViewAbstract {
 	}
 	
 	/**
+	 * Sets manga title.
+	 * 
+	 * @param string $title manga title
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	protected function setTitle (string $title) {
+		$this->title = $title;
+	}
+	
+	/**
 	 * Sets display data for each volume.
 	 *
 	 * Uses the following array structure:
@@ -243,6 +254,21 @@ class DisplaySeriesView extends ViewAbstract {
 		}
 		
 		return ($summary);
+	}
+	
+	/**
+	 * Gets manga title.
+	 * 
+	 * @return string manga title
+	 */
+	private function getTitle () {
+		if (empty ($this->title)) {
+			$title = '<i>No Title</i>';
+		} else {
+			$title = $this->title;
+		}
+		
+		return ($title);
 	}
 	
 	/**

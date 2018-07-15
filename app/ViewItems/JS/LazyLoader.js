@@ -55,6 +55,9 @@ class LazyLoader {
 						.removeClass (this.placeholder);
 					
 					$placeholder.replaceWith (newNode);
+				} else {
+					// No image was found, so add a placeholder img
+					$placeholder.find ("img").attr ("src", "/resources/icons/placeholder.svg");
 				}
 			}.bind (this, $placeholder)
 		});

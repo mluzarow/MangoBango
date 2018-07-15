@@ -214,7 +214,7 @@ class DisplaySeriesView extends ViewAbstract {
 					throw new InvalidArgumentException ("Argument (Volumes) items key \"{$key}\" must be of type string.");
 				}
 				
-				if (empty($volume[$key])) {
+				if ($key === 'link' && empty($volume[$key])) {
 					throw new \InvalidArgumentException ("Argument (Volumes) items key \"{$key}\" cannot be empty.");
 				}
 			}

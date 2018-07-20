@@ -21,13 +21,29 @@
 }
 
 .library_display_container .manga_series_wrap .title {
+	position: relative;
 	margin: 0;
 	height: 3.06em;
 	display: block;
 	color: #b9b9b9;
+	overflow: hidden;
 	text-align: center;
 	font-family: Arial;
 	font-size: 1.63em;
+	white-space: nowrap;
+}
+
+.library_display_container .manga_series_wrap .title .elipsis {
+	display: inline-block;
+}
+
+.library_display_container .manga_series_wrap .title .title_expand {
+	position: absolute;
+	top: 0;
+	display: none;
+	background-color: var(--hightlight_bg);
+	color: #5f3d00;
+	white-space: normal;
 }
 
 .library_display_container .manga_series_wrap .title::before {
@@ -38,8 +54,14 @@
 	content: '';
 }
 
+
+
 .library_display_container .manga_series_wrap:hover .title {
 	color: #5f3d00;
+}
+
+.library_display_container .manga_series_wrap:hover .title .title_expand {
+	display: block;
 }
 
 .library_display_container .manga_series_wrap a {

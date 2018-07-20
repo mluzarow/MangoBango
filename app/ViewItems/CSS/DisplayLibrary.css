@@ -40,6 +40,9 @@
 .library_display_container .manga_series_wrap .title .title_expand {
 	position: absolute;
 	top: 0;
+	right: 0;
+	left: 0;
+	min-height: 100%;
 	display: none;
 	background-color: var(--hightlight_bg);
 	color: #5f3d00;

@@ -49,63 +49,33 @@ class FirstTimeSetup {
 		$q = 'use `server`';
 		$r = \Core\Database::query ($q);
 		
-		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
-				`sort` INT(10) NOT NULL AUTO_INCREMENT,
-				`manga_id` INT(10) NOT NULL,
-				`volume_sort` INT(10) NOT NULL,
-				`filename` VARCHAR(255) NOT NULL,
-				`is_archive` TINYINT(1) NOT NULL,
-				PRIMARY KEY (`sort`, `manga_id`, `volume_sort`)
-			)
-			COLLATE = "utf8_general_ci"
-			ENGINE = InnoDB
-			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
+		// Create manga inventory schema
+		$service = (new \Common\MangaInventory\Package ())->getService (
+			'setup',
+			\Core\Database::getInstance ()
+		);
 		
-		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_directories_series` (
-				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`path` VARCHAR(255) NOT NULL,
-				`series_cover` VARCHAR(20) NULL DEFAULT NULL,
-				PRIMARY KEY (`manga_id`)
-			)
-			COLLATE = "utf8_general_ci"
-			ENGINE = InnoDB
-			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_directories_series');
+		$messages[] = $this->createMessage (
+			$service->createSchemaChapters (),
+			'manga_directories_chapters'
+		);
 		
-		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_directories_volumes` (
-				`sort` INT(10) NOT NULL AUTO_INCREMENT,
-				`manga_id` INT(10) NOT NULL,
-				`filename` VARCHAR(255) NOT NULL,
-				`cover` VARCHAR(20) NULL DEFAULT NULL,
-				`spine` VARCHAR(20) NULL DEFAULT NULL,
-				`index` VARCHAR(20) NULL DEFAULT NULL,
-				PRIMARY KEY (`sort`, `manga_id`)
-			)
-			COLLATE = "utf8_general_ci"
-			ENGINE = InnoDB
-			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_directories_volumes');
+		$messages[] = $this->createMessage (
+			$service->createSchemaSeries (),
+			'manga_directories_series'
+		);
 		
-		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_metadata` (
-				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`name` VARCHAR(255) NOT NULL,
-				`name_original` VARCHAR(255) NULL DEFAULT NULL,
-				PRIMARY KEY (`manga_id`)
-			)
-			COLLATE = "utf8_general_ci"
-			ENGINE = InnoDB
-			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_metadata');
+		$messages[] = $this->createMessage (
+			$service->createSchemaVolumes (),
+			'manga_directories_volumes'
+		);
 		
+		$messages[] = $this->createMessage (
+			$service->createSchemaMetadata (),
+			'manga_metadata'
+		);
+		
+		// Create config schema
 		$q = '
 			CREATE TABLE IF NOT EXISTS `server_configs` (
 				`config_id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -120,6 +90,7 @@ class FirstTimeSetup {
 		$r = \Core\Database::query ($q);
 		$messages[] = $this->createMessage ($r, 'server_configs');
 		
+		// Create statistics schema
 		$q = '
 			CREATE TABLE IF NOT EXISTS `statistics` (
 				`stat_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -133,6 +104,7 @@ class FirstTimeSetup {
 		$r = \Core\Database::query ($q);
 		$messages[] = $this->createMessage ($r, 'statistics');
 		
+		// Creates users schema
 		$q = '
 			CREATE TABLE IF NOT EXISTS `users` (
 				`user_id` INT(10) NOT NULL AUTO_INCREMENT,

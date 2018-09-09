@@ -34,7 +34,7 @@ class Package implements IPackage {
 	/**
 	 * Builds the inventory read service.
 	 * 
-	 * @param Database $db_connection datbase singleton
+	 * @param Database $db_connection database singleton
 	 * 
 	 * @return Read\Service inventory read service
 	 * 

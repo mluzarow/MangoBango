@@ -77,7 +77,8 @@ class Database {
 			return true;
 		
 		$result = [];
-		while ($result[] = $r->fetch_assoc ());
+		while ($item = $r->fetch_assoc ())
+			$result[] = $item;
 		
 		return $result;
 	}

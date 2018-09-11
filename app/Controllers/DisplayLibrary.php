@@ -6,10 +6,12 @@ use ViewItems\PageViews\DisplayLibraryBookcaseView;
 
 class DisplayLibrary {
 	public function __construct () {
+		$this->db = \Core\Database::getInstance ();
+		
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';
-		$r = \Core\Database::query ($q);
+		$r = $this->db->query ($q);
 		
 		$manga_directory = $r[0]['config_value'];
 		
@@ -17,7 +19,7 @@ class DisplayLibrary {
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "library_view_type"';
-		$r = \Core\Database::query ($q);
+		$r = $this->db->query ($q);
 		
 		$library_view_type = (int) $r[0]['config_value'];
 		
@@ -51,7 +53,7 @@ class DisplayLibrary {
 			FROM `manga_directories_series` AS `s`
 			JOIN `manga_metadata` AS `m`
 				ON `s`.`manga_id` = `m`.`manga_id`';
-		$r = \Core\Database::query ($q);
+		$r = $this->db->query ($q);
 		
 		if ($r === false) {
 			return ([]);
@@ -98,7 +100,7 @@ class DisplayLibrary {
 			FROM `manga_directories_series` AS `s`
 			JOIN `manga_metadata` AS `m`
 				ON `s`.`manga_id` = `m`.`manga_id`';
-		$r = \Core\Database::query ($q);
+		$r = $this->db->query ($q);
 		
 		if ($r === false) {
 			return ([]);
@@ -117,7 +119,7 @@ class DisplayLibrary {
 		$q = '
 			SELECT `sort`, `manga_id`, `filename`, `spine`
 			FROM `manga_directories_volumes`';
-		$r = \Core\Database::query ($q);
+		$r = $this->db->query ($q);
 		
 		if ($r === false) {
 			return ([]);

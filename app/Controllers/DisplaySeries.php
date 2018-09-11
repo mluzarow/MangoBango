@@ -11,11 +11,13 @@ class DisplaySeries {
 	 * Constructor for controller DisplaySeries.
 	 */
 	public function __construct () {
+		$db = \Core\Database::getInstance ();
+		
 		// Fetch manga directory
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$manga_directory = $r[0]['config_value'];
 		
@@ -26,7 +28,7 @@ class DisplaySeries {
 			JOIN `manga_directories_volumes` AS `v`
 				ON `s`.`manga_id` = `v`.`manga_id`
 			WHERE `s`.`manga_id` = '.$_GET['s'];
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		if ($r === false) {
 			return;
@@ -54,7 +56,7 @@ class DisplaySeries {
 				`volume_sort`
 			FROM `manga_directories_chapters`
 			WHERE `manga_id` = '.$_GET['s'];
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		if ($r === false) {
 			return;
@@ -76,7 +78,7 @@ class DisplaySeries {
 			SELECT `name`, `summary`, `genre`
 			FROM `manga_metadata`
 			WHERE `manga_id` = '.$_GET['s'];
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$view_parameters['summary'] = '';
 		$view_parameters['genres'] = [];

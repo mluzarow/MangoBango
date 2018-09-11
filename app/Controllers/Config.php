@@ -11,6 +11,8 @@ class Config {
 	 * Constructor for page controller Config.
 	 */
 	public function __construct () {
+		$this->db = \Core\Database::getInstance ();
+		
 		if (!empty ($_POST)) {
 			// If there is post data (this controller called via ajax), ignore
 			// standard page setup instructions
@@ -20,7 +22,7 @@ class Config {
 		$q = '
 			SELECT `config_name`, `config_value`
 			FROM `server_configs`';
-		$r = \Core\Database::query ($q);
+		$r = $this->db->query ($q);
 		
 		$configs_dict = [];
 		foreach ($r as $row) {
@@ -57,15 +59,15 @@ class Config {
 				UPDATE `server_configs` 
 				SET `config_value` = '.$configs['reader_display_style'].' 
 				WHERE `config_name` = "reader_display_style"';
-			$r = \Core\Database::query ($q);
+			$r = $this->db->query ($q);
 		}
 		
 		if (!empty ($configs['manga_directory'])) {
 			$q = '
 				UPDATE `server_configs` 
-				SET `config_value` = "'.\Core\Database::sanitize ($configs['manga_directory']).'" 
+				SET `config_value` = "'.$this->db->sanitize ($configs['manga_directory']).'" 
 				WHERE `config_name` = "manga_directory"';
-			$r = \Core\Database::query ($q);
+			$r = $this->db->query ($q);
 		}
 		
 		if (!empty ($configs['manga_directory'])) {
@@ -73,7 +75,7 @@ class Config {
 				UPDATE `server_configs` 
 				SET `config_value` = '.$configs['library_view_type'].' 
 				WHERE `config_name` = "library_view_type"';
-			$r = \Core\Database::query ($q);
+			$r = $this->db->query ($q);
 		}
 	}
 	
@@ -110,7 +112,7 @@ class Config {
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';
-		$r = \Core\Database::query ($q);
+		$r = $this->db->query ($q);
 		
 		$directory_tree = $this->dirToArray ($r[0]['config_value']);
 		
@@ -119,8 +121,8 @@ class Config {
 			// Check if this folder is already bound to a series
 			$q = '
 				SELECT `manga_id` FROM `manga_directories_series`
-				WHERE `path` = "'.\Core\Database::sanitize ($series_name).'"';
-			$r = \Core\Database::query ($q);
+				WHERE `path` = "'.$this->db->sanitize ($series_name).'"';
+			$r = $this->db->query ($q);
 			
 			if (!empty ($r)) {
 				continue;
@@ -219,7 +221,7 @@ class Config {
 		// Get the new manga ID
 		$q = '
 			SELECT MAX(`manga_id`) AS `max_id` FROM `manga_metadata`';
-		$r = \Core\Database::query ($q);
+		$r = $this->db->query ($q);
 		
 		if ($r !== false) {
 			if ($r[0]['max_id'] === null) {
@@ -235,14 +237,14 @@ class Config {
 					(`manga_id`, `name`, `name_original`)
 				VALUES
 					('.$max_id.', "'.$manga['name'].'", "'.$manga['name_original'].'")';
-			$r = \Core\Database::query ($q);
+			$r = $this->db->query ($q);
 			
 			$q = '
 				INSERT INTO `manga_directories_series`
 					(`manga_id`, `path`, `series_cover`)
 				VALUES
 					('.$max_id.', "'.$manga['path'].'", "'.$manga['series_cover'].'")';
-			$r = \Core\Database::query ($q);
+			$r = $this->db->query ($q);
 			
 			$vol_sort = 1;
 			foreach ($manga['volumes'] as $volume) {
@@ -258,7 +260,7 @@ class Config {
 							"'.$volume['spine'].'",
 							"'.$volume['index'].'"
 						)';
-				$r = \Core\Database::query ($q);
+				$r = $this->db->query ($q);
 				
 				$chap_sort = 1;
 				foreach ($volume['chapters'] as $chapter) {
@@ -279,7 +281,7 @@ class Config {
 								"'.$chapter['filename'].'",
 								'.$chapter['is_archive'].'
 							)';
-					$r = \Core\Database::query ($q);
+					$r = $this->db->query ($q);
 					
 					$chap_sort++;
 				}

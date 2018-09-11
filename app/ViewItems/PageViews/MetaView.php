@@ -50,12 +50,6 @@ class MetaView extends ViewAbstract {
 							<span>Settings</span>
 						</a>
 					</div>
-					<div class="menu_item">
-						<a href="/db/dashboard">
-							<img src="\resources\icons\database.svg" />
-							<span>Database</span>
-						</a>
-					</div>
 				</div>
 				<div class="button btn_library">
 					<a href="/displaylibrary">
@@ -70,11 +64,6 @@ class MetaView extends ViewAbstract {
 				<div class="button btn_config">
 					<a href="/config">
 						<img src="\resources\icons\gears.svg" />
-					</a>
-				</div>
-				<div class="button btn_db">
-					<a href="/db/dashboard">
-						<img src="\resources\icons\database.svg" />
 					</a>
 				</div>
 				<div class="login_wrap">

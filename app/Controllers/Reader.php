@@ -6,11 +6,13 @@ use \ViewItems\PageViews\ReaderPageView;
 
 class Reader {
 	public function __construct () {
+		$db = \Core\Database::getInstance ();
+		
 		// Fetch manga directory
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$manga_directory = $r[0]['config_value'];
 		
@@ -21,7 +23,7 @@ class Reader {
 			SELECT `path`
 			FROM `manga_directories_series`
 			WHERE `manga_id` = '.$_GET['s'];
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$manga_info['series_folder'] = $r[0]['path'];
 		
@@ -30,7 +32,7 @@ class Reader {
 			FROM `manga_directories_volumes`
 			WHERE `manga_id` = '.$_GET['s'].'
 				AND `sort` = '.$_GET['v'];
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$manga_info['volume_folder'] = $r[0]['filename'];
 		$manga_info['volume_sort'] = $r[0]['sort'];
@@ -41,7 +43,7 @@ class Reader {
 			WHERE `manga_id` = '.$_GET['s'].'
 				AND `volume_sort` = '.$_GET['v'].'
 				AND `sort` IN ('.$_GET['c'].','.($_GET['c'] + 1).')';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$next_chapter = null;
 		if (count ($r) > 1) {
@@ -90,7 +92,7 @@ class Reader {
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "reader_display_style"';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$reader_display_style = (int) $r[0]['config_value'];
 		

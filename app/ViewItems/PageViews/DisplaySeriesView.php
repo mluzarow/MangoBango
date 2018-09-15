@@ -25,7 +25,7 @@ class DisplaySeriesView extends ViewAbstract {
 		'<div class="library_metadata">
 			<div class="section_left">
 				<div class="series_title">
-					Series Title
+					'.$this->getTitle ().'
 				</div>
 				<div class="series_cover">
 					<img src="'.current ($this->getVolumes ())['source'].'" />
@@ -34,25 +34,25 @@ class DisplaySeriesView extends ViewAbstract {
 			<div class="section_middle">
 				<div class="section_header">Summary</div>
 				<div class="section_block">
-					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
-					Summary Text Summary Text Summary Text Summary Text Summary Text Summary Text
+					'.$this->getSummary ().'
 				</div>
 			</div>
 			<div class="section_right">
 				<div class="section_header">Tags</div>
-				<div class="section_block">
-					<div class="tag_wrap">
-						<span>Action</span>
-					</div>
-					<div class="tag_wrap">
-						<span>Drama</span>
-					</div>
-					<div class="tag_wrap">
-						<span>Shounen</span>
-					</div>
-				</div>
+				<div class="section_block">';
+					foreach ($this->getGenres () as $genre) {
+						$output .= '
+						<div class="tag_wrap">
+							<span>'.$genre.'</span>
+						</div>';
+					}
+					
+					if (empty ($this->getGenres ())) {
+						$output .=
+						'<i>No tags available</i>';
+					}
+		$output .=
+				'</div>
 			</div>
 			<div style="clear: both;"></div>
 		</div>
@@ -72,7 +72,9 @@ class DisplaySeriesView extends ViewAbstract {
 				$output .=
 				'<div class="manga_volume_wrap">
 					<a href="'.$volume['link'].'">
-						<img src="'.$volume['source'].'" />
+						<div class="placeholder" data-origin="'.$volume['source'].'">
+							<img src="\resources\icons\loading-3s-200px.svg" />
+						</div>
 					</a>
 				</div>';
 			}
@@ -87,23 +89,11 @@ class DisplaySeriesView extends ViewAbstract {
 	 * Constructs the javascript using the available properties.
 	 */
 	protected function constructJavascript () {
-		return ('
-			<script>
-				// Fix for height of chapter list to always reach the bottom of
-				// the viewport no matter what
-				$(window).ready (function () {
-					let chapterTop = $(".chapter_container").offset ().top;
-					let chapterHeight = $(".chapter_container").height ();
-					let viewportHeight = $(window).height ();
-					let volumeHeight = $(".library_display_container").height ();
-					
-					if (viewportHeight > (chapterTop + chapterHeight)) {
-						$(".chapter_container").height (viewportHeight - chapterTop);
-					} else if (volumeHeight > chapterHeight) {
-						$(".chapter_container").height (volumeHeight);
-					}
-				});
-			</script>');
+		$output =
+		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/DisplaySeries.js"></script>';
+		
+		return ($output);
 	}
 	
 	/**
@@ -145,6 +135,50 @@ class DisplaySeriesView extends ViewAbstract {
 	}
 	
 	/**
+	 * Sets list of series genre tags.
+	 * 
+	 * @param array $genres list of series genres
+	 * 
+	 * @throws TypeError on non-string parameter
+	 * @throws InvalidArgumentException on non-string or empty array items
+	 */
+	protected function setGenres (array $genres) {
+		foreach ($genres as $genre) {
+			if (!is_string ($genre)) {
+				throw new \InvalidArgumentException ('Argument (Genres) items must be strings.');
+			}
+			
+			if (empty ($genre)) {
+				throw new \InvalidArgumentException ('Argument (Genres) items cannot be empty.');
+			}
+		}
+		
+		$this->genres = $genres;
+	}
+	
+	/**
+	 * Sets series summary.
+	 * 
+	 * @var string series summary
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	protected function setSummary (string $summary) {
+		$this->summary = $summary;
+	}
+	
+	/**
+	 * Sets manga title.
+	 * 
+	 * @param string $title manga title
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	protected function setTitle (string $title) {
+		$this->title = $title;
+	}
+	
+	/**
 	 * Sets display data for each volume.
 	 *
 	 * Uses the following array structure:
@@ -179,6 +213,10 @@ class DisplaySeriesView extends ViewAbstract {
 				if (!is_string ($volume[$key])) {
 					throw new InvalidArgumentException ("Argument (Volumes) items key \"{$key}\" must be of type string.");
 				}
+				
+				if ($key === 'link' && empty($volume[$key])) {
+					throw new \InvalidArgumentException ("Argument (Volumes) items key \"{$key}\" cannot be empty.");
+				}
 			}
 		}
 		
@@ -192,6 +230,45 @@ class DisplaySeriesView extends ViewAbstract {
 	 */
 	private function getChapters () {
 		return ($this->chapters);
+	}
+	
+	/**
+	 * Gets list of series genres.
+	 * 
+	 * @return array list of series genres
+	 */
+	private function getGenres () {
+		return ($this->genres);
+	}
+	
+	/**
+	 * Gets series summary.
+	 * 
+	 * @return string series summary
+	 */
+	private function getSummary () {
+		if (empty ($this->summary)) {
+			$summary = '<i>No summary available.</i>';
+		} else {
+			$summary = $this->summary;
+		}
+		
+		return ($summary);
+	}
+	
+	/**
+	 * Gets manga title.
+	 * 
+	 * @return string manga title
+	 */
+	private function getTitle () {
+		if (empty ($this->title)) {
+			$title = '<i>No Title</i>';
+		} else {
+			$title = $this->title;
+		}
+		
+		return ($title);
 	}
 	
 	/**

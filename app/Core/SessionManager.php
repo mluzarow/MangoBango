@@ -46,11 +46,13 @@ class SessionManager {
 			return (0);
 		}
 		
+		$db = \Core\Database::getInstance ();
+		
 		// Get saved value
 		$q = '
 			SELECT `username`, `password` FROM `users`
-			WHERE `username` = "'.\Core\Database::sanitize ($_POST['username']).'"';
-		$r = \Core\Database::query ($q);
+			WHERE `username` = "'.$db->sanitize ($_POST['username']).'"';
+		$r = $db->query ($q);
 		
 		if (empty ($r)) {
 			// No matching username found

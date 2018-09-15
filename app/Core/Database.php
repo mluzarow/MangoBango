@@ -6,40 +6,56 @@ namespace Core;
  */
 class Database {
 	/**
-	 * @var mysqli current DB connection
+	 * @var string database setup ini file.
 	 */
-	private static $database;
+	const DB_INI = '../app/server.ini';
 	
-	public static function getConnectionData () {
-		$details = [
-			'client_info' => self::$database->client_info,
-			'client_version' => self::$database->client_version,
-			'host_info' => self::$database->host_info,
-			'stat' => self::$database->stat,
-			'server_info' => self::$database->server_info,
-			'server_version' => self::$database->server_version
-		];
+	/**
+	 * @var Database instance of database connection
+	 */
+	private static $instance;
+	
+	/**
+	 * @var mysqli $connection database connection
+	 * @var string $host       database hostname
+	 * @var string $password   database password
+	 * @var string $port       database port number
+	 * @var string #user       database username
+	 */
+	private $connection;
+	private $host;
+	private $password;
+	private $port;
+	private $user;
+	
+	/**
+	 * Gets the instance of the database controller.
+	 * 
+	 * @return Database database controller
+	 */
+	public static function getInstance () {
+		if (self::$instance === null) {
+			self::$instance = new \Core\Database ();
+			self::$instance->initialize ();
+		}
 		
-		return ($details);
+		return self::$instance;
 	}
 	
 	/**
-	 * Initializes the database connection.
+	 * Gets the database connection information.
 	 * 
-	 * @return bool database status flag
+	 * @return array connection information
 	 */
-	public static function initialize () : bool {
-		$config_data = parse_ini_file ('../app/server.ini');
-		
-		self::$database = new \mysqli (
-			$config_data['host'].':'.$config_data['port'],
-			$config_data['user'],
-			$config_data['password']
-		);
-		
-		$server_active = self::$database->query ('use `server`');
-		
-		return ($server_active);
+	public function getConnectionData () {
+		return [
+			'client_info' => $this->connection->client_info,
+			'client_version' => $this->connection->client_version,
+			'host_info' => $this->connection->host_info,
+			'stat' => $this->connection->stat,
+			'server_info' => $this->connection->server_info,
+			'server_version' => $this->connection->server_version
+		];
 	}
 	
 	/**
@@ -47,25 +63,24 @@ class Database {
 	 * 
 	 * @param string $q MySQL query string
 	 * 
-	 * @return array|false list of returned rows or false if query failed
+	 * @return array|true list of returned rows or success flag
+	 * 
+	 * @throws Exception on failed query
 	 */
-	public static function query ($q) {
-		$r = self::$database->query ($q);
+	public function query (string $q) {
+		$r = $this->connection->query ($q);
 		
-		if ($r !== false) {
-			if ($r === true) {
-				return (true);
-			}
-			
-			$result = [];
-			while ($t = $r->fetch_assoc ()) {
-				$result[] = $t;
-			}
-			
-			return ($result);
-		} else {
-			throw new \Exception (self::$database->error);
-		}
+		if ($r === false)
+			throw new \Exception ($this->connection->error);
+		
+		if ($r === true)
+			return true;
+		
+		$result = [];
+		while ($item = $r->fetch_assoc ())
+			$result[] = $item;
+		
+		return $result;
 	}
 	
 	/**
@@ -75,9 +90,40 @@ class Database {
 	 * 
 	 * @return string sanitized input string
 	 */
-	public static function sanitize ($input) {
-		$sanitized_input = self::$database->real_escape_string ($input);
+	public function sanitize (string $input) : string {
+		return $this->connection->real_escape_string ($input);
+	}
+	
+	/**
+	 * Constructor for database controller.
+	 */
+	private function __construct () {
+		$config_data = parse_ini_file (self::DB_INI);
 		
-		return ($sanitized_input);
+		if (empty($config_data))
+			throw new \IOException ('NO INI FILE');
+		
+		$this->host = $config_data['host'];
+		$this->password = $config_data['password'];
+		$this->port = $config_data['port'];
+		$this->user = $config_data['user'];
+	}
+	
+	/**
+	 * Initialized database connection.
+	 * 
+	 * @uses \mysqli to instance MySQL database connection
+	 * 
+	 * @throws Exception on DB context query failure
+	 */
+	private function initialize () {
+		$this->connection = new \mysqli (
+			$this->host.':'.$this->port,
+			$this->user,
+			$this->password
+		);
+		
+		if ($this->connection->query ('use `server`') === false)
+			throw new \Exception ('SOMETHING WRONG WITH DB');
 	}
 }

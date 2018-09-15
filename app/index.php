@@ -18,7 +18,12 @@ spl_autoload_register(function ($className) {
 	}
 });
 
-$db_status = \Core\Database::initialize ();
+$db_status = true;
+try {
+	$db = \Core\Database::getInstance ();
+} catch (\Throwable $e) {
+	$db_status = false;
+}
 
 // Load user session
 $user_session = new \Core\SessionManager ();

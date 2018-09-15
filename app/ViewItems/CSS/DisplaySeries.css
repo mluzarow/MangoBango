@@ -132,6 +132,7 @@
 	width: 300px;
 	display: inline-block;
 	background-color: #2b2b2b;
+	vertical-align: top;
 }
 
 .library_display_container .manga_volume_wrap:hover {
@@ -140,10 +141,99 @@
 
 .library_display_container .manga_volume_wrap a {
 	display: block;
+	text-decoration: none;
 }
 
 .library_display_container .manga_volume_wrap a img {
 	width: 100%;
 	height: 425px;
 	vertical-align: top;
+}
+
+.library_display_container .manga_volume_wrap a .placeholder {
+	height: 425px;
+	text-align: center;
+}
+
+.library_display_container .manga_volume_wrap a .placeholder::before {
+	width: 0;
+	height: 100%;
+	display: inline-block;
+	vertical-align: middle;
+	content: '';
+}
+
+.library_display_container .manga_volume_wrap a .placeholder img {
+	width: 65%;
+	height: auto;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+@media all and (max-width: 1000px) {
+	.library_metadata .section_left {
+		width: 100%;
+		float: none;
+	}
+	
+	.library_metadata .section_right {
+		width: 50%;
+	}
+	
+	.left_wrap {
+		width: 40%;
+	}
+	
+	.library_display_container {
+		width: 60%;
+	}
+	
+	.library_display_container .manga_volume_wrap {
+		width: 40%;
+	}
+	
+	.library_display_container .manga_volume_wrap a img {
+		height: 31.5vw;
+	}
+}
+
+@media all and (max-width: 600px) {
+	.library_metadata .section_middle {
+		width: 100%;
+		float: none;
+	}
+	
+	.library_metadata .section_right {
+		width: 100%;
+		float: none;
+	}
+	
+	.left_wrap {
+		width: 100%;
+		float: none;
+	}
+	
+	.sticky_glue {
+		margin-left: 0;
+		width: 100%;
+	}
+	
+	.chapter_container {
+		margin-left: 0;
+		width: 100%;
+		/* This resets Dan's scripted height requirements */
+		height: auto !important;
+	}
+	
+	.library_display_container {
+		width: 100%;
+	}
+	
+	.library_display_container .manga_volume_wrap {
+		width: calc(100% - 30px);
+	}
+	
+	.library_display_container .manga_volume_wrap a img {
+		height: auto;
+	}
 }

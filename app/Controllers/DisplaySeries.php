@@ -11,11 +11,13 @@ class DisplaySeries {
 	 * Constructor for controller DisplaySeries.
 	 */
 	public function __construct () {
+		$db = \Core\Database::getInstance ();
+		
 		// Fetch manga directory
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$manga_directory = $r[0]['config_value'];
 		
@@ -26,7 +28,7 @@ class DisplaySeries {
 			JOIN `manga_directories_volumes` AS `v`
 				ON `s`.`manga_id` = `v`.`manga_id`
 			WHERE `s`.`manga_id` = '.$_GET['s'];
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		if ($r === false) {
 			return;
@@ -37,22 +39,14 @@ class DisplaySeries {
 		
 		foreach ($r as $v) {
 			if (empty($v['cover'])) {
-				// @TODO Should probably include a placeholder cover image.
-				throw new Exception('NO COVER FOR '.$v['path']);
+				$path = '';
+			} else {
+				$path = "{$manga_directory}\\{$v['path']}\\{$v['filename']}\\cover.{$v['cover']}";
 			}
-			
-			$file_path = "{$manga_directory}\\{$v['path']}\\{$v['filename']}\\cover.{$v['cover']}";
-			
-			$f = fopen ($file_path, 'r');
-			$blob = fread ($f, filesize ($file_path));
-			fclose ($f);
-			
-			$file_segs = explode ('.', $v['path']);
-			$ext = end ($file_segs);
 			
 			$view_parameters['volumes'][] = [
 				'link' => "/reader?s={$v['manga_id']}&v={$v['sort']}&c=1",
-				'source' => "data:image/{$ext};base64,".base64_encode ($blob)
+				'source' => $path
 			];
 		}
 		
@@ -62,7 +56,7 @@ class DisplaySeries {
 				`volume_sort`
 			FROM `manga_directories_chapters`
 			WHERE `manga_id` = '.$_GET['s'];
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		if ($r === false) {
 			return;
@@ -79,6 +73,24 @@ class DisplaySeries {
 		}
 		
 		ksort ($view_parameters['chapters']);
+		
+		$q = '
+			SELECT `name`, `summary`, `genre`
+			FROM `manga_metadata`
+			WHERE `manga_id` = '.$_GET['s'];
+		$r = $db->query ($q);
+		
+		$view_parameters['summary'] = '';
+		$view_parameters['genres'] = [];
+		$view_parameters['title'] = '';
+		
+		if ($r !== false) {
+			$row = current ($r);
+			
+			$view_parameters['summary'] = empty ($row['summary']) ? '' : $row['summary'];
+			$view_parameters['genres'] = json_decode ($row['genre']);
+			$view_parameters['title'] = empty ($row['name']) ? '' : $row['name'];
+		}
 		
 		$view = new DisplaySeriesView ($view_parameters);
 		$view->render ();

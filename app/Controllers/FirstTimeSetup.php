@@ -50,24 +50,9 @@ class FirstTimeSetup {
 		$r = \Core\Database::query ($q);
 		
 		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
-				`sort` INT(10) NOT NULL AUTO_INCREMENT,
-				`manga_id` INT(10) NOT NULL,
-				`volume_sort` INT(10) NOT NULL,
-				`filename` VARCHAR(255) NOT NULL,
-				`is_archive` TINYINT(1) NOT NULL,
-				PRIMARY KEY (`sort`, `manga_id`, `volume_sort`)
-			)
-			COLLATE = "utf8_general_ci"
-			ENGINE = InnoDB
-			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
-		
-		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_series` (
 				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`path` VARCHAR(255) NOT NULL,
+				`folder_name` VARCHAR(255) NOT NULL,
 				`series_cover` VARCHAR(20) NULL DEFAULT NULL,
 				PRIMARY KEY (`manga_id`)
 			)
@@ -79,19 +64,35 @@ class FirstTimeSetup {
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_volumes` (
-				`sort` INT(10) NOT NULL AUTO_INCREMENT,
+				`volume_id` INT(10) NOT NULL AUTO_INCREMENT,
 				`manga_id` INT(10) NOT NULL,
-				`filename` VARCHAR(255) NOT NULL,
-				`cover` VARCHAR(20) NULL DEFAULT NULL,
-				`spine` VARCHAR(20) NULL DEFAULT NULL,
-				`index` VARCHAR(20) NULL DEFAULT NULL,
-				PRIMARY KEY (`sort`, `manga_id`)
+				`sort` INT(10) NOT NULL,
+				`folder_name` VARCHAR(255) NOT NULL,
+				`cover` VARCHAR(10) NULL DEFAULT NULL,
+				`spine` VARCHAR(10) NULL DEFAULT NULL,
+				`index` VARCHAR(10) NULL DEFAULT NULL,
+				PRIMARY KEY (`volume_id`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
 		$r = \Core\Database::query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_volumes');
+		
+		$q = '
+			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
+				`chapter_id` INT(10) NOT NULL AUTO_INCREMENT,
+				`volume_id` INT(10) NOT NULL,
+				`sort` INT(10) NOT NULL,
+				`folder_name` VARCHAR(255) NOT NULL,
+				`is_archive` TINYINT(1) NOT NULL,
+				PRIMARY KEY (`chapter_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB
+			AUTO_INCREMENT = 1';
+		$r = \Core\Database::query ($q);
+		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_metadata` (

@@ -31,10 +31,12 @@ class FirstTimeSetup {
 	 * @throws TypeError on non-string returned JSON messages list
 	 */
 	public function ajaxCreateDatabases () : string {
+		$db = \Core\Database::getInstance ();
+		
 		$messages = [];
 		
 		$q = 'CREATE DATABASE `server`';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		if ($r === false) {
 			// Error creating database
@@ -47,7 +49,7 @@ class FirstTimeSetup {
 		}
 		
 		$q = 'use `server`';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_series` (
@@ -59,7 +61,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_series');
 		
 		$q = '
@@ -76,7 +78,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_volumes');
 		
 		$q = '
@@ -91,7 +93,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
 		
 		$q = '
@@ -104,7 +106,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_metadata');
 		
 		$q = '
@@ -118,7 +120,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'server_configs');
 		
 		$q = '
@@ -131,7 +133,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'statistics');
 		
 		$q = '
@@ -146,7 +148,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'users');
 		
 		$q = '
@@ -157,7 +159,7 @@ class FirstTimeSetup {
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'user_types');
 		
 		// Create default configs
@@ -168,7 +170,7 @@ class FirstTimeSetup {
 				("reader_display_style", 2),
 				("manga_directory", ""),
 				("library_view_type", 1)';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		return (json_encode ($messages));
 	}

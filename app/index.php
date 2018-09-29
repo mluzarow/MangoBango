@@ -49,8 +49,7 @@ if ($db_status === false) {
 	
 	if (
 		$uri === 'firsttimesetup' ||
-		$uri === 'ajax/core/sessionmanager/ajaxCreateUser' ||
-		$uri === 'ajax/controllers/firsttimesetup/ajaxcreatedatabases'
+		$uri === 'ajax/controllers/firsttimesetup/ajaxrunsetup'
 	) {
 		if ($current_segs[0] === 'ajax') {
 			unset ($current_segs[0]);

@@ -121,7 +121,7 @@ class Config {
 			// Check if this folder is already bound to a series
 			$q = '
 				SELECT `manga_id` FROM `manga_directories_series`
-				WHERE `path` = "'.$this->db->sanitize ($series_name).'"';
+				WHERE `folder_name` = "'.$this->db->sanitize ($series_name).'"';
 			$r = $this->db->query ($q);
 			
 			if (!empty ($r)) {
@@ -131,7 +131,7 @@ class Config {
 			$new_manga = [
 				'name' => $series_name,
 				'name_original' => null,
-				'path' => $series_name,
+				'folder_name' => $series_name,
 				'series_cover' => null,
 				'volumes' => []
 			];
@@ -152,7 +152,7 @@ class Config {
 				$vol_number = $matches[0];
 				
 				$new_manga['volumes'][$vol_number] = [
-					'filename' => $volume_name,
+					'folder_name' => $volume_name,
 					'cover' => null,
 					'spine' => null,
 					'index' => null,
@@ -167,7 +167,7 @@ class Config {
 						$file_segs = explode ('.', $chapter_contents);
 						$ext = end ($file_segs);
 						
-						$chap_filename = $chapter_contents;
+						$chap_folder_name = $chapter_contents;
 						
 						if ($ext === 'zip') {
 							// Is archive
@@ -188,15 +188,15 @@ class Config {
 							continue;
 						}
 					} else {
-						$chap_filename = $chapter_name;
+						$chap_folder_name = $chapter_name;
 					}
 					
 					// Try and get the chapter number
-					preg_match ('/((?:[0-9]+)(?:\.(?:[0-9]+))?)/', $chap_filename, $matches);
+					preg_match ('/((?:[0-9]+)(?:\.(?:[0-9]+))?)/', $chap_folder_name, $matches);
 					$chap_number = $matches[0];
 					
 					$new_manga['volumes'][$vol_number]['chapters'][$chap_number] = [
-						'filename' => $chap_filename,
+						'folder_name' => $chap_folder_name,
 						'is_archive' => $is_archive
 					];
 				}
@@ -218,44 +218,65 @@ class Config {
 	 * @param array $manga_list dictionary of new manga
 	 */
 	private function saveNewManga ($manga_list) {
-		// Get the new manga ID
+		// Get the new manga IDs
 		$q = '
-			SELECT MAX(`manga_id`) AS `max_id` FROM `manga_metadata`';
+			SELECT
+				MAX(`s`.`manga_id`) AS `id_series`,
+				MAX(`v`.`volume_id`) AS `id_volume`,
+				MAX(`c`.`chapter_id`) AS `id_chapter`
+			FROM `manga_directories_series` AS `s`
+			LEFT JOIN `manga_directories_volumes` AS `v`
+				ON `s`.`manga_id` = `v`.`manga_id`
+			LEFT JOIN `manga_directories_chapters` AS `c`
+				ON `v`.`volume_id` = `c`.`volume_id`';
 		$r = $this->db->query ($q);
 		
-		if ($r !== false) {
-			if ($r[0]['max_id'] === null) {
-				$max_id = 1;
-			} else {
-				$max_id = $r[0]['max_id'] + 1;
-			}
-		}
+		$new_id_series = empty($r[0]['id_series']) ? 1 : $r[0]['id_series']++;
+		$new_id_volume = empty($r[0]['id_volume']) ? 1 : $r[0]['id_volume']++;
+		$new_id_chapter = empty($r[0]['id_chapter']) ? 1 : $r[0]['id_chapter']++;
 		
 		foreach ($manga_list as $manga) {
 			$q = '
 				INSERT INTO `manga_metadata`
 					(`manga_id`, `name`, `name_original`)
 				VALUES
-					('.$max_id.', "'.$manga['name'].'", "'.$manga['name_original'].'")';
+					(
+						'.$new_id_series.',
+						"'.$manga['name'].'",
+						"'.$manga['name_original'].'"
+					)';
 			$r = $this->db->query ($q);
 			
 			$q = '
 				INSERT INTO `manga_directories_series`
-					(`manga_id`, `path`, `series_cover`)
+					(`manga_id`, `folder_name`, `series_cover`)
 				VALUES
-					('.$max_id.', "'.$manga['path'].'", "'.$manga['series_cover'].'")';
+					(
+						'.$new_id_series.',
+						"'.$manga['folder_name'].'",
+						"'.$manga['series_cover'].'"
+					)';
 			$r = $this->db->query ($q);
 			
 			$vol_sort = 1;
 			foreach ($manga['volumes'] as $volume) {
 				$q = '
 					INSERT INTO `manga_directories_volumes`
-						(`sort`, `manga_id`, `filename`, `cover`, `spine`, `index`)
+						(
+							`volume_id`,
+							`manga_id`,
+							`sort`,
+							`folder_name`,
+							`cover`,
+							`spine`,
+							`index`
+						)
 					VALUES
 						(
+							'.$new_id_volume.',
+							'.$new_id_series.',
 							'.$vol_sort.',
-							'.$max_id.',
-							"'.$volume['filename'].'",
+							"'.$volume['folder_name'].'",
 							"'.$volume['cover'].'",
 							"'.$volume['spine'].'",
 							"'.$volume['index'].'"
@@ -267,29 +288,31 @@ class Config {
 					$q = '
 						INSERT INTO `manga_directories_chapters`
 							(
+								`chapter_id`,
+								`volume_id`,
 								`sort`,
-								`manga_id`,
-								`volume_sort`,
-								`filename`,
+								`folder_name`,
 								`is_archive`
 							)
 						VALUES
 							(
+								'.$new_id_chapter.',
+								'.$new_id_volume.',
 								'.$chap_sort.',
-								'.$max_id.',
-								'.$vol_sort.',
-								"'.$chapter['filename'].'",
+								"'.$chapter['folder_name'].'",
 								'.$chapter['is_archive'].'
 							)';
 					$r = $this->db->query ($q);
 					
 					$chap_sort++;
+					$new_id_chapter++;
 				}
 				
 				$vol_sort++;
+				$new_id_volume++;
 			}
 			
-			$max_id++;
+			$new_id_series++;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use \Core\Database;
 use \ViewItems\PageViews\FirstTimeSetupView;
 
 /**
@@ -24,17 +25,66 @@ class FirstTimeSetup {
 	}
 	
 	/**
+	 * AJAX method for first time database setup.
+	 * 
+	 * @return string JSON en coded status messages & codes
+	 * 
+	 * @throws TypeError on non-string return
+	 */
+	public function ajaxRunSetup () : string {
+		if (empty($_POST['username']) || empty($_POST['password'])) {
+			return json_encode ([
+				'code' => 0,
+				'message' => 'Invalid user data sent.'
+			]);
+		}
+		
+		$db = Database::getInstance ();
+		
+		$messages = [];
+		
+		$messages['database'] = $this->createDatabases ($db);
+		$messages['config'] = $this->createDefaultConfigs ($db);
+		$messages['user'] = $this->createAdminUser (
+			$db,
+			$_POST['username'],
+			$_POST['password']
+		);
+		
+		return json_encode ($messages);
+	}
+	
+	/**
+	 * Creates an admin user with the given credentials.
+	 * 
+	 * @param Database $db database connection
+	 * 
+	 * @return array creation status message
+	 * 
+	 * @throws TypeError on incorrectly typed parameters or return
+	 */
+	private function createAdminUser (Database $db, string $username, string $password) : array {
+		$sm = new \Core\SessionManager ();
+		$status = $sm->createUser ($username, $password, 'admin');
+		
+		return [
+			'code' => $status ? 1 : 0,
+			'message' => ($status ? 'Successfully' : 'Failed').' making admin user.'
+		];
+	}
+	
+	/**
 	 * Creates all the necessary tables for the server.
 	 * 
-	 * @return string JSON list of status messages
+	 * @return array list of status messages
 	 * 
-	 * @throws TypeError on non-string returned JSON messages list
+	 * @throws TypeError on incorrectly typed parameter or return
 	 */
-	public function ajaxCreateDatabases () : string {
+	private function createDatabases (Database $db) : array {
 		$messages = [];
 		
 		$q = 'CREATE DATABASE `server`';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		if ($r === false) {
 			// Error creating database
@@ -43,67 +93,70 @@ class FirstTimeSetup {
 				$msg => 'Failed creating database `server`.'
 			];
 			
-			return (json_encode ($messages));
+			return $messages;
 		}
 		
 		$q = 'use `server`';
-		$r = \Core\Database::query ($q);
-		
-		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
-				`sort` INT(10) NOT NULL AUTO_INCREMENT,
-				`manga_id` INT(10) NOT NULL,
-				`volume_sort` INT(10) NOT NULL,
-				`filename` VARCHAR(255) NOT NULL,
-				`is_archive` TINYINT(1) NOT NULL,
-				PRIMARY KEY (`sort`, `manga_id`, `volume_sort`)
-			)
-			COLLATE = "utf8_general_ci"
-			ENGINE = InnoDB
-			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
+		$r = $db->query ($q);
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_series` (
 				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`path` VARCHAR(255) NOT NULL,
+				`folder_name` VARCHAR(255) NOT NULL,
 				`series_cover` VARCHAR(20) NULL DEFAULT NULL,
 				PRIMARY KEY (`manga_id`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_series');
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_volumes` (
-				`sort` INT(10) NOT NULL AUTO_INCREMENT,
+				`volume_id` INT(10) NOT NULL AUTO_INCREMENT,
 				`manga_id` INT(10) NOT NULL,
-				`filename` VARCHAR(255) NOT NULL,
-				`cover` VARCHAR(20) NULL DEFAULT NULL,
-				`spine` VARCHAR(20) NULL DEFAULT NULL,
-				`index` VARCHAR(20) NULL DEFAULT NULL,
-				PRIMARY KEY (`sort`, `manga_id`)
+				`sort` INT(10) NOT NULL,
+				`folder_name` VARCHAR(255) NOT NULL,
+				`cover` VARCHAR(10) NULL DEFAULT NULL,
+				`spine` VARCHAR(10) NULL DEFAULT NULL,
+				`index` VARCHAR(10) NULL DEFAULT NULL,
+				PRIMARY KEY (`volume_id`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_volumes');
+		
+		$q = '
+			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
+				`chapter_id` INT(10) NOT NULL AUTO_INCREMENT,
+				`volume_id` INT(10) NOT NULL,
+				`sort` INT(10) NOT NULL,
+				`folder_name` VARCHAR(255) NOT NULL,
+				`is_archive` TINYINT(1) NOT NULL,
+				PRIMARY KEY (`chapter_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB
+			AUTO_INCREMENT = 1';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
 		
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_metadata` (
 				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
 				`name` VARCHAR(255) NOT NULL,
 				`name_original` VARCHAR(255) NULL DEFAULT NULL,
+				`summary` VARCHAR(2000) NULL DEFAULT NULL,
+				`genres` VARCHAR(2000) NULL DEFAULT NULL,
 				PRIMARY KEY (`manga_id`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_metadata');
 		
 		$q = '
@@ -117,7 +170,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'server_configs');
 		
 		$q = '
@@ -130,7 +183,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'statistics');
 		
 		$q = '
@@ -145,7 +198,7 @@ class FirstTimeSetup {
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'users');
 		
 		$q = '
@@ -156,10 +209,22 @@ class FirstTimeSetup {
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'user_types');
 		
-		// Create default configs
+		return ($messages);
+	}
+	
+	/**
+	 * Creates default config settings.
+	 * 
+	 * @param Database $db database connection
+	 * 
+	 * @return array config creation status message
+	 * 
+	 * @throws TypeError on incorrectly typed parameter or return
+	 */
+	private function createDefaultConfigs (Database $db) : array {
 		$q = '
 			INSERT INTO `server_configs`
 				(`config_name`, `config_value`)
@@ -167,9 +232,12 @@ class FirstTimeSetup {
 				("reader_display_style", 2),
 				("manga_directory", ""),
 				("library_view_type", 1)';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
-		return (json_encode ($messages));
+		return [
+			'code' => $r ? 1 : 0,
+			'message' => ($r ? 'Successfully' : 'Failed').' creating default configs.'
+		];
 	}
 	
 	/**

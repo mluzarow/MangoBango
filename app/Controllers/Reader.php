@@ -14,53 +14,41 @@ class Reader {
 			WHERE `config_name` = "manga_directory"';
 		$r = $db->query ($q);
 		
-		$manga_directory = $r[0]['config_value'];
+		$manga_dir = $r[0]['config_value'];
 		
 		$manga_info = [];
 		
 		// Fetch manga info by ID
 		$q = '
-			SELECT `path`
-			FROM `manga_directories_series`
-			WHERE `manga_id` = '.$_GET['s'];
+			SELECT
+				`s`.`folder_name` AS `series_folder`,
+				`v`.`folder_name` AS `volume_folder`,
+				`v`.`sort` AS `volume_sort`,
+				`c`.`folder_name` AS `chapter_folder`,
+				`c`.`sort` AS `chapter_sort`,
+				`c`.`is_archive`
+			FROM `manga_directories_series` AS `s`
+			JOIN `manga_directories_volumes` AS `v`
+				ON `s`.`manga_id` = `v`.`manga_id`
+			JOIN `manga_directories_chapters` AS `c`
+				ON `v`.`volume_id` = `c`.`volume_id`
+			WHERE `s`.`manga_id` = '.$_GET['s'].'
+				AND `v`.`sort` = '.$_GET['v'].'
+				AND `c`.`sort` IN ('.$_GET['c'].','.($_GET['c'] + 1).')';
 		$r = $db->query ($q);
 		
-		$manga_info['series_folder'] = $r[0]['path'];
+		if ($r === false)
+			return ['file_paths' => []];
 		
-		$q = '
-			SELECT `filename`, `sort`
-			FROM `manga_directories_volumes`
-			WHERE `manga_id` = '.$_GET['s'].'
-				AND `sort` = '.$_GET['v'];
-		$r = $db->query ($q);
-		
-		$manga_info['volume_folder'] = $r[0]['filename'];
-		$manga_info['volume_sort'] = $r[0]['sort'];
-		
-		$q = '
-			SELECT `filename`, `sort`, `is_archive`
-			FROM `manga_directories_chapters`
-			WHERE `manga_id` = '.$_GET['s'].'
-				AND `volume_sort` = '.$_GET['v'].'
-				AND `sort` IN ('.$_GET['c'].','.($_GET['c'] + 1).')';
-		$r = $db->query ($q);
-		
-		$next_chapter = null;
-		if (count ($r) > 1) {
-			$next_chapter = $_GET['c'] + 1;
-		}
+		$next_chapter = count($r) ? $_GET['c'] + 1 : null;
 		
 		// Get the first row (which should be the sort we want to display)
-		$row = current ($r);
+		$r = current ($r);
 		
-		$manga_info['chapter'] = $r[0]['filename'];
-		$manga_info['chapter_sort'] = $r[0]['sort'];
-		$manga_info['is_archive'] = $r[0]['is_archive'];
-		
-		$path = "{$manga_directory}\\{$manga_info['series_folder']}\\{$manga_info['volume_folder']}\\{$manga_info['chapter']}";
+		$path = "{$manga_dir}\\{$r['series_folder']}\\{$r['volume_folder']}\\{$r['chapter_folder']}";
 			
 		$file_paths = [];
-		if ($manga_info['is_archive'] === '1') {
+		if ($r['is_archive'] === '1') {
 			$files = array_keys (\Core\ZipManager::readFiles ($path));
 			
 			foreach ($files as $file) {

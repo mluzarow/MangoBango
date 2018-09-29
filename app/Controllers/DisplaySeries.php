@@ -75,7 +75,7 @@ class DisplaySeries {
 		ksort ($view_parameters['chapters']);
 		
 		$q = '
-			SELECT `name`, `summary`, `genre`
+			SELECT `name`, `summary`, `genres`
 			FROM `manga_metadata`
 			WHERE `manga_id` = '.$_GET['s'];
 		$r = $db->query ($q);
@@ -88,7 +88,7 @@ class DisplaySeries {
 			$row = current ($r);
 			
 			$view_parameters['summary'] = empty ($row['summary']) ? '' : $row['summary'];
-			$view_parameters['genres'] = json_decode ($row['genre']);
+			$view_parameters['genres'] = empty($row['genres']) ? [] : json_decode ($row['genres']);
 			$view_parameters['title'] = empty ($row['name']) ? '' : $row['name'];
 		}
 		

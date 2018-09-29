@@ -23,7 +23,7 @@ class DisplaySeries {
 		
 		// Fetch manga info by ID
 		$q = '
-			SELECT `s`.`path`, `v`.*
+			SELECT `s`.`folder_name` as `series_folder`, `v`.*
 			FROM `manga_directories_series` AS `s`
 			JOIN `manga_directories_volumes` AS `v`
 				ON `s`.`manga_id` = `v`.`manga_id`
@@ -41,7 +41,7 @@ class DisplaySeries {
 			if (empty($v['cover'])) {
 				$path = '';
 			} else {
-				$path = "{$manga_directory}\\{$v['path']}\\{$v['filename']}\\cover.{$v['cover']}";
+				$path = "{$manga_directory}\\{$v['series_folder']}\\{$v['folder_name']}\\cover.{$v['cover']}";
 			}
 			
 			$view_parameters['volumes'][] = [
@@ -51,11 +51,11 @@ class DisplaySeries {
 		}
 		
 		$q = '
-			SELECT
-				`sort` AS `chapter_sort`,
-				`volume_sort`
-			FROM `manga_directories_chapters`
-			WHERE `manga_id` = '.$_GET['s'];
+			SELECT `v`.`sort` AS `volume_sort`, `c`.`sort` AS `chapter_sort`
+			FROM `manga_directories_volumes` AS `v`
+			JOIN `manga_directories_chapters` AS `c`
+				ON `v`.`volume_id` = `c`.`volume_id`
+			WHERE `v`.`manga_id` = '.$_GET['s'];
 		$r = $db->query ($q);
 		
 		if ($r === false) {

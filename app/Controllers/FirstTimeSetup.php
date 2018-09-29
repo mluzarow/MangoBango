@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use \Core\Database;
 use \ViewItems\PageViews\FirstTimeSetupView;
 
 /**
@@ -23,16 +24,56 @@ class FirstTimeSetup {
 		$view->render ();
 	}
 	
+	public function ajaxRunSetup () : string {
+		if (empty($_POST['username']) || empty($_POST['password'])) {
+			return json_encode ([
+				'code' => 0,
+				'message' => 'Invalid user data sent.'
+			]);
+		}
+		
+		$db = Database::getInstance ();
+		
+		$messages = [];
+		
+		$messages['database'] = $this->createDatabases ($db);
+		$messages['config'] = $this->createDefaultConfigs ($db);
+		$messages['user'] = $this->createAdminUser (
+			$db,
+			$_POST['username'],
+			$_POST['password']
+		);
+		
+		return json_encode ($messages);
+	}
+	
+	/**
+	 * Creates an admin user with the given credentials.
+	 * 
+	 * @param Database $db database connection
+	 * 
+	 * @return array creation status message
+	 * 
+	 * @throws TypeError on incorrectly typed parameters or return
+	 */
+	private function createAdminUser (Database $db, string $username, string $password) : array {
+		$sm = new \Core\SessionManager ();
+		$status = $sm->createUser ($username, $password, 'admin');
+		
+		return [
+			'code' => $status ? 1 : 0,
+			'message' => ($status ? 'Successfully' : 'Failed').' making admin user.'
+		];
+	}
+	
 	/**
 	 * Creates all the necessary tables for the server.
 	 * 
-	 * @return string JSON list of status messages
+	 * @return array list of status messages
 	 * 
-	 * @throws TypeError on non-string returned JSON messages list
+	 * @throws TypeError on incorrectly typed parameter or return
 	 */
-	public function ajaxCreateDatabases () : string {
-		$db = \Core\Database::getInstance ();
-		
+	private function createDatabases (Database $db) : array {
 		$messages = [];
 		
 		$q = 'CREATE DATABASE `server`';
@@ -45,7 +86,7 @@ class FirstTimeSetup {
 				$msg => 'Failed creating database `server`.'
 			];
 			
-			return (json_encode ($messages));
+			return $messages;
 		}
 		
 		$q = 'use `server`';
@@ -162,7 +203,19 @@ class FirstTimeSetup {
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'user_types');
 		
-		// Create default configs
+		return ($messages);
+	}
+	
+	/**
+	 * Creates default config settings.
+	 * 
+	 * @param Database $db database connection
+	 * 
+	 * @return array config creation status message
+	 * 
+	 * @throws TypeError on incorrectly typed parameter or return
+	 */
+	private function createDefaultConfigs (Database $db) : array {
 		$q = '
 			INSERT INTO `server_configs`
 				(`config_name`, `config_value`)
@@ -172,7 +225,10 @@ class FirstTimeSetup {
 				("library_view_type", 1)';
 		$r = $db->query ($q);
 		
-		return (json_encode ($messages));
+		return [
+			'code' => $r ? 1 : 0,
+			'message' => ($r ? 'Successfully' : 'Failed').' creating default configs.'
+		];
 	}
 	
 	/**

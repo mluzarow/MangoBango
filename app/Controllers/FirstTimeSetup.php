@@ -149,6 +149,8 @@ class FirstTimeSetup {
 				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
 				`name` VARCHAR(255) NOT NULL,
 				`name_original` VARCHAR(255) NULL DEFAULT NULL,
+				`summary` VARCHAR(2000) NULL DEFAULT NULL,
+				`genres` VARCHAR(2000) NULL DEFAULT NULL,
 				PRIMARY KEY (`manga_id`)
 			)
 			COLLATE = "utf8_general_ci"

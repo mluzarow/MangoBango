@@ -86,6 +86,8 @@ class SessionManager {
 	 *         - Non-bool return success flag
 	 */
 	public function createUser (string $username, string $password, string $type) : bool {
+		$db = \Core\Database::getInstance ();
+		
 		$pass_hash = password_hash ($password, PASSWORD_DEFAULT);
 		
 		$q = '
@@ -93,7 +95,7 @@ class SessionManager {
 				(`username`, `password`, `type`)
 			VALUES
 				("'.$username.'", "'.$pass_hash.'", "'.$type.'")';
-		$r = \Core\Database::query ($q);
+		$r = $db->query ($q);
 		
 		if ($r === false) {
 			return (false);

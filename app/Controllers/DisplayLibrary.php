@@ -42,14 +42,14 @@ class DisplayLibrary {
 	 * @param string $manga_directory manga directory
 	 * 
 	 * @return array dictionary of series data in the following structure:
-	 *  [manga ID]      int    manga ID
-	 *    ├── ['link']  string link to the series page for this manga
-	 *    ├── ['path']  string path to cover image
-	 *    └── ['title'] string meta name of series
+	 *  [manga ID]            int    manga ID
+	 *    ├── ['link']        string link to the series page for this manga
+	 *    ├── ['folder_name'] string path to cover image
+	 *    └── ['title']       string meta name of series
 	 */
 	private function getImagesCovers ($manga_directory) {
 		$q = '
-			SELECT `s`.`path`, `s`.`series_cover`, `m`.`manga_id`, `m`.`name`
+			SELECT `s`.`folder_name`, `s`.`series_cover`, `m`.`manga_id`, `m`.`name`
 			FROM `manga_directories_series` AS `s`
 			JOIN `manga_metadata` AS `m`
 				ON `s`.`manga_id` = `m`.`manga_id`';
@@ -64,7 +64,7 @@ class DisplayLibrary {
 			if (empty ($series['series_cover'])) {
 				$path = '';
 			} else {
-				$path = "{$manga_directory}\\{$series['path']}\\series_cover.{$series['series_cover']}";
+				$path = "{$manga_directory}\\{$series['folder_name']}\\series_cover.{$series['series_cover']}";
 			}
 			
 			$series_data[$series['name']] = [
@@ -96,7 +96,7 @@ class DisplayLibrary {
 	 */
 	private function getImagesSpines ($manga_directory) {
 		$q = '
-			SELECT `s`.`path`, `m`.`manga_id`, `m`.`name`
+			SELECT `s`.`folder_name`, `m`.`manga_id`, `m`.`name`
 			FROM `manga_directories_series` AS `s`
 			JOIN `manga_metadata` AS `m`
 				ON `s`.`manga_id` = `m`.`manga_id`';
@@ -109,7 +109,7 @@ class DisplayLibrary {
 		$manga_data = [];
 		foreach ($r as $row) {
 			$manga_data[$row['manga_id']] = [
-				'basepath' => $row['path'],
+				'basepath' => $row['folder_name'],
 				'link' => "/displaySeries?s={$row['manga_id']}",
 				'name' => $row['name'],
 				'paths' => []
@@ -117,7 +117,7 @@ class DisplayLibrary {
 		}
 		
 		$q = '
-			SELECT `sort`, `manga_id`, `filename`, `spine`
+			SELECT `sort`, `manga_id`, `folder_name`, `spine`
 			FROM `manga_directories_volumes`';
 		$r = $this->db->query ($q);
 		

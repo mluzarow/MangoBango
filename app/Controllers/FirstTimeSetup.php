@@ -24,6 +24,13 @@ class FirstTimeSetup {
 		$view->render ();
 	}
 	
+	/**
+	 * AJAX method for first time database setup.
+	 * 
+	 * @return string JSON en coded status messages & codes
+	 * 
+	 * @throws TypeError on non-string return
+	 */
 	public function ajaxRunSetup () : string {
 		if (empty($_POST['username']) || empty($_POST['password'])) {
 			return json_encode ([

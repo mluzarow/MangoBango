@@ -7,10 +7,10 @@ class LazyLoader {
 	/**
 	 * Constructor for lazy loader controller.
 	 * 
-	 * @param {String} placeholder CSS class of placeholder
+	 * @param {String} placeholderClass CSS class of placeholder
 	 */
-	constructor (placeholder) {
-		this.placeholder = placeholder;
+	constructor (placeholderClass) {
+		this.placeholderClass = placeholderClass;
 		this.$placeholders = [];
 	}
 	
@@ -18,48 +18,53 @@ class LazyLoader {
 	 * Finds all the placeholders on the page.
 	 */
 	findPlaceholders () {
-		this.$placeholders = $("." + this.placeholder);
+		this.$placeholders = $("." + this.placeholderClass);
 	}
 	
 	/**
 	 * Request images for all placeholders on the page.
 	 */
 	replacePlaceholders () {
-		$.each (this.$placeholders, function (index, $placeholder) {
-			this.requestImage ($($placeholder));
-		}.bind (this));
+		this.requestImages (this.$placeholders);
 	}
 	
 	/**
-	 * Requests an image from the LazyLoader controller using the data-origin
-	 * attribute of the given jQuery node & replaces the given node with the
-	 * received image.
+	 * Requests a batch of images from the LazyLoader controller using the
+	 * data-origin attribute of the given jQuery nodes & replaces the given nodes
+	 * with the received images.
 	 * 
-	 * @param  {Node} $placeholder jQuery node of the placeholder
+	 * @param {Array} placeholders list of jQuery nodes of placeholders
 	 */
-	requestImage ($placeholder) {
-		let filePath = $placeholder.attr ("data-origin");
+	requestImages (placeholders) {
+		var filePaths = [];
+		
+		$.each (placeholders, (i, $v) => filepaths.push ($v.attr ("data-origin"));
 		
 		$.ajax({
-			url: "ajax/Core/LazyLoader/ajaxRequestImage",
+			url: "ajax/Core/LazyLoader/ajaxRequestImages",
 			method: "POST",
 			data: {
-				filepath: filePath
+				filepaths: filePaths
 			},
 			timeout: 10000,
-			success: function ($placeholder, imageData) {
-				if (imageData.length > 0) {
-					let newNode = $("<img>")
-						.attr ("src", imageData)
-						.addClass ($placeholder[0].classList.value)
-						.removeClass (this.placeholder);
-					
-					$placeholder.replaceWith (newNode);
-				} else {
-					// No image was found, so add a placeholder img
-					$placeholder.find ("img").attr ("src", "/resources/icons/placeholder.svg");
-				}
-			}.bind (this, $placeholder)
+			success: function (imageSrc) {
+				$.each (placeholders, (i, $v) => {
+					if (imageSrc.length > 0) {
+						let newNode = $("<img>")
+							.attr ("src", imageData)
+							.addClass ($v[0].classList.value)
+							.removeClass (this.placeholderClass);
+						
+						$v.replaceWith (newNode);
+					} else {
+						// No image was found, so add a placeholder img
+						$v.find ("img").attr (
+							"src",
+							"/resources/icons/placeholder.svg"
+						);
+					}
+				});
+			}.bind (this, placeholders);
 		});
 	}
 }

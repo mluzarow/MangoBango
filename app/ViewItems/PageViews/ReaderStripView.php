@@ -1,9 +1,9 @@
 <?php
 namespace ViewItems\PageViews;
 
-use \ViewItems\ViewAbstract;
+use \ViewItems\ViewTemplate;
 
-class ReaderStripView extends ViewAbstract {
+class ReaderStripView extends ViewTemplate {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */

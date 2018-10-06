@@ -1,12 +1,12 @@
 <?php
 namespace ViewItems\PageViews;
 
-use \ViewItems\ViewAbstract;
+use \ViewItems\ViewTemplate;
 
 /**
  * View class for the list of server configs on the config page.
  */
-class ConfigView extends ViewAbstract {
+class ConfigView extends ViewTemplate {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */

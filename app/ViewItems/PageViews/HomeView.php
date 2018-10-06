@@ -1,9 +1,9 @@
 <?php
 namespace ViewItems\PageViews;
 
-use ViewItems\ViewAbstract;
+use ViewItems\ViewTemplate;
 
-class HomeView extends ViewAbstract {
+class HomeView extends ViewTemplate {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */

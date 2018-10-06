@@ -6,7 +6,7 @@ use Core\MetaPage;
 /**
  * View class template from which all views extend.
  */
-abstract class ViewAbstract {
+class ViewTemplate {
 	/**
 	 * @var string CSS output
 	 */
@@ -69,17 +69,17 @@ abstract class ViewAbstract {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */
-	abstract protected function constructCSS ();
+	protected function constructCSS () {}
 	
 	/**
 	 * Constructs the HTML using the available properties.
 	 */
-	abstract protected function constructHTML ();
+	protected function constructHTML () {}
 	
 	/**
 	 * Constructs the javascript using the available properties.
 	 */
-	abstract protected function constructJavascript ();
+	protected function constructJavascript () {}
 	
 	/**
 	 * Gets the CSS output.

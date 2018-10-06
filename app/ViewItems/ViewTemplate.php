@@ -91,7 +91,7 @@ class ViewTemplate {
 			$this->css_output = $this->constructCSS ();
 		}
 		
-		return ($this->css_output);
+		return $this->css_output;
 	}
 	
 	/**
@@ -104,7 +104,7 @@ class ViewTemplate {
 			$this->html_output = $this->constructHTML ();
 		}
 		
-		return ($this->html_output);
+		return $this->html_output;
 	}
 	
 	/**
@@ -117,6 +117,6 @@ class ViewTemplate {
 			$this->js_output = $this->constructJavascript ();
 		}
 		
-		return ($this->js_output);
+		return $this->js_output;
 	}
 }

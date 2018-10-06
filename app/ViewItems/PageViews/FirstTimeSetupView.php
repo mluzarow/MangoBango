@@ -1,12 +1,12 @@
 <?php
 namespace ViewItems\PageViews;
 
-use \ViewItems\ViewAbstract;
+use \ViewItems\ViewTemplate;
 
 /**
  * Page view for the first time server setup script.
  */
-class FirstTimeSetupView extends ViewAbstract {
+class FirstTimeSetupView extends ViewTemplate {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */

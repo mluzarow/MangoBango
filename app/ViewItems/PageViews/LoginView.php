@@ -1,12 +1,12 @@
 <?php
 namespace ViewItems\PageViews;
 
-use \ViewItems\ViewAbstract;
+use \ViewItems\ViewTemplate;
 
 /**
  * Page view rendering output for the server login page.
  */
-class LoginView extends ViewAbstract {
+class LoginView extends ViewTemplate {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */

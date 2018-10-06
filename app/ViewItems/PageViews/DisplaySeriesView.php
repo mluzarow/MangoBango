@@ -1,12 +1,12 @@
 <?php
 namespace ViewItems\PageViews;
 
-use ViewItems\ViewAbstract;
+use ViewItems\ViewTemplate;
 
 /**
  * View class displaying volume covers of a given series.
  */
-class DisplaySeriesView extends ViewAbstract {
+class DisplaySeriesView extends ViewTemplate {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */

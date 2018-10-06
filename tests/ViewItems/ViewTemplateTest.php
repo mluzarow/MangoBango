@@ -10,6 +10,7 @@ class ViewTemplateTest extends TestCase {
 	 * type.
 	 * 
 	 * @dataProvider nonArrayProvider
+	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid invalid parameter type data
 	 */

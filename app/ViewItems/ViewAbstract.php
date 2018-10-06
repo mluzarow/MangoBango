@@ -1,7 +1,7 @@
 <?php
 namespace ViewItems;
 
-use \Core\MetaPage;
+use Core\MetaPage;
 
 /**
  * View class template from which all views extend.

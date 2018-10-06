@@ -2,7 +2,7 @@
 // Autoload classes based on a 1:1 mapping from namespace to directory structure.
 spl_autoload_register(function ($className) {
 	$ds = DIRECTORY_SEPARATOR;
-	$dir = __DIR__.'\\app';
+	$dir = str_replace ('\\tests', '\\app', __DIR__);
 	
 	// Replace namespace separator with directory separator
 	$className = str_replace('\\', $ds, $className);

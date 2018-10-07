@@ -47,6 +47,7 @@ class ReaderPageView extends ViewTemplate {
 	protected function constructJavascript () {
 		$output =
 		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/LazyLoaderEvents.js"></script>
 		<script type="text/javascript" src="/ViewItems/JS/ReaderPage.js"></script>';
 		
 		return ($output);

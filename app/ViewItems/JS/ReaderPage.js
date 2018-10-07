@@ -34,9 +34,5 @@ $(window).ready (function () {
 	});
 });
 
-$(window).on ("load", function () {
-	var lazyLoader = new LazyLoader ("placeholder");
-	
-	lazyLoader.findPlaceholders ();
-	lazyLoader.replacePlaceholders ();
-});
+// Start lazy loader
+lazyLoadByScroll ();

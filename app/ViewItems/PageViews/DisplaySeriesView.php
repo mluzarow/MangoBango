@@ -91,6 +91,7 @@ class DisplaySeriesView extends ViewTemplate {
 	protected function constructJavascript () {
 		$output =
 		'<script type="text/javascript" src="/ViewItems/JS/LazyLoader.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/LazyLoaderEvents.js"></script>
 		<script type="text/javascript" src="/ViewItems/JS/DisplaySeries.js"></script>';
 		
 		return ($output);

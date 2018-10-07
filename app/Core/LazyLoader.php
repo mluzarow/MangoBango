@@ -6,44 +6,58 @@ namespace Core;
  */
 class LazyLoader {
 	/**
-	 * Requests an image via AJAX with the given image path.
-	 * 
-	 * @return string base 64 encoded requested image file or empty string if no
-	 *                file could be found or loaded
-	 */
-	public function ajaxRequestImage () : string {
-		if (empty ($_POST['filepath'])) {
-			return ('');
-		}
-		
-		$image_path = $_POST['filepath'];
-		
-		$image_segs = explode ('#', $image_path);
-		
-		if (count ($image_segs) > 1) {
-			$image_data = $this->loadArchiveImage ($image_segs[0], $image_segs[1]);
-		} else {
-			$image_data = $this->loadLooseImage ($image_path);
-		}
-		
-		return ($image_data);
-	}
-	
-	/**
 	 * Requests a list of images via AJAX with a given list of image paths.
 	 * 
 	 * @return array list of base 64 encoded requested image files
+	 * 
+	 * @throws TypeError on invalid return type
 	 */
 	public function ajaxRequestImages () : string {
-		$image_datas = json_decode ($_POST['filepaths'], true);
+		// No POST variable given (or it is empty)
+		if (empty ($_POST['filepaths']))
+			return json_encode ([]);
 		
-		foreach ($image_paths as $image_path) {
-			$image_datas[] = $this->ajaxRequestImage ($image_path);
+		$filepaths = json_decode ($_POST['filepaths'], true);
+		
+		// JSON was invalid
+		if (empty ($filepaths))
+			return json_encode ([]);
+		
+		$image_srcs = [];
+		foreach ($filepaths as $path) {
+			// No data for this item
+			if (empty ($path)) {
+				$image_srcs[] = '';
+				continue;
+			}
+			
+			$image_srcs[] = $this->fetchImageSrc ($path);
 		}
 		
-		$image_datas = json_encode ($image_datas, true);
+		return json_encode ($image_srcs);
+	}
+	
+	/**
+	 * Fetches image source data based on image path.
+	 * 
+	 * @param string $path path of image
+	 * 
+	 * @return string base 64 encoded requested image file or empty string if no
+	 *                file could be found or loaded
+	 * 
+	 * @throws TypeError on invalid parameter or return type
+	 */
+	private function fetchImageSrc (string $path) : string {
+		$image_segs = explode ('#', $path);
 		
-		return ($image_datas);
+		if (count ($image_segs) === 1) {
+			return $this->loadLooseImage ($path);
+		}
+		
+		return $image_data = $this->loadArchiveImage (
+			$image_segs[0],
+			$image_segs[1]
+		);
 	}
 	
 	/**
@@ -54,24 +68,26 @@ class LazyLoader {
 	 * 
 	 * @return string base 64 encoded requested image file or empty string if no
 	 *                file could be found or loaded
+	 * 
+	 * @throws TypeError on invalid parameter or return type
 	 */
-	private function loadArchiveImage ($archive_path, $image_path) {
+	private function loadArchiveImage (
+		string $archive_path,
+		string $image_path
+	) : string {
 		// Open the archive
 		$file_list = \Core\ZipManager::readFiles ($archive_path);
 		
-		if (empty ($file_list[$image_path])) {
-			// No image could be loaded
-			$image_data = '';
-		} else {
-			$blob = $file_list[$image_path];
-			
-			$file_segs = explode ('.', $image_path);
-			$ext = end ($file_segs);
-			
-			$image_data = "data:image/{$ext};base64,".$blob;
-		}
+		// No image could be loaded
+		if (empty ($file_list[$image_path]))
+			return '';
 		
-		return ($image_data);
+		$blob = $file_list[$image_path];
+		
+		$file_segs = explode ('.', $image_path);
+		$ext = end ($file_segs);
+		
+		return "data:image/{$ext};base64,".$blob;
 	}
 	
 	/**
@@ -81,8 +97,10 @@ class LazyLoader {
 	 * 
 	 * @return string base 64 encoded requested image file or empty string if no
 	 *                file could be found or loaded
+	 * 
+	 * @throws TypeError on invalid parameter or return type
 	 */
-	private function loadLooseImage ($image_path) {
+	private function loadLooseImage (string $image_path) : string {
 		$f = fopen ($image_path, 'r');
 		
 		if ($f === false) {
@@ -99,6 +117,6 @@ class LazyLoader {
 		
 		fclose ($f);
 		
-		return ($image_data);
+		return $image_data;
 	}
 }

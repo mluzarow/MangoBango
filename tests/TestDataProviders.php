@@ -21,6 +21,32 @@ class TestDataProviders {
 	}
 	
 	/**
+	 * Non-string type provider.
+	 * 
+	 * @return array non-string type data
+	 */
+	public static function nonStringProvider () {
+		return
+			self::arrayType () +
+			self::booleanType () +
+			self::floatType () +
+			self::integerType () +
+			self::nullType () +
+			self::objectType ();
+	}
+	
+	/**
+	 * Sources array types for providers.
+	 * 
+	 * @return array array type data
+	 */
+	private static function arrayType () {
+		return [
+			[array ()]
+		];
+	}
+	
+	/**
 	 * Sources boolean types for providers.
 	 * 
 	 * @return array boolean type data

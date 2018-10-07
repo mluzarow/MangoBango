@@ -38,33 +38,45 @@ class LazyLoader {
 	requestImages (placeholders) {
 		var filePaths = [];
 		
-		$.each (placeholders, (i, $v) => filepaths.push ($v.attr ("data-origin"));
+		$.each (placeholders, (i, $v) => filePaths.push ($($v).attr ("data-origin")));
 		
 		$.ajax({
 			url: "ajax/Core/LazyLoader/ajaxRequestImages",
 			method: "POST",
 			data: {
-				filepaths: filePaths
+				filepaths: JSON.stringify (filePaths)
 			},
+			dataType: "json",
 			timeout: 10000,
-			success: function (imageSrc) {
+			error: function (placeholders) {
+				// No image was found, so add a placeholder img
 				$.each (placeholders, (i, $v) => {
-					if (imageSrc.length > 0) {
-						let newNode = $("<img>")
-							.attr ("src", imageData)
-							.addClass ($v[0].classList.value)
-							.removeClass (this.placeholderClass);
-						
-						$v.replaceWith (newNode);
-					} else {
+					$v.find ("img").attr (
+						"src",
+						"/resources/icons/placeholder.svg"
+					);
+				});
+			}.bind (this, placeholders),
+			success: function (placeholders, imageSrc) {
+				$.each (placeholders, (i, $v) => {
+					if (imageSrc[i].length < 1) {
 						// No image was found, so add a placeholder img
-						$v.find ("img").attr (
+						$($v).find ("img").attr (
 							"src",
 							"/resources/icons/placeholder.svg"
 						);
+						
+						continue;
 					}
+					
+					let newNode = $("<img>")
+						.attr ("src", imageSrc[i])
+						.addClass ($($v)[0].classList.value)
+						.removeClass (this.placeholderClass);
+					
+					$v.replaceWith (newNode[0]);
 				});
-			}.bind (this, placeholders);
+			}.bind (this, placeholders)
 		});
 	}
 }

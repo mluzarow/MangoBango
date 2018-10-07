@@ -50,13 +50,14 @@ class LazyLoader {
 	private function fetchImageSrc (string $path) : string {
 		$image_segs = explode ('#', $path);
 		
-		if (count ($image_segs) > 1) {
-			$image_data = $this->loadArchiveImage ($image_segs[0], $image_segs[1]);
-		} else {
-			$image_data = $this->loadLooseImage ($image_path);
+		if (count ($image_segs) === 1) {
+			return $this->loadLooseImage ($path);
 		}
 		
-		return $image_data;
+		return $image_data = $this->loadArchiveImage (
+			$image_segs[0],
+			$image_segs[1]
+		);
 	}
 	
 	/**

@@ -11,31 +11,57 @@ class LazyLoader {
 	 */
 	constructor (placeholderClass) {
 		this.placeholderClass = placeholderClass;
-		this.$placeholders = [];
 	}
 	
 	/**
 	 * Finds all the placeholders on the page.
+	 *
+	 * @return {Array} list of jQuery nodes of placeholders
 	 */
-	findPlaceholders () {
-		this.$placeholders = $("." + this.placeholderClass);
+	findPlaceholdersAll () {
+		return $("." + this.placeholderClass).toArray ();
+	}
+	
+	/**
+	 * Finds all the placeholders that fit on the section of the page currently
+	 * visible to the user.
+	 * 
+	 * @return {Array} List of nodes within the current viewport
+	 */
+	findPlaceholdersViewport () {
+		let nodes = $("." + this.placeholderClass).toArray ();
+		
+		if (nodes.length === 0)
+			return [];
+		
+		let vpTop = $(window).scrollTop ();
+		let vpBottom = vpTop + $(window).height ();
+		
+		return nodes.filter (node => {
+			let eTop = $(node).offset ().top;
+			let eBottom = eTop + $(node).outerHeight ();
+			
+			return eBottom > vpTop && eTop < vpBottom;
+		});
 	}
 	
 	/**
 	 * Request images for all placeholders on the page.
+	 * 
+	 * @param {Array} placeholders list of placeholder nodes
 	 */
-	replacePlaceholders () {
+	replacePlaceholders (placeholders) {
 		// Cut the images up into batches of 5
 		let chunks = [];
 		let tChunk = [];
 		
-		for (let i = 0; i < this.$placeholders.length; i++) {
+		for (let i = 0; i < placeholders.length; i++) {
 			if (tChunk.length === 5) {
 				chunks.push (tChunk);
 				tChunk = [];
 			}
 			
-			tChunk.push (this.$placeholders[i]);
+			tChunk.push (placeholders[i]);
 		}
 		
 		if (tChunk.length > 0) {

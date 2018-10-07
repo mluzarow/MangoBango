@@ -151,7 +151,6 @@
 }
 
 .library_display_container .manga_volume_wrap a .placeholder {
-	height: 425px;
 	text-align: center;
 }
 
@@ -165,7 +164,6 @@
 
 .library_display_container .manga_volume_wrap a .placeholder img {
 	width: 65%;
-	height: auto;
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -235,5 +233,9 @@
 	
 	.library_display_container .manga_volume_wrap a img {
 		height: auto;
+	}
+	
+	.library_display_container .manga_volume_wrap a .placeholder {
+		height: 109.6vw;
 	}
 }

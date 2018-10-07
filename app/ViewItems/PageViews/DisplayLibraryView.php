@@ -1,9 +1,9 @@
 <?php
 namespace ViewItems\PageViews;
 
-use ViewItems\ViewAbstract;
+use ViewItems\ViewTemplate;
 
-class DisplayLibraryView extends ViewAbstract {
+class DisplayLibraryView extends ViewTemplate {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */

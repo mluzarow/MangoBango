@@ -1,12 +1,12 @@
 <?php
 namespace ViewItems\PageViews;
 
-use \ViewItems\ViewAbstract;
+use \ViewItems\ViewTemplate;
 
 /**
  * Meta page view rendering the page frame.
  */
-class MetaView extends ViewAbstract {
+class MetaView extends ViewTemplate {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */

@@ -1,12 +1,12 @@
 <?php
 namespace ViewItems;
 
-use \Core\MetaPage;
+use Core\MetaPage;
 
 /**
  * View class template from which all views extend.
  */
-abstract class ViewAbstract {
+class ViewTemplate {
 	/**
 	 * @var string CSS output
 	 */
@@ -69,17 +69,17 @@ abstract class ViewAbstract {
 	/**
 	 * Constructs the CSS using the available properties.
 	 */
-	abstract protected function constructCSS ();
+	protected function constructCSS () {}
 	
 	/**
 	 * Constructs the HTML using the available properties.
 	 */
-	abstract protected function constructHTML ();
+	protected function constructHTML () {}
 	
 	/**
 	 * Constructs the javascript using the available properties.
 	 */
-	abstract protected function constructJavascript ();
+	protected function constructJavascript () {}
 	
 	/**
 	 * Gets the CSS output.
@@ -91,7 +91,7 @@ abstract class ViewAbstract {
 			$this->css_output = $this->constructCSS ();
 		}
 		
-		return ($this->css_output);
+		return $this->css_output;
 	}
 	
 	/**
@@ -104,7 +104,7 @@ abstract class ViewAbstract {
 			$this->html_output = $this->constructHTML ();
 		}
 		
-		return ($this->html_output);
+		return $this->html_output;
 	}
 	
 	/**
@@ -117,6 +117,6 @@ abstract class ViewAbstract {
 			$this->js_output = $this->constructJavascript ();
 		}
 		
-		return ($this->js_output);
+		return $this->js_output;
 	}
 }

@@ -15,3 +15,6 @@ spl_autoload_register(function ($className) {
 		require_once $file;
 	}
 });
+
+// Include the static providers as well
+require_once __DIR__.'\\TestDataProviders.php';

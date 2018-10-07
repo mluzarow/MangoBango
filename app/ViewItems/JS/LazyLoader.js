@@ -25,7 +25,24 @@ class LazyLoader {
 	 * Request images for all placeholders on the page.
 	 */
 	replacePlaceholders () {
-		this.requestImages (this.$placeholders);
+		// Cut the images up into batches of 5
+		let chunks = [];
+		let tChunk = [];
+		
+		for (let i = 0; i < this.$placeholders.length; i++) {
+			if (tChunk.length === 5) {
+				chunks.push (tChunk);
+				tChunk = [];
+			}
+			
+			tChunk.push (this.$placeholders[i]);
+		}
+		
+		if (tChunk.length > 0) {
+			chunks.push (tChunk);
+		}
+		
+		$.each (chunks, (i, v) => this.requestImages (v));
 	}
 	
 	/**
@@ -66,7 +83,7 @@ class LazyLoader {
 							"/resources/icons/placeholder.svg"
 						);
 						
-						continue;
+						return;
 					}
 					
 					let newNode = $("<img>")

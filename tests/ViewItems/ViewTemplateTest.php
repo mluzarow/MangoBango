@@ -9,18 +9,12 @@ class ViewTemplateTest extends TestCase {
 	 * Testing failed instantiation of view class abstract on invalid parameter
 	 * type.
 	 * 
-	 * @dataProvider nonArrayProvider
+	 * @dataProvider Tests\TestDataProviders::nonArrayProvider
 	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid invalid parameter type data
 	 */
 	public function testInvalidViewParametersType ($invalid) {
 		new ViewTemplate ($invalid);
-	}
-	
-	public function nonArrayProvider() {
-		return [
-			[5]
-		];
 	}
 }

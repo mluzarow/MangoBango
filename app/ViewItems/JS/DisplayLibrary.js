@@ -23,7 +23,7 @@ $(window).ready (function () {
 });
 
 $(window).on ("load", function () {
-	var lazyLoader = new LazyLoader ("placeholder");
+	var lazyLoader = new LazyLoader ();
 	
 	// Request first batch of images on load once
 	var scrollTimeout = true;

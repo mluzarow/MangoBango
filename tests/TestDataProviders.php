@@ -16,14 +16,15 @@ class TestDataProviders {
 			self::floatType () +
 			self::integerType () +
 			self::stringType () +
-			[
-				// Null
-				[null],
-				// Objects
-				[new \stdClass ()]
-			];
+			self::nullType () +
+			self::objectType ();
 	}
 	
+	/**
+	 * Sources boolean types for providers.
+	 * 
+	 * @return array boolean type data
+	 */
 	private static function booleanType () {
 		return [
 			[true],
@@ -31,6 +32,11 @@ class TestDataProviders {
 		];
 	}
 	
+	/**
+	 * Sources float types for providers.
+	 * 
+	 * @return array float type data
+	 */
 	private static function floatType () {
 		return [
 			[1.0],
@@ -40,6 +46,11 @@ class TestDataProviders {
 		];
 	}
 	
+	/**
+	 * Sources integer types for providers.
+	 * 
+	 * @return array integer type data
+	 */
 	private static function integerType () {
 		return [
 			[1],
@@ -50,6 +61,33 @@ class TestDataProviders {
 		];
 	}
 	
+	/**
+	 * Sources null types for providers.
+	 * 
+	 * @return array null type data
+	 */
+	private static function nullType () {
+		return [
+			[null]
+		];
+	}
+	
+	/**
+	 * Sources object types for providers.
+	 * 
+	 * @return array object type data
+	 */
+	private static function objectType () {
+		return [
+			[new \stdClass ()]
+		];
+	}
+	
+	/**
+	 * Sources string types for providers.
+	 * 
+	 * @return array string type data
+	 */
 	private static function stringType () {
 		return [
 			['1.0'],

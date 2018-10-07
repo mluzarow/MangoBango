@@ -5,21 +5,12 @@
  */
 class LazyLoader {
 	/**
-	 * Constructor for lazy loader controller.
-	 * 
-	 * @param {String} placeholderClass CSS class of placeholder
-	 */
-	constructor (placeholderClass) {
-		this.placeholderClass = placeholderClass;
-	}
-	
-	/**
 	 * Finds all the placeholders on the page.
 	 *
 	 * @return {Array} list of jQuery nodes of placeholders
 	 */
 	findPlaceholdersAll () {
-		return $("." + this.placeholderClass).toArray ().filter (
+		return $(".placeholder").toArray ().filter (
 			node => !$(node).hasClass ("processing") && !$(node).hasClass ("done")
 		);
 	}
@@ -31,7 +22,7 @@ class LazyLoader {
 	 * @return {Array} List of nodes within the current viewport
 	 */
 	findPlaceholdersViewport () {
-		let nodes = $("." + this.placeholderClass).toArray ().filter (
+		let nodes = $(".placeholder").toArray ().filter (
 			node => !$(node).hasClass ("processing") && !$(node).hasClass ("done")
 		);
 		
@@ -122,7 +113,7 @@ class LazyLoader {
 					let newNode = $("<img>")
 						.attr ("src", imageSrc[i])
 						.addClass ($($v)[0].classList.value)
-						.removeClass (this.placeholderClass)
+						.removeClass ("placeholder")
 						.removeClass ("processing");
 					
 					$v.replaceWith (newNode[0]);

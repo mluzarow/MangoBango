@@ -75,7 +75,7 @@ class LazyLoader {
 			chunks.push (tChunk);
 		}
 		
-		$.each (chunks, (i, v) => this.requestImages (v));
+		$.each (chunks, (i, v) => this._requestImages (v));
 	}
 	
 	/**
@@ -85,7 +85,7 @@ class LazyLoader {
 	 * 
 	 * @param {Array} placeholders list of jQuery nodes of placeholders
 	 */
-	requestImages (placeholders) {
+	_requestImages (placeholders) {
 		var filePaths = [];
 		
 		$.each (placeholders, (i, $v) => filePaths.push ($($v).attr ("data-origin")));

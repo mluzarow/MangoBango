@@ -19,7 +19,9 @@ class LazyLoader {
 	 * @return {Array} list of jQuery nodes of placeholders
 	 */
 	findPlaceholdersAll () {
-		return $("." + this.placeholderClass).toArray ();
+		return $("." + this.placeholderClass).toArray ().filter (
+			node => !$(node).hasClass ("processing") && !$(node).hasClass ("done")
+		);
 	}
 	
 	/**
@@ -29,7 +31,9 @@ class LazyLoader {
 	 * @return {Array} List of nodes within the current viewport
 	 */
 	findPlaceholdersViewport () {
-		let nodes = $("." + this.placeholderClass).toArray ();
+		let nodes = $("." + this.placeholderClass).toArray ().filter (
+			node => !$(node).hasClass ("processing") && !$(node).hasClass ("done")
+		);
 		
 		if (nodes.length === 0)
 			return [];
@@ -51,6 +55,9 @@ class LazyLoader {
 	 * @param {Array} placeholders list of placeholder nodes
 	 */
 	replacePlaceholders (placeholders) {
+		// Mark all these nodes as being actively updated.
+		$.each (placeholders, (i, v) => $(v).addClass ("processing"));
+		
 		// Cut the images up into batches of 5
 		let chunks = [];
 		let tChunk = [];
@@ -115,7 +122,8 @@ class LazyLoader {
 					let newNode = $("<img>")
 						.attr ("src", imageSrc[i])
 						.addClass ($($v)[0].classList.value)
-						.removeClass (this.placeholderClass);
+						.removeClass (this.placeholderClass)
+						.removeClass ("processing");
 					
 					$v.replaceWith (newNode[0]);
 				});

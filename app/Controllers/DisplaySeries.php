@@ -88,7 +88,7 @@ class DisplaySeries {
 			$row = current ($r);
 			
 			$view_parameters['summary'] = empty ($row['summary']) ? '' : $row['summary'];
-			$view_parameters['genres'] = empty($row['genres']) ? [] : json_decode ($row['genres']);
+			$view_parameters['genres'] = empty($row['genres']) ? [] : json_decode ($row['genres'], true);
 			$view_parameters['title'] = empty ($row['name']) ? '' : $row['name'];
 		}
 		

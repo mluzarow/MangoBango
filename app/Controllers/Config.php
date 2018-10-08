@@ -231,9 +231,9 @@ class Config {
 				ON `v`.`volume_id` = `c`.`volume_id`';
 		$r = $this->db->query ($q);
 		
-		$new_id_series = empty($r[0]['id_series']) ? 1 : $r[0]['id_series']++;
-		$new_id_volume = empty($r[0]['id_volume']) ? 1 : $r[0]['id_volume']++;
-		$new_id_chapter = empty($r[0]['id_chapter']) ? 1 : $r[0]['id_chapter']++;
+		$new_id_series = empty($r[0]['id_series']) ? 1 : ++$r[0]['id_series'];
+		$new_id_volume = empty($r[0]['id_volume']) ? 1 : ++$r[0]['id_volume'];
+		$new_id_chapter = empty($r[0]['id_chapter']) ? 1 : ++$r[0]['id_chapter'];
 		
 		foreach ($manga_list as $manga) {
 			$q = '

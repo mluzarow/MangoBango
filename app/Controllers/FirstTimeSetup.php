@@ -15,20 +15,20 @@ class FirstTimeSetup {
 		if (!empty ($_POST)) {
 			return;
 		}
-		
+
 		\Core\MetaPage::setTitle ('First Time Setup');
 		\Core\MetaPage::setHead ('');
 		\Core\MetaPage::setBody ('');
-		
+
 		$view = new FirstTimeSetupView ([]);
 		$view->render ();
 	}
-	
+
 	/**
 	 * AJAX method for first time database setup.
-	 * 
+	 *
 	 * @return string JSON en coded status messages & codes
-	 * 
+	 *
 	 * @throws TypeError on non-string return
 	 */
 	public function ajaxRunSetup () : string {
@@ -38,11 +38,11 @@ class FirstTimeSetup {
 				'message' => 'Invalid user data sent.'
 			]);
 		}
-		
+
 		$db = Database::getInstance ();
-		
+
 		$messages = [];
-		
+
 		$messages['database'] = $this->createDatabases ($db);
 		$messages['config'] = $this->createDefaultConfigs ($db);
 		$messages['user'] = $this->createAdminUser (
@@ -50,55 +50,55 @@ class FirstTimeSetup {
 			$_POST['username'],
 			$_POST['password']
 		);
-		
+
 		return json_encode ($messages);
 	}
-	
+
 	/**
 	 * Creates an admin user with the given credentials.
-	 * 
+	 *
 	 * @param Database $db database connection
-	 * 
+	 *
 	 * @return array creation status message
-	 * 
+	 *
 	 * @throws TypeError on incorrectly typed parameters or return
 	 */
 	private function createAdminUser (Database $db, string $username, string $password) : array {
-		$sm = new \Core\SessionManager ();
+		$sm = \Core\SessionManager::getInstance();
 		$status = $sm->createUser ($username, $password, 'admin');
-		
+
 		return [
 			'code' => $status ? 1 : 0,
 			'message' => ($status ? 'Successfully' : 'Failed').' making admin user.'
 		];
 	}
-	
+
 	/**
 	 * Creates all the necessary tables for the server.
-	 * 
+	 *
 	 * @return array list of status messages
-	 * 
+	 *
 	 * @throws TypeError on incorrectly typed parameter or return
 	 */
 	private function createDatabases (Database $db) : array {
 		$messages = [];
-		
+
 		$q = 'CREATE DATABASE `server`';
 		$r = $db->query ($q);
-		
+
 		if ($r === false) {
 			// Error creating database
 			$messages[] = [
 				$code => 0,
 				$msg => 'Failed creating database `server`.'
 			];
-			
+
 			return $messages;
 		}
-		
+
 		$q = 'use `server`';
 		$r = $db->query ($q);
-		
+
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_series` (
 				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -111,7 +111,7 @@ class FirstTimeSetup {
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_series');
-		
+
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_volumes` (
 				`volume_id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -128,7 +128,7 @@ class FirstTimeSetup {
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_volumes');
-		
+
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
 				`chapter_id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -143,7 +143,7 @@ class FirstTimeSetup {
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
-		
+
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_metadata` (
 				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -158,7 +158,7 @@ class FirstTimeSetup {
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'manga_metadata');
-		
+
 		$q = '
 			CREATE TABLE IF NOT EXISTS `server_configs` (
 				`config_id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -172,7 +172,7 @@ class FirstTimeSetup {
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'server_configs');
-		
+
 		$q = '
 			CREATE TABLE IF NOT EXISTS `statistics` (
 				`stat_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -185,7 +185,7 @@ class FirstTimeSetup {
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'statistics');
-		
+
 		$q = '
 			CREATE TABLE IF NOT EXISTS `users` (
 				`user_id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -200,7 +200,7 @@ class FirstTimeSetup {
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'users');
-		
+
 		$q = '
 			CREATE TABLE IF NOT EXISTS `user_types` (
 				`type_name` VARCHAR(255) NOT NULL,
@@ -211,17 +211,17 @@ class FirstTimeSetup {
 			ENGINE = InnoDB';
 		$r = $db->query ($q);
 		$messages[] = $this->createMessage ($r, 'user_types');
-		
+
 		return ($messages);
 	}
-	
+
 	/**
 	 * Creates default config settings.
-	 * 
+	 *
 	 * @param Database $db database connection
-	 * 
+	 *
 	 * @return array config creation status message
-	 * 
+	 *
 	 * @throws TypeError on incorrectly typed parameter or return
 	 */
 	private function createDefaultConfigs (Database $db) : array {
@@ -233,21 +233,21 @@ class FirstTimeSetup {
 				("manga_directory", ""),
 				("library_view_type", 1)';
 		$r = $db->query ($q);
-		
+
 		return [
 			'code' => $r ? 1 : 0,
 			'message' => ($r ? 'Successfully' : 'Failed').' creating default configs.'
 		];
 	}
-	
+
 	/**
 	 * Creates a table creation message.
-	 * 
+	 *
 	 * @param bool   $success status of table creation
 	 * @param string $table   table name
-	 * 
+	 *
 	 * @return array created message
-	 * 
+	 *
 	 * @throws TypeError on:
 	 *         - Non-bool success flag
 	 *         - Non-string table name
@@ -261,12 +261,12 @@ class FirstTimeSetup {
 			$code = 0;
 			$msg = "Failed creating table `{$table}`";
 		}
-		
+
 		$message = [
 			'code' => $code,
 			'message' => $msg
 		];
-		
+
 		return ($message);
 	}
 }

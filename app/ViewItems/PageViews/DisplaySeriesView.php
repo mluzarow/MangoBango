@@ -27,9 +27,6 @@ class DisplaySeriesView extends ViewTemplate {
 				<div class="series_title">
 					'.$this->getTitle ().'
 				</div>
-				<div class="series_cover">
-					<img src="'.current ($this->getVolumes ())['source'].'" />
-				</div>
 			</div>
 			<div class="section_middle">
 				<div class="section_header">Summary</div>

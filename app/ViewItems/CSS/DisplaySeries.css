@@ -38,14 +38,6 @@
 	font-size: 2em;
 }
 
-.library_metadata .series_cover {
-	text-align: center;
-}
-
-.library_metadata .series_cover img {
-	width: 35%;
-}
-
 .library_metadata .section_header {
 	padding-top: 20px;
 	padding-left: 20px;

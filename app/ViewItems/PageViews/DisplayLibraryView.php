@@ -82,7 +82,7 @@ class DisplayLibraryView extends ViewTemplate {
 					throw new \InvalidArgumentException ("Argument (Manga Data) item at key \"{$key}\" must be of type string.");
 				}
 				
-				if (empty ($manga[$key])) {
+				if ($key !== 'path' && empty ($manga[$key])) {
 					throw new \InvalidArgumentException ("Argument (Manga Data) item at key \"{$key}\" cannot be empty.");
 				}
 			}

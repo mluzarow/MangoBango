@@ -4,15 +4,15 @@
 #
 version: 2
 jobs:
-  hello:
+  phpunit:
     docker:
       - image: circleci/php:7.1-browsers
     steps:
       - checkout
-      - run: echo "Hello"
-      - run: echo "Also Hello"
+      - run: echo "PHP Unit Tests"
+      #- run: phpunit --bootstrap tests/TestBootstrap.php tests
 workflows:
   version: 2
   build:
     jobs:
-      - hello
+      - phpunit

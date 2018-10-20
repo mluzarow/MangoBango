@@ -64,29 +64,18 @@ if ($db_status === false) {
 			new \Controllers\FirstTimeSetup ();
 		}
 	} else {
-		// Load the reroute script
-		\Core\MetaPage::setHead ('
-			<script>
-				window.location = "/firsttimesetup";
-			</script>
-		');
-		\Core\MetaPage::setBody ('');
+		// Redirect to first time setup
+		header ('Location: /firsttimesetup', true, 301);
+		exit;
 	}
 	
 	echo \Core\MetaPage::render ();
 	return;
 } else if (in_array ('firsttimesetup', $current_segs)) {
-	// Database is set up, so do not allow access to this script again.
-	// Load the reroute script
-	\Core\MetaPage::setHead ('
-		<script>
-			window.location = "/login";
-		</script>
-	');
-	\Core\MetaPage::setBody ('');
-	
-	echo \Core\MetaPage::render ();
-	return;
+	// Database is set up, so do not allow access to this script again. Redirect
+	// to login page.
+	header ('Location: /login', true, 301);
+	exit;
 }
 
 if ((new \Core\SessionManager ())->isLoggedIn () === false) {
@@ -111,13 +100,9 @@ if ((new \Core\SessionManager ())->isLoggedIn () === false) {
 			new \Controllers\Login ();
 		}
 	} else {
-		// Load the reroute script
-		\Core\MetaPage::setHead ('
-			<script>
-				window.location = "/login";
-			</script>
-		');
-		\Core\MetaPage::setBody ('');
+		// Redirect to login page
+		header ('Location: /login', true, 301);
+		exit;
 	}
 	
 	echo \Core\MetaPage::render ();

@@ -12,14 +12,9 @@ class Login {
 	 */
 	public function __construct () {
 		if ((new \Core\SessionManager ())->isLoggedIn () === true) {
-			// Route user to home page
-			\Core\MetaPage::setHead ('
-				<script>
-					window.location = "/";
-				</script>
-			');
-			\Core\MetaPage::setBody ('');
-			return;
+			// Redirect to home page
+			header ('Location: /', true, 301);
+			exit;
 		}
 		
 		\Core\MetaPage::setTitle ('Login');

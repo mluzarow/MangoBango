@@ -1,7 +1,7 @@
 module.exports = function (grunt) {
 	grunt.initConfig ({
 		csslint: {
-			files: ['css/*.css']
+			files: ['*.css']
 		}
 	});
 	

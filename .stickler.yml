@@ -1,0 +1,14 @@
+---
+linters:
+    csslint:
+
+files:
+    ignore:
+        - 'app/External/*'
+        - 'app/resources/*'
+
+review:
+    fail_on_comments: true
+
+fixers:
+    enable: false

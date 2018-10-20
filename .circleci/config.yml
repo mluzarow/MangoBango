@@ -10,6 +10,7 @@ jobs:
     steps:
       - checkout
       - run: echo "Hello"
+      - run: echo "Also Hello"
 workflows:
   version: 2
   build:

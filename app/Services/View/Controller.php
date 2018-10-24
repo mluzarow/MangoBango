@@ -8,14 +8,16 @@ class Controller {
 	/**
 	 * Builds the view processing service.
 	 * 
+	 * @param string $root_path path to MangoBango root (index)
+	 * 
 	 * @return Service view processing service
 	 * 
-	 * @throws TypeError on non-Service return
+	 * @throws TypeError on invalid parameter or return type
 	 */
-	public function buildViewService () : Service {
+	public function buildViewService (string $root_path) : Service {
 		return new Service (
 			$this->buildViewFactory (),
-			$this->buildViewProvider ()
+			$this->buildViewProvider ($root_path)
 		);
 	}
 	
@@ -33,11 +35,13 @@ class Controller {
 	/**
 	 * Builds the view provider.
 	 * 
+	 * @param string $root_path path to MangoBango root (index)
+	 * 
 	 * @return Provider view provider
 	 * 
-	 * @throws TypeError on non-Provider return
+	 * @throws TypeError on invalid parameter or return type
 	 */
-	private function buildViewProvider () : Provider {
-		return new Provider ();
+	private function buildViewProvider (string $root_path) : Provider {
+		return new Provider ($root_path);
 	}
 }

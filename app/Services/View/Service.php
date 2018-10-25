@@ -53,10 +53,7 @@ class Service {
 		// Get & process HTML
 		$html = '';
 		if (!empty ($config['HTML']))
-			$html = $this->processHTML (
-				$this->provider->fetchFile ($config['HTML']),
-				$view_data
-			);
+			$html = $this->provider->fetchHTMLFile ($config['HTML'], $view_data);
 		
 		return $this->factory->buildViewItem ($css, $html, $js);
 	}
@@ -105,26 +102,6 @@ class Service {
 			},
 			$js_files
 		);
-	}
-	
-	/**
-	 * Evaluates the PHP in the HTML file.
-	 * 
-	 * @param string    $file_contents view file contents
-	 * @param IViewData $view          view data
-	 * 
-	 * @return string processed view HTML
-	 * 
-	 * @throws TypeError on non-string parameter or return
-	 */
-	private function processHTML (
-		string $file_contents,
-		IViewData $view
-	) : string {
-		ob_start ();
-		eval ("?>{$file_contents}");
-		
-		return ob_get_clean ();
 	}
 	
 	/**

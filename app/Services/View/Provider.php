@@ -1,6 +1,8 @@
 <?php
 namespace Services\View;
 
+use Services\View\Data\ViewItem;
+
 /**
  * View file provider.
  */
@@ -17,20 +19,22 @@ class Provider {
 	}
 	
 	/**
-	 * Fetches file contents.
+	 * Fetches HTML file contents.
 	 * 
-	 * @param string $filename name of HTML file to open.
+	 * @param string   $filename  name of HTML file to open.
+	 * @param ViewItem $view_data data object for the view
 	 * 
 	 * @return string file contents or empty if open failed
 	 * 
 	 * @throws TypeError on invalid parameter or return type
 	 */
-	public function fetchFile (string $filename) : string {
+	public function fetchHTMLFile (string $filename, ViewItem $view_data) : string {
 		$root = $this->getRootPath ();
 		
-		return (string) file_get_contents (
-			"{$root}\\ViewItems\\HTML\\{$filename}.php"
-		);
+		ob_start ();
+		require_once ("{$root}\\ViewItems\\HTML\\{$filename}.php");
+		
+		return ob_get_clean ();
 	}
 	
 	/**

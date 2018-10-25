@@ -1,7 +1,7 @@
 <?php
 namespace Services\View;
 
-use Services\View\Data\ViewItem;
+use Services\View\Data\IViewData;
 
 /**
  * View file provider.
@@ -14,21 +14,21 @@ class Provider {
 	 * 
 	 * @throws TypeError on non-string parameter
 	 */
-	public function __construct (stirng $root_path) {
+	public function __construct (string $root_path) {
 		$this->setRootPath ($root_path);
 	}
 	
 	/**
 	 * Fetches HTML file contents.
 	 * 
-	 * @param string   $filename  name of HTML file to open.
-	 * @param ViewItem $view_data data object for the view
+	 * @param string    $filename  name of HTML file to open.
+	 * @param IViewData $view      data object for the view
 	 * 
 	 * @return string file contents or empty if open failed
 	 * 
 	 * @throws TypeError on invalid parameter or return type
 	 */
-	public function fetchHTMLFile (string $filename, ViewItem $view_data) : string {
+	public function fetchHTMLFile (string $filename, IViewData $view) : string {
 		$root = $this->getRootPath ();
 		
 		ob_start ();

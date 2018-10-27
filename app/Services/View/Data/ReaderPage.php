@@ -13,6 +13,19 @@ class ReaderPage implements IViewData {
 	private $next_chapter_link;
 	
 	/**
+	 * Constructor for data object.
+	 * 
+	 * @param array  $file_paths        list of image paths
+	 * @param string $next_chapter_link next chapter anchor link
+	 * 
+	 * @throws TypeError on invalid parameter type
+	 */
+	public function __construct (array $file_paths, string $next_chapter_link) {
+		$this->setFilePaths ($file_paths);
+		$this->setNextChapterLink ($next_chapter_link);
+	}
+	
+	/**
 	 * Gets the view name to which the data is tied (the controller's name).
 	 * 
 	 * @return string page controller name

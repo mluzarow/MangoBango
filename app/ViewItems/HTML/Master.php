@@ -2,7 +2,11 @@
 <html>
 	<head>
 		<title><?php echo $view->getTitle (); ?></title>
+		<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/UIFrame.css">
 		<?php echo $view->getViewContents ()->getCSS (); ?>
+		<script type="text/javascript" src="/External/Javascript/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/dropdown.js"></script>
+		<script type="text/javascript" src="/ViewItems/JS/logout.js"></script>
 		<?php echo $view->getViewContents ()->getJS (); ?>
 	</head>
 	<body>

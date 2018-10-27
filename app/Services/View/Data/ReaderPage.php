@@ -6,6 +6,13 @@ namespace Services\View\Data;
  */
 class ReaderPage implements IViewData {
 	/**
+	 * @var array  $file_paths        list of image paths
+	 * @var string $next_chapter_link next chapter anchor link
+	 */
+	private $file_paths;
+	private $next_chapter_link;
+	
+	/**
 	 * Gets the view name to which the data is tied (the controller's name).
 	 * 
 	 * @return string page controller name

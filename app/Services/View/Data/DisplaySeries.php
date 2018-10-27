@@ -19,6 +19,31 @@ class DisplaySeries implements IViewData {
 	private $volumes;
 	
 	/**
+	 * Constructor for data object.
+	 * 
+	 * @param array  $chapters chapter data list
+	 * @param array  $genres   list of series genres
+	 * @param string $summary  series summary
+	 * @param string $title    series title
+	 * @param array  $volumes  display data for each volume
+	 * 
+	 * @throws TypeError on invalid parameter type
+	 */
+	public function __construct (
+		array $chapters,
+		array $genres,
+		string $summary,
+		string $title,
+		array $volumes
+	) {
+		$this->setChapters ($chapters);
+		$this->setGenres ($genres);
+		$this->setSummary ($summary);
+		$this->setTitle ($title);
+		$this->setVolumes ($volumes);
+	}
+	
+	/**
 	 * Gets the view name to which the data is tied (the controller's name).
 	 * 
 	 * @return string page controller name

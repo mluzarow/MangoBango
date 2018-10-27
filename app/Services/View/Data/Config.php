@@ -6,16 +6,12 @@ namespace Services\View\Data;
  */
 class Config implements IViewData {
 	/**
-	 * @var int library view type
+	 * @var int    $library_view_type    library view type
+	 * @var string $manga_directory      manga directory setting
+	 * @var int    $reader_display_style reader display style setting
 	 */
 	private $library_view_type;
-	/**
-	 * @var string manga directory setting
-	 */
 	private $manga_directory;
-	/**
-	 * @var int reader display style setting
-	 */
 	private $reader_display_style;
 	
 	/**

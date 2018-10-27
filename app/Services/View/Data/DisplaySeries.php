@@ -120,6 +120,15 @@ class DisplaySeries implements IViewData {
 	/**
 	 * Sets chapter anchor data list.
 	 * 
+	 * Uses the following array structure:
+	 * array
+	 *   ├── [0]
+	 *   │    ├── ['link']   string  anchor href to chapter in reader 
+	 *   │    └── ['title']  string  chapter title
+	 *   │    .
+	 *   │    .
+	 *   └── [n]
+	 * 
 	 * @param array $chapters chapter data list
 	 * 
 	 * @throws TypeError on non-array parameter

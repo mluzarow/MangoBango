@@ -71,6 +71,17 @@ class Config implements IViewData {
 	}
 	
 	/**
+	 * Gets the view name to which the data is tied (the controller's name).
+	 * 
+	 * @return string page controller name
+	 * 
+	 * @throws TypeError on non-string return
+	 */
+	public function getViewName () : string {
+		return 'Config';
+	}
+	
+	/**
 	 * Sets the library view type.
 	 * 
 	 * @param int $config library view type

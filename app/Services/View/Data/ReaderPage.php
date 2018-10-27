@@ -15,4 +15,65 @@ class ReaderPage implements IViewData {
 	public function getViewName () : string {
 		return 'ReaderPage';
 	}
+	
+	/**
+	 * Gets list of image paths.
+	 * 
+	 * @return array list of image paths
+	 * 
+	 * @throws TypeError on non-array return
+	 */
+	public function getFilePaths () : array {
+		return $this->file_paths;
+	}
+	
+	/**
+	 * Gets next chapter anchor link.
+	 * 
+	 * @return string next chapter anchor link or empty if no next chapter
+	 * 
+	 * @throws TypeError on non-string return
+	 */
+	public function getNextChapterLink () : string {
+		return $this->next_chapter_link;
+	}
+	
+	/**
+	 * Sets list of image paths.
+	 * 
+	 * @param array $file_paths list of image paths
+	 * 
+	 * @throws InvalidArgumentException on non-string or empty items
+	 * @throws TypeError on non-array parameter
+	 */
+	private function setFilePaths (array $file_paths) {
+		foreach ($file_paths as $i => $path) {
+			if (!is_string ($path)) {
+				throw new \InvalidArgumentException (
+					"Parameter (File Paths > {$i}) must be of type string; ".
+					gettype ($path).' given.'
+				);
+			}
+			
+			if (empty (trim ($path))) {
+				throw new \InvalidArgumentException (
+					"Parameter (File Paths > {$i}) can not be empty."
+				);
+			}
+		}
+		
+		$this->file_paths = $file_paths;
+	}
+	
+	/**
+	 * Sets next chapter anchor link.
+	 * 
+	 * @param string $next_chapter_link next chapter anchor link or empty if no
+	 *                                  next chapter
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	private function setNextChapterLink (string $next_chapter_link) {
+		$this->next_chapter_link = $next_chapter_link;
+	}
 }

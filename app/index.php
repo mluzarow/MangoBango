@@ -121,21 +121,6 @@ if (!empty($current_segs)) {
 		
 		echo $result;
 		return;
-	} else if ($current_segs[0] === 'db') {
-		// Use the DBViewer files
-		$namespace = '\DBViewer\PageControllers';
-		for ($i = 1; $i < count ($current_segs); $i++) {
-			$namespace .= '\\'.$current_segs[$i];
-		}
-		
-		$user_login = $user_session->getSessionItem ('username');
-		(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
-		
-		try {
-			new $namespace ();
-		} catch (Error $e) {
-			echo $e->getMessage ();
-		}
 	} else {
 		$namespace = '\Controllers';
 		

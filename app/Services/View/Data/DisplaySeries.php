@@ -6,6 +6,19 @@ namespace Services\View\Data;
  */
 class DisplaySeries implements IViewData {
 	/**
+	 * @var array  $chapters chapter data list
+	 * @var array  $genres   list of series genres
+	 * @var string $summary  series summary
+	 * @var string $title    series title
+	 * @var array  $volumes  display data for each volume
+	 */
+	private $chapters;
+	private $genres;
+	private $summary;
+	private $title;
+	private $volumes;
+	
+	/**
 	 * Gets the view name to which the data is tied (the controller's name).
 	 * 
 	 * @return string page controller name

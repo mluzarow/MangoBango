@@ -116,4 +116,156 @@ class DisplaySeries implements IViewData {
 	public function getVolumes () : array {
 		return $this->volumes;
 	}
+	
+	/**
+	 * Sets chapter anchor data list.
+	 * 
+	 * @param array $chapters chapter data list
+	 * 
+	 * @throws TypeError on non-array parameter
+	 * @throws InvalidArgumentException on:
+	 *         - Non-array chapter data
+	 *         - Missing chapter data keys (title|link)
+	 *         - Non-string chapter data title or link
+	 *         - Empty chapter data title or lin
+	 */
+	private function setChapters (array $chapters) {
+		foreach ($chapters as $i => &$chapter) {
+			if (!is_array ($chapter)) {
+				throw new \InvalidArgumentException (
+					"Parameter (Chapters > {$i}) must be of type array; ".
+					gettype ($chapter).' given.'
+				);
+			}
+			
+			foreach (['title', 'link'] as $key) {
+				if (!array_key_exists ($key, $chapter)) {
+					throw new \InvalidArgumentException (
+						"Parameter (Chapters > {$i}) must have key \"{$key}\"."
+					);
+				}
+				
+				if (!is_string ($chapter[$key])) {
+					throw new \InvalidArgumentException (
+						"Parameter (Chapters > {$i} > {$key}) must be of type ".
+						'string; '.gettype ($chapter[$key]).' given.'
+					);
+				}
+				
+				$chapter[$key] = trim ($chapter[$key]);
+				
+				if (empty ($chapter[$key])) {
+					throw new \InvalidArgumentException (
+						"Parameter (Chapters > {$i} > {$key}) cannot be empty."
+					);
+				}
+				
+				$this->chapters = $chapters;
+			}
+		}
+	}
+	
+	/**
+	 * Sets list of series genre tags.
+	 * 
+	 * @param array $genres list of series genres
+	 * 
+	 * @throws TypeError on non-string parameter
+	 * @throws InvalidArgumentException on non-string or empty array items
+	 */
+	private function setGenres (array $genres) {
+		foreach ($genres as $i => $genre) {
+			if (!is_string ($genre)) {
+				throw new \InvalidArgumentException (
+					"Parameter (Genres > {$i}) must be of type string; ".
+					gettype ($genre).' given.'
+				);
+			}
+			
+			if (empty ($genre)) {
+				throw new \InvalidArgumentException (
+					"Parameter (Genres > {$i}) cannot be empty."
+				);
+			}
+		}
+		
+		$this->genres = $genres;
+	}
+	
+	/**
+	 * Sets series summary.
+	 * 
+	 * @var string series summary
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	private function setSummary (string $summary) {
+		$this->summary = $summary;
+	}
+	
+	/**
+	 * Sets manga title.
+	 * 
+	 * @param string $title manga title
+	 * 
+	 * @throws TypeError on non-string parameter
+	 */
+	private function setTitle (string $title) {
+		$this->title = $title;
+	}
+	
+	/**
+	 * Sets display data for each volume.
+	 *
+	 * Uses the following array structure:
+	 * array
+	 *   ├── [0]
+	 *   │    ├── ['link']    string  href reader link for the manga volume
+	 *   │    └── ['source']  string  image source for the volume cover
+	 *   │    .
+	 *   │    .
+	 *   └── [n]
+	 * 
+	 * @param array $volumes display data for each volume
+	 * 
+	 * @throws TypeError on non-array parameter
+	 * @throws InvalidArgumentException on:
+	 *         - non-array items
+	 *         - missing array item keys
+	 *         - non string array items
+	 *         - empty array items
+	 */
+	private function setVolumes (array $volumes) {
+		foreach ($volumes as $i => $volume) {
+			if (!is_array ($volume)) {
+				throw new InvalidArgumentException (
+					"Parameter (Volumes > {$i}) must be of type array; ".
+					gettype ($volume).' given.'
+				);
+			}
+			
+			foreach (['link', 'source'] as $key) {
+				if (!array_key_exists ($key, $volume)) {
+					throw new InvalidArgumentException (
+						"Paramater (Volumes > {$i}) must have key \"{$key}\"."
+					);
+				}
+				
+				if (!is_string ($volume[$key])) {
+					throw new InvalidArgumentException (
+						"Paramater (Volumes > {$i} > {$key}) must be of type ".
+						'string; '.gettype ($volume[$key]).' given.'
+					);
+				}
+				
+				if ($key === 'link' && empty($volume[$key])) {
+					throw new \InvalidArgumentException (
+						"Paramater (Volumes > {$i} > {$key}) cannot be empty."
+					);
+				}
+			}
+		}
+		
+		$this->volumes = $volumes;
+	}
 }

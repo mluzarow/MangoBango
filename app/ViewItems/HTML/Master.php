@@ -55,5 +55,5 @@
 	</div>
 </div>
 <div class="display_container">
-	<?php echo $view->getViewContents ()->getHTML (); ?>
+	<?php echo $view->getViewContent ()->getHTML (); ?>
 </div>

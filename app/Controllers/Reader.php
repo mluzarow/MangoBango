@@ -5,7 +5,10 @@ use \ViewItems\PageViews\ReaderStripView;
 use \ViewItems\PageViews\ReaderPageView;
 
 class Reader {
-	public function __construct () {
+	/**
+	 * Runs page process.
+	 */
+	public function begin () {
 		$db = \Core\Database::getInstance ();
 		
 		// Fetch manga directory

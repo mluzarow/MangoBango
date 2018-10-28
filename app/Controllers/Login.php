@@ -8,9 +8,9 @@ use \ViewItems\PageViews\LoginView;
  */
 class Login {
 	/**
-	 * Constructor for page controller Login.
+	 * Runs page process.
 	 */
-	public function __construct () {
+	public function begin () {
 		if ((new \Core\SessionManager ())->isLoggedIn () === true) {
 			// Redirect to home page
 			header ('Location: /', true, 301);

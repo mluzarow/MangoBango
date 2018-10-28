@@ -2,7 +2,10 @@
 namespace Controllers;
 
 class Home {
-	public function __construct () {
+	/**
+	 * Runs page process.
+	 */
+	public function begin () {
 		$db = \Core\Database::getInstance ();
 		
 		// Get number of series

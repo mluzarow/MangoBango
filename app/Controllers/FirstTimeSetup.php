@@ -9,22 +9,6 @@ use \ViewItems\PageViews\FirstTimeSetupView;
  */
 class FirstTimeSetup {
 	/**
-	 * Constructor for page controller FirstTimeSetup.
-	 */
-	public function __construct () {
-		if (!empty ($_POST)) {
-			return;
-		}
-		
-		\Core\MetaPage::setTitle ('First Time Setup');
-		\Core\MetaPage::setHead ('');
-		\Core\MetaPage::setBody ('');
-		
-		$view = new FirstTimeSetupView ([]);
-		$view->render ();
-	}
-	
-	/**
 	 * AJAX method for first time database setup.
 	 * 
 	 * @return string JSON en coded status messages & codes
@@ -52,6 +36,18 @@ class FirstTimeSetup {
 		);
 		
 		return json_encode ($messages);
+	}
+	
+	/**
+	 * Runs page process.
+	 */
+	public function begin () {
+		\Core\MetaPage::setTitle ('First Time Setup');
+		\Core\MetaPage::setHead ('');
+		\Core\MetaPage::setBody ('');
+		
+		$view = new FirstTimeSetupView ([]);
+		$view->render ();
 	}
 	
 	/**

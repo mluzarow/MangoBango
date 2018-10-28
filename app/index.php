@@ -61,7 +61,7 @@ if ($db_status === false) {
 			echo $result;
 			return;
 		} else {
-			new \Controllers\FirstTimeSetup ();
+			(new \Controllers\FirstTimeSetup ())->begin ();
 		}
 	} else {
 		// Redirect to first time setup
@@ -97,7 +97,7 @@ if ((new \Core\SessionManager ())->isLoggedIn () === false) {
 			echo $result;
 			return;
 		} else {
-			new \Controllers\Login ();
+			(new \Controllers\Login ())->begin ();
 		}
 	} else {
 		// Redirect to login page
@@ -132,7 +132,7 @@ if (!empty($current_segs)) {
 		(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
 		
 		try {
-			new $namespace ();
+			(new $namespace ())->begin ();
 		} catch (Error $e) {
 			echo $e->getMessage ();
 		}
@@ -141,7 +141,7 @@ if (!empty($current_segs)) {
 	// Empty so its just the home page.
 	$user_login = $user_session->getSessionItem ('username');
 	(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
-	new \Controllers\Home ();
+	(new \Controllers\Home ())->begin ();
 }
 
 echo \Core\MetaPage::render ();

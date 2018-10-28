@@ -72,6 +72,13 @@ class Service {
 		if (!empty ($config['JS']))
 			$js = $this->getJSTags ($config['JS']);
 		
+		foreach ($parameters as $param) {
+			if ($param instanceof ViewItem) {
+				$css += explode ("\n", $param->getCSS ());
+				$js += explode ("\n", $param->getJS ());
+			}
+		}
+		
 		// Get & process HTML
 		$html = '';
 		if (!empty ($config['HTML']))

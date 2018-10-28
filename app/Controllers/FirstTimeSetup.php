@@ -42,12 +42,17 @@ class FirstTimeSetup {
 	 * Runs page process.
 	 */
 	public function begin () {
-		\Core\MetaPage::setTitle ('First Time Setup');
-		\Core\MetaPage::setHead ('');
-		\Core\MetaPage::setBody ('');
-		
-		$view = new FirstTimeSetupView ([]);
-		$view->render ();
+		return (new \Services\View\Controller ())->
+			buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+			buildView (
+				[
+					'name' => '',
+					'CSS' => ['FirstTimeSetup'],
+					'HTML' => 'FirstTimeSetup',
+					'JS' => ['FirstTimeSetup']
+				],
+				[]
+			);
 	}
 	
 	/**

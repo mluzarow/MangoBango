@@ -74,8 +74,17 @@ class Config {
 		$view_parameters['manga_directory'] = $configs_dict['manga_directory'];
 		$view_parameters['library_view_type'] = $configs_dict['library_view_type'];
 		
-		$view = new ConfigView ($view_parameters);
-		$view->render ();
+		return (new \Services\View\Controller ())->
+			buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+			buildView (
+				[
+					'name' => 'Config',
+					'CSS' => ['Config'],
+					'HTML' => 'Config',
+					'JS' => ['Config']
+				],
+				$view_parameters
+			);
 	}
 	
 	/**

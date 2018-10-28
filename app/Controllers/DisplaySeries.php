@@ -97,7 +97,16 @@ class DisplaySeries {
 			$view_parameters['title'] = empty ($row['name']) ? '' : $row['name'];
 		}
 		
-		$view = new DisplaySeriesView ($view_parameters);
-		$view->render ();
+		return (new \Services\View\Controller ())->
+			buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+			buildView (
+				[
+					'name' => 'DisplaySeries',
+					'CSS' => ['DisplaySeries'],
+					'HTML' => 'DisplaySeries',
+					'JS' => ['LazyLoader', 'LazyLoaderEvents', 'DisplaySeries']
+				],
+				$view_parameters
+			);
 	}
 }

@@ -17,11 +17,16 @@ class Login {
 			exit;
 		}
 		
-		\Core\MetaPage::setTitle ('Login');
-		\Core\MetaPage::setHead ('');
-		\Core\MetaPage::setBody ('');
-		
-		$view = new LoginView ([]);
-		$view->render ();
+		return (new \Services\View\Controller ())->
+			buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+			buildView (
+				[
+					'name' => '',
+					'CSS' => ['Login'],
+					'HTML' => 'Login',
+					'JS' => ['Login']
+				],
+				[]
+			);
 	}
 }

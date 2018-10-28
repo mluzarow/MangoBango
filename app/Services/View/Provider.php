@@ -28,7 +28,7 @@ class Provider {
 	 * 
 	 * @throws TypeError on invalid parameter or return type
 	 */
-	public function fetchHTMLFile (string $filename, IViewData $view) : string {
+	public function fetchHTMLFile (string $filename, ?IViewData $view) : string {
 		$root = $this->getRootPath ();
 		
 		ob_start ();

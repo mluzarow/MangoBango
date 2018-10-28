@@ -2,38 +2,38 @@
 namespace Services\View\Data;
 
 /**
- * View data object for the Master view.
+ * View data object for the Page view.
  */
-class Master implements IViewData {
+class Page implements IViewData {
 	/**
-	 * @var string   $username next chapter anchor link
+	 * @var string   $title         page title
 	 * @var ViewItem $view_content  view content
 	 */
-	private $username;
+	private $title;
 	private $view_content;
 	
 	/**
 	 * Constructor for data object.
 	 * 
-	 * @param string   $username next chapter anchor link
-	 * @param ViewItem $view_content  view content
+	 * @param string   $title        page title
+	 * @param ViewItem $view_content view content
 	 * 
 	 * @throws TypeError on invalid parameter type
 	 */
-	public function __construct (string $username, ViewItem $view_content) {
-		$this->setUsername ($username);
+	public function __construct (string $title, ViewItem $view_content) {
+		$this->setTitle ($title);
 		$this->setViewContent ($view_content);
 	}
 	
 	/**
-	 * Gets username.
+	 * Gets page title.
 	 * 
-	 * @return string username
+	 * @return string page title
 	 * 
 	 * @throws TypeError on non-string return
 	 */
-	public function getUsername () : string {
-		return $this->username;
+	public function getTitle () : string {
+		return $this->title;
 	}
 	
 	/**
@@ -55,18 +55,18 @@ class Master implements IViewData {
 	 * @throws TypeError on non-string return
 	 */
 	public function getViewName () : string {
-		return 'Master';
+		return 'Page';
 	}
 	
 	/**
-	 * Sets username.
+	 * Sets page title.
 	 * 
-	 * @param string $username username
+	 * @param string $title page title
 	 * 
 	 * @throws TypeError on non-string parameter
 	 */
-	private function setUsername (string $username) {
-		$this->username = $username;
+	private function setTitle (string $title) {
+		$this->title = $title;
 	}
 	
 	/**

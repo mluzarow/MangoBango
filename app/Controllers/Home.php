@@ -31,7 +31,16 @@ class Home {
 			]
 		];
 		
-		$view = new \ViewItems\PageViews\HomeView ($view_parameters);
-		$view->render ();
+		return (new \Services\View\Controller ())->
+			buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+			buildView (
+				[
+					'name' => 'Home',
+					'CSS' => ['Home'],
+					'HTML' => 'Home',
+					'JS' => []
+				],
+				$view_parameters
+			);
 	}
 }

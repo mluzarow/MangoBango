@@ -11,13 +11,18 @@ class DisplaySeries {
 	 * Constructor for controller DisplaySeries.
 	 */
 	public function __construct () {
-		$db = \Core\Database::getInstance ();
-		
+		$this->db = \Core\Database::getInstance ();
+	}
+	
+	/**
+	 * Runs page process.
+	 */
+	public function begin () {
 		// Fetch manga directory
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';
-		$r = $db->query ($q);
+		$r = $this->db->query ($q);
 		
 		$manga_directory = $r[0]['config_value'];
 		
@@ -28,7 +33,7 @@ class DisplaySeries {
 			JOIN `manga_directories_volumes` AS `v`
 				ON `s`.`manga_id` = `v`.`manga_id`
 			WHERE `s`.`manga_id` = '.$_GET['s'];
-		$r = $db->query ($q);
+		$r = $this->db->query ($q);
 		
 		if ($r === false) {
 			return;
@@ -56,7 +61,7 @@ class DisplaySeries {
 			JOIN `manga_directories_chapters` AS `c`
 				ON `v`.`volume_id` = `c`.`volume_id`
 			WHERE `v`.`manga_id` = '.$_GET['s'];
-		$r = $db->query ($q);
+		$r = $this->db->query ($q);
 		
 		if ($r === false) {
 			return;
@@ -78,7 +83,7 @@ class DisplaySeries {
 			SELECT `name`, `summary`, `genres`
 			FROM `manga_metadata`
 			WHERE `manga_id` = '.$_GET['s'];
-		$r = $db->query ($q);
+		$r = $this->db->query ($q);
 		
 		$view_parameters['summary'] = '';
 		$view_parameters['genres'] = [];
@@ -88,11 +93,20 @@ class DisplaySeries {
 			$row = current ($r);
 			
 			$view_parameters['summary'] = empty ($row['summary']) ? '' : $row['summary'];
-			$view_parameters['genres'] = empty($row['genres']) ? [] : json_decode ($row['genres']);
+			$view_parameters['genres'] = empty($row['genres']) ? [] : json_decode ($row['genres'], true);
 			$view_parameters['title'] = empty ($row['name']) ? '' : $row['name'];
 		}
 		
-		$view = new DisplaySeriesView ($view_parameters);
-		$view->render ();
+		return (new \Services\View\Controller ())->
+			buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+			buildView (
+				[
+					'name' => 'DisplaySeries',
+					'CSS' => ['DisplaySeries'],
+					'HTML' => 'DisplaySeries',
+					'JS' => ['LazyLoader', 'LazyLoaderEvents', 'DisplaySeries']
+				],
+				$view_parameters
+			);
 	}
 }

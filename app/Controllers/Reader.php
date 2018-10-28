@@ -5,7 +5,10 @@ use \ViewItems\PageViews\ReaderStripView;
 use \ViewItems\PageViews\ReaderPageView;
 
 class Reader {
-	public function __construct () {
+	/**
+	 * Runs page process.
+	 */
+	public function begin () {
 		$db = \Core\Database::getInstance ();
 		
 		// Fetch manga directory
@@ -86,13 +89,31 @@ class Reader {
 		
 		if ($reader_display_style === 2) {
 			// Display as a strip
-			$view = new ReaderStripView ($view_parameters);
+			return (new \Services\View\Controller ())->
+				buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+				buildView (
+					[
+						'name' => 'ReaderStrip',
+						'CSS' => ['ReaderStrip'],
+						'HTML' => 'ReaderStrip',
+						'JS' => ['LazyLoader', 'LazyLoaderEvents', 'ReaderStrip']
+					],
+					$view_parameters
+				);
 		} else if ($reader_display_style === 1) {
 			// Display as a single page with left and right arrows
-			$view = new ReaderPageView ($view_parameters);
+			return (new \Services\View\Controller ())->
+				buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+				buildView (
+					[
+						'name' => 'ReaderPage',
+						'CSS' => ['ReaderPage'],
+						'HTML' => 'ReaderPage',
+						'JS' => ['LazyLoader', 'LazyLoaderEvents', 'ReaderPage']
+					],
+					$view_parameters
+				);
 		}
-		
-		$view->render ();
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 <?php
 use \Core\AJAXProcessor;
+use Services\View\Data\ViewItem;
 
 // Autoload classes based on a 1:1 mapping from namespace to directory structure.
 spl_autoload_register(function ($className) {
@@ -17,6 +18,52 @@ spl_autoload_register(function ($className) {
 		require_once $file;
 	}
 });
+
+/**
+ * Gets the master view object.
+ * 
+ * @param string   $username username
+ * @param ViewItem $view     child view object
+ * 
+ * @return ViewItem master view object
+ * 
+ * @throws TypeError on invalid parameter or return type
+ */
+function getMasterView (string $username, ViewItem $view) : ViewItem {
+	return (new \Services\View\Controller ())->
+		buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+		buildView (
+			[
+				'name' => 'Master',
+				'CSS' => ['UIFrame'],
+				'HTML' => 'Master',
+				'JS' => ['dropdown', 'logout']
+			],
+			[
+				'username' => $username,
+				'view_content' => $view
+			]
+		);
+}
+
+/**
+ * Gets page view HTML.
+ * 
+ * @param string   $title page title
+ * @param ViewItem $view  child view object
+ * 
+ * @return string view HTML
+ * 
+ * @throws TypeError on invalid parameters or return type
+ */
+function getPageView (string $title, ViewItem $view) : string {
+	return (new \Services\View\Controller ())->
+		buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+		buildPage (
+			$title,
+			$view
+		);
+}
 
 $db_status = true;
 try {
@@ -59,34 +106,24 @@ if ($db_status === false) {
 			$result = $ajax->fireTargetMethod ();
 			
 			echo $result;
-			return;
 		} else {
-			new \Controllers\FirstTimeSetup ();
+			echo getPageView (
+				'First Time Setup',
+				(new \Controllers\FirstTimeSetup ())->begin ()
+			);
 		}
 	} else {
-		// Load the reroute script
-		\Core\MetaPage::setHead ('
-			<script>
-				window.location = "/firsttimesetup";
-			</script>
-		');
-		\Core\MetaPage::setBody ('');
+		// Redirect to first time setup
+		header ('Location: /firsttimesetup', true, 301);
+		exit;
 	}
 	
-	echo \Core\MetaPage::render ();
 	return;
 } else if (in_array ('firsttimesetup', $current_segs)) {
-	// Database is set up, so do not allow access to this script again.
-	// Load the reroute script
-	\Core\MetaPage::setHead ('
-		<script>
-			window.location = "/login";
-		</script>
-	');
-	\Core\MetaPage::setBody ('');
-	
-	echo \Core\MetaPage::render ();
-	return;
+	// Database is set up, so do not allow access to this script again. Redirect
+	// to login page.
+	header ('Location: /login', true, 301);
+	exit;
 }
 
 if ((new \Core\SessionManager ())->isLoggedIn () === false) {
@@ -106,21 +143,18 @@ if ((new \Core\SessionManager ())->isLoggedIn () === false) {
 			$result = $ajax->fireTargetMethod ();
 			
 			echo $result;
-			return;
 		} else {
-			new \Controllers\Login ();
+			echo getPageView (
+				'Login',
+				(new \Controllers\Login ())->begin ()
+			);
 		}
 	} else {
-		// Load the reroute script
-		\Core\MetaPage::setHead ('
-			<script>
-				window.location = "/login";
-			</script>
-		');
-		\Core\MetaPage::setBody ('');
+		// Redirect to login page
+		header ('Location: /login', true, 301);
+		exit;
 	}
 	
-	echo \Core\MetaPage::render ();
 	return;
 }
 
@@ -136,21 +170,6 @@ if (!empty($current_segs)) {
 		
 		echo $result;
 		return;
-	} else if ($current_segs[0] === 'db') {
-		// Use the DBViewer files
-		$namespace = '\DBViewer\PageControllers';
-		for ($i = 1; $i < count ($current_segs); $i++) {
-			$namespace .= '\\'.$current_segs[$i];
-		}
-		
-		$user_login = $user_session->getSessionItem ('username');
-		(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
-		
-		try {
-			new $namespace ();
-		} catch (Error $e) {
-			echo $e->getMessage ();
-		}
 	} else {
 		$namespace = '\Controllers';
 		
@@ -158,20 +177,25 @@ if (!empty($current_segs)) {
 			$namespace .= '\\'.$current_segs[$i];
 		}
 		
-		$user_login = $user_session->getSessionItem ('username');
-		(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
-		
 		try {
-			new $namespace ();
+			echo getPageView (
+				preg_replace ('/(?<!^)(?<! )[A-Z]/',' $0', end ($current_segs)),
+				getMasterView (
+					$user_session->getSessionItem ('username'),
+					(new $namespace ())->begin ()
+				)
+			);
 		} catch (Error $e) {
 			echo $e->getMessage ();
 		}
 	}
 } else {
 	// Empty so its just the home page.
-	$user_login = $user_session->getSessionItem ('username');
-	(new \ViewItems\PageViews\MetaView (['username' => $user_login]))->render ();
-	new \Controllers\Home ();
+	echo getPageView (
+		'Home Page',
+		getMasterView (
+			$user_session->getSessionItem ('username'),
+			(new \Controllers\Home ())->begin ()
+		)
+	);
 }
-
-echo \Core\MetaPage::render ();

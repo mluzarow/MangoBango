@@ -8,25 +8,25 @@ use \ViewItems\PageViews\LoginView;
  */
 class Login {
 	/**
-	 * Constructor for page controller Login.
+	 * Runs page process.
 	 */
-	public function __construct () {
+	public function begin () {
 		if ((new \Core\SessionManager ())->isLoggedIn () === true) {
-			// Route user to home page
-			\Core\MetaPage::setHead ('
-				<script>
-					window.location = "/";
-				</script>
-			');
-			\Core\MetaPage::setBody ('');
-			return;
+			// Redirect to home page
+			header ('Location: /', true, 301);
+			exit;
 		}
 		
-		\Core\MetaPage::setTitle ('Login');
-		\Core\MetaPage::setHead ('');
-		\Core\MetaPage::setBody ('');
-		
-		$view = new LoginView ([]);
-		$view->render ();
+		return (new \Services\View\Controller ())->
+			buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+			buildView (
+				[
+					'name' => '',
+					'CSS' => ['Login'],
+					'HTML' => 'Login',
+					'JS' => ['Login']
+				],
+				[]
+			);
 	}
 }

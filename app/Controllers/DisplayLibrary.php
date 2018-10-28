@@ -7,7 +7,12 @@ use ViewItems\PageViews\DisplayLibraryBookcaseView;
 class DisplayLibrary {
 	public function __construct () {
 		$this->db = \Core\Database::getInstance ();
-		
+	}
+	
+	/**
+	 * Runs page process.
+	 */
+	public function begin () {
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';
@@ -26,14 +31,23 @@ class DisplayLibrary {
 		if ($library_view_type === 1) {
 			// Display as series of covers
 			$view_parameters['manga_data'] = $this->getImagesCovers ($manga_directory);
-			$view = new DisplayLibraryView ($view_parameters);
+			
+			return (new \Services\View\Controller ())->
+				buildViewService ($_SERVER['DOCUMENT_ROOT'])->
+				buildView (
+					[
+						'name' => 'DisplayLibrary',
+						'CSS' => ['DisplayLibrary'],
+						'HTML' => 'DisplayLibrary',
+						'JS' => ['LazyLoader', 'LazyLoaderEvents', 'DisplayLibrary']
+					],
+					$view_parameters
+				);
 		} else if ($library_view_type === 2) {
 			// Display as bookcase
 			$view_parameters['manga_data'] = $this->getImagesSpines ($directory_tree);
 			$view = new DisplayLibraryBookcaseView ($view_parameters);
 		}
-		
-		$view->render ();
 	}
 	
 	/**

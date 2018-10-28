@@ -6,42 +6,23 @@ namespace Services\View\Data;
  */
 class Master implements IViewData {
 	/**
-	 * @var string   $title         list of image paths
 	 * @var string   $username next chapter anchor link
 	 * @var ViewItem $view_content  view content
 	 */
-	private $title;
 	private $username;
 	private $view_content;
 	
 	/**
 	 * Constructor for data object.
 	 * 
-	 * @param string   $title         list of image paths
 	 * @param string   $username next chapter anchor link
 	 * @param ViewItem $view_content  view content
 	 * 
 	 * @throws TypeError on invalid parameter type
 	 */
-	public function __construct (
-		string $title,
-		string $username,
-		ViewItem $view_content
-	) {
-		$this->setTitle ($title);
+	public function __construct (string $username, ViewItem $view_content) {
 		$this->setUsername ($username);
 		$this->setViewContent ($view_content);
-	}
-	
-	/**
-	 * Gets page title.
-	 * 
-	 * @return string page title
-	 * 
-	 * @throws TypeError on non-string return
-	 */
-	public function getTitle () : string {
-		return $this->title;
 	}
 	
 	/**
@@ -75,17 +56,6 @@ class Master implements IViewData {
 	 */
 	public function getViewName () : string {
 		return 'Master';
-	}
-	
-	/**
-	 * Sets page title.
-	 * 
-	 * @param string $title page title
-	 * 
-	 * @throws TypeError on non-string parameter
-	 */
-	private function setTitle (string $title) {
-		$this->title = $title;
 	}
 	
 	/**

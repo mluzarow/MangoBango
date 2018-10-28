@@ -61,7 +61,12 @@ class Service {
 		$this->provider->validateFiles ($config);
 		
 		// Build view parameters object
-		$view_data = $this->factory->buildViewData ($config['name'], $parameters);
+		$view_data = null;
+		if (!empty ($config['name']))
+			$view_data = $this->factory->buildViewData (
+				$config['name'],
+				$parameters
+			);
 		
 		// Get CSS/JS tags
 		$css = [];
@@ -176,10 +181,5 @@ class Service {
 					"Parameter (Config > {$key}) must be of type string; ".
 					gettype ($config[$key]).' given.'
 				);
-		
-		if (empty ($config['name']))
-			throw new \InvalidArgumentException (
-				'Parameter (Config > name) must not be empty.'
-			);
 	}
 }

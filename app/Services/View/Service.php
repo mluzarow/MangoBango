@@ -22,6 +22,28 @@ class Service {
 	}
 	
 	/**
+	 * Finalizes the page with the view content given.
+	 * 
+	 * @param string   $title        title of the page
+	 * @param ViewItem $view_content view content object
+	 * 
+	 * @return string page HTML (with CSS / JS tags)
+	 * 
+	 * @throws TypeError on invalid parameter or return type
+	 */
+	public function buildPage (string $title, ViewItem $view_content) : string {
+		$view_data = $this->factory->buildViewData (
+			'Page',
+			[
+				'title' => $title,
+				'view_content' => $view_content
+			]
+		);
+		
+		return $this->provider->fetchHTMLFile ('Page', $view_data);
+	}
+	
+	/**
 	 * Builds the requested view.
 	 * 
 	 * @param array $config     dictionary of view file names to load

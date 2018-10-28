@@ -74,8 +74,8 @@ class Service {
 		
 		foreach ($parameters as $param) {
 			if ($param instanceof ViewItem) {
-				$css += explode ("\n", $param->getCSS ());
-				$js += explode ("\n", $param->getJS ());
+				$css = array_merge ($css, $param->getCSSTags ());
+				$js = array_merge ($js, $param->getJSTags ());
 			}
 		}
 		

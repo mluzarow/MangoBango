@@ -1,4 +1,3 @@
-
 <div class="topbar">
 	<div class="logo">
 		<a href="\">MangoBango</a>

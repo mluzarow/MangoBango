@@ -12,30 +12,6 @@ class Config {
 	 */
 	public function __construct () {
 		$this->db = \Core\Database::getInstance ();
-		
-		if (!empty ($_POST)) {
-			// If there is post data (this controller called via ajax), ignore
-			// standard page setup instructions
-			return;
-		}
-		
-		$q = '
-			SELECT `config_name`, `config_value`
-			FROM `server_configs`';
-		$r = $this->db->query ($q);
-		
-		$configs_dict = [];
-		foreach ($r as $row) {
-			$configs_dict[$row['config_name']] = $row['config_value'];
-		}
-		
-		$view_parameters = [];
-		$view_parameters['reader_display_style'] = $configs_dict['reader_display_style'];
-		$view_parameters['manga_directory'] = $configs_dict['manga_directory'];
-		$view_parameters['library_view_type'] = $configs_dict['library_view_type'];
-		
-		$view = new ConfigView ($view_parameters);
-		$view->render ();
 	}
 	
 	/**
@@ -77,6 +53,29 @@ class Config {
 				WHERE `config_name` = "library_view_type"';
 			$r = $this->db->query ($q);
 		}
+	}
+	
+	/**
+	 * Runs page process.
+	 */
+	public function begin () {
+		$q = '
+			SELECT `config_name`, `config_value`
+			FROM `server_configs`';
+		$r = $this->db->query ($q);
+		
+		$configs_dict = [];
+		foreach ($r as $row) {
+			$configs_dict[$row['config_name']] = $row['config_value'];
+		}
+		
+		$view_parameters = [];
+		$view_parameters['reader_display_style'] = $configs_dict['reader_display_style'];
+		$view_parameters['manga_directory'] = $configs_dict['manga_directory'];
+		$view_parameters['library_view_type'] = $configs_dict['library_view_type'];
+		
+		$view = new ConfigView ($view_parameters);
+		$view->render ();
 	}
 	
 	/**

@@ -7,7 +7,12 @@ use ViewItems\PageViews\DisplayLibraryBookcaseView;
 class DisplayLibrary {
 	public function __construct () {
 		$this->db = \Core\Database::getInstance ();
-		
+	}
+	
+	/**
+	 * Runs page process.
+	 */
+	public function begin () {
 		$q = '
 			SELECT `config_value` FROM `server_configs`
 			WHERE `config_name` = "manga_directory"';

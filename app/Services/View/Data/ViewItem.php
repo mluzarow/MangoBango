@@ -32,6 +32,17 @@ class ViewItem {
 	}
 	
 	/**
+	 * Gets list of CSS tags.
+	 * 
+	 * @return array list of CSS tags
+	 * 
+	 * @throws TypeError on non-array return
+	 */
+	public function getCSSTags () : array {
+		return $this->css;
+	}
+	
+	/**
 	 * Gets HTML output.
 	 * 
 	 * @return string HTML output
@@ -51,6 +62,17 @@ class ViewItem {
 	 */
 	public function getJS () : string {
 		return implode ("\n", $this->js);
+	}
+	
+	/**
+	 * Gets list of JS tags.
+	 * 
+	 * @return array list of JS tags
+	 * 
+	 * @throws TypeError on non-array return
+	 */
+	public function getJSTags () : array {
+		return $this->js;
 	}
 	
 	/**

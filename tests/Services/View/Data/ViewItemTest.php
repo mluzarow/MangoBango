@@ -54,6 +54,6 @@ class ViewItemTest extends TestCase {
 	 * Testing valid parameters yield valid instance.
 	 */
 	public function testConstructor () {
-		$this->assertInstanceOf ($this->instance (), ViewItem::class);
+		$this->assertInstanceOf (ViewItem::class, $this->instance ());
 	}
 }

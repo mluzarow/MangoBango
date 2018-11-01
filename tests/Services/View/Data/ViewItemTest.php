@@ -1,4 +1,6 @@
 <?php
+declare (strict_types = 1);
+
 namespace Tests\Services\View\Data;
 
 use PHPUnit\Framework\TestCase;
@@ -80,13 +82,7 @@ class ViewItemTest extends TestCase {
 	 */
 	public function testInvalidHTMLType ($invalid) {
 		$this->html = $invalid;
-		
-		try {
-			$this->instance ();
-		} catch (\Throwable $e) {
-			var_dump (get_class($e));
-		}
-		var_dump ($this->html);
+		$this->instance ();
 	}
 	
 	/**

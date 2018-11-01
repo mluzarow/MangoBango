@@ -1,4 +1,6 @@
 <?php
+declare (strict_types = 1);
+
 // Autoload classes based on a 1:1 mapping from namespace to directory structure.
 spl_autoload_register(function ($className) {
 	$ds = DIRECTORY_SEPARATOR;

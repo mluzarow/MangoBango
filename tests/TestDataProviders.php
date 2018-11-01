@@ -11,13 +11,14 @@ class TestDataProviders {
 	 * @return array non-array type data
 	 */
 	public static function nonArrayProvider () {
-		return 
-			self::booleanType () +
-			self::floatType () +
-			self::integerType () +
-			self::stringType () +
-			self::nullType () +
-			self::objectType ();
+		return array_merge (
+			self::booleanType (),
+			self::floatType (),
+			self::integerType (),
+			self::stringType (),
+			self::nullType (),
+			self::objectType ()
+		);
 	}
 	
 	/**
@@ -26,13 +27,14 @@ class TestDataProviders {
 	 * @return array non-string type data
 	 */
 	public static function nonStringProvider () {
-		return
-			self::arrayType () +
-			self::booleanType () +
-			self::floatType () +
-			self::integerType () +
-			self::nullType () +
-			self::objectType ();
+		return array_merge (
+			self::arrayType (),
+			self::booleanType (),
+			self::floatType (),
+			self::integerType (),
+			self::nullType (),
+			self::objectType ()
+		);
 	}
 	
 	/**

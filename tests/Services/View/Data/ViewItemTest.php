@@ -56,4 +56,49 @@ class ViewItemTest extends TestCase {
 	public function testConstructor () {
 		$this->assertInstanceOf (ViewItem::class, $this->instance ());
 	}
+	
+	/**
+	 * Testing invalid CSS tags parameter yeilds TypeError.
+	 *
+	 * @dataProvider Tests\TestDataProviders::nonArrayProvider
+	 * @expectedException TypeError
+	 * 
+	 * @param mixed $invalid non-array type
+	 */
+	public function testInvalidCSSTagsType ($invalid) {
+		$this->css_tags = $invalid;
+		$this->instance ();
+	}
+	
+	/**
+	 * Testing invalid HTML parameter yeilds TypeError.
+	 *
+	 * @dataProvider Tests\TestDataProviders::nonStringProvider
+	 * @expectedException TypeError
+	 * 
+	 * @param mixed $invalid non-string type
+	 */
+	public function testInvalidHTMLType ($invalid) {
+		$this->html = $invalid;
+		
+		try {
+			$this->instance ();
+		} catch (\Throwable $e) {
+			var_dump (get_class($e));
+		}
+		var_dump ($this->html);
+	}
+	
+	/**
+	 * Testing invalid JS tags parameter yeilds TypeError.
+	 *
+	 * @dataProvider Tests\TestDataProviders::nonArrayProvider
+	 * @expectedException TypeError
+	 * 
+	 * @param mixed $invalid non-array type
+	 */
+	public function testInvalidJSTagsType ($invalid) {
+		$this->js_tags = $invalid;
+		$this->instance ();
+	}
 }

@@ -12,6 +12,7 @@ jobs:
       - run:
           name: Composer Install
           command: composer install
+      - run: ls -a
       - run:
           name: Run PHPUint
           command: vendor/bin/phpunit --bootstrap tests/TestBootstrap.php tests

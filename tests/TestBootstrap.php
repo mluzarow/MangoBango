@@ -4,7 +4,7 @@ declare (strict_types = 1);
 // Autoload classes based on a 1:1 mapping from namespace to directory structure.
 spl_autoload_register(function ($className) {
 	$ds = DIRECTORY_SEPARATOR;
-	$dir = str_replace ('\\tests', '\\app', __DIR__);
+	$dir = str_replace ("{$ds}tests", "{$ds}app", __DIR__);
 	
 	// Replace namespace separator with directory separator
 	$className = str_replace('\\', $ds, $className);
@@ -19,4 +19,4 @@ spl_autoload_register(function ($className) {
 });
 
 // Include the static providers as well
-require_once __DIR__.'\\DataProviders.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'DataProviders.php';

@@ -9,8 +9,13 @@ jobs:
       - image: circleci/php:7.1-browsers
     steps:
       - checkout
-      - run: echo "PHP Unit Tests"
-      #- run: phpunit --bootstrap tests/TestBootstrap.php tests
+      - run:
+          name: Composer Install
+          command: composer install
+      - run: ls -a
+      - run:
+          name: Run PHPUint
+          command: vendor/bin/phpunit --bootstrap tests/TestBootstrap.php tests
 workflows:
   version: 2
   build:

@@ -93,7 +93,7 @@ class ViewItemTest extends TestCase {
 	/**
 	 * Testing invalid CSS tags parameter yeilds TypeError.
 	 *
-	 * @dataProvider Tests\TestDataProviders::nonArrayProvider
+	 * @dataProvider Tests\DataProviders::nonArrayProvider
 	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid non-array type
@@ -106,7 +106,7 @@ class ViewItemTest extends TestCase {
 	/**
 	 * Testing invalid CSS tags items type yields InvalidArgumentException.
 	 * 
-	 * @dataProvider Tests\TestDataProviders::nonStringProvider
+	 * @dataProvider Tests\DataProviders::nonStringProvider
 	 * @expectedException InvalidArgumentException
 	 * 
 	 * @param mixed $invalid non-string type
@@ -156,7 +156,7 @@ class ViewItemTest extends TestCase {
 	/**
 	 * Testing invalid HTML parameter yeilds TypeError.
 	 *
-	 * @dataProvider Tests\TestDataProviders::nonStringProvider
+	 * @dataProvider Tests\DataProviders::nonStringProvider
 	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid non-string type
@@ -200,7 +200,7 @@ class ViewItemTest extends TestCase {
 	/**
 	 * Testing invalid JS tags parameter yeilds TypeError.
 	 *
-	 * @dataProvider Tests\TestDataProviders::nonArrayProvider
+	 * @dataProvider Tests\DataProviders::nonArrayProvider
 	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid non-array type
@@ -213,7 +213,7 @@ class ViewItemTest extends TestCase {
 	/**
 	 * Testing invalid JS tags items type yields InvalidArgumentException.
 	 * 
-	 * @dataProvider Tests\TestDataProviders::nonStringProvider
+	 * @dataProvider Tests\DataProviders::nonStringProvider
 	 * @expectedException InvalidArgumentException
 	 * 
 	 * @param mixed $invalid non-string type

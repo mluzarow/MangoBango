@@ -60,6 +60,37 @@ class ViewItemTest extends TestCase {
 	}
 	
 	/**
+	 * Testing valid CSS tags parameter yields no exception.
+	 * 
+	 * @dataProvider validCSSTagsProvider
+	 * 
+	 * @param array $valid valid CSS tags
+	 */
+	public function testValidCSSTags ($valid) {
+		$this->css_tags = $valid;
+		$this->assertInstanceOf (ViewItem::class, $this->instance ());
+	}
+	
+	/**
+	 * Data provider for testValidCSSTags().
+	 * 
+	 * @return array valid CSS tags data
+	 */
+	public function validCSSTagsProvider () {
+		return [
+			// Empty
+			[[]],
+			// One Item
+			[['<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/UIFrame.css">']],
+			// Multiple Items
+			[[
+				'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/UIFrame.css">',
+				'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/DisplayLibrary.css">'
+			]]
+		];
+	}
+	
+	/**
 	 * Testing invalid CSS tags parameter yeilds TypeError.
 	 *
 	 * @dataProvider Tests\TestDataProviders::nonArrayProvider
@@ -70,6 +101,56 @@ class ViewItemTest extends TestCase {
 	public function testInvalidCSSTagsType ($invalid) {
 		$this->css_tags = $invalid;
 		$this->instance ();
+	}
+	
+	/**
+	 * Testing invalid CSS tags items type yields InvalidArgumentException.
+	 * 
+	 * @dataProvider Tests\TestDataProviders::nonStringProvider
+	 * @expectedException InvalidArgumentException
+	 * 
+	 * @param mixed $invalid non-string type
+	 */
+	public function testInvalidCSSTagsItemType ($invalid) {
+		$this->css_tags = [$invalid];
+		$this->instance ();
+	}
+	
+	/**
+	 * Testing valid HTML parameter yields no exception.
+	 * 
+	 * @dataProvider validHTMLProvider
+	 * 
+	 * @param array $valid valid HTML
+	 */
+	public function testValidHTML ($valid) {
+		$this->html = $valid;
+		$this->assertInstanceOf (ViewItem::class, $this->instance ());
+	}
+	
+	/**
+	 * Data provider for testValidHTML().
+	 * 
+	 * @return array valid HTML data
+	 */
+	public function validHTMLProvider () {
+		return [
+			// Empty
+			[''],
+			// Single tag
+			['<div></div>'],
+			// Hefty HTML
+			[
+				'<div class="library_display_container">
+					<div class="manga_series_wrap">
+						<h2 class="title">090 Eko to Issho</h2>
+						<a href="/displaySeries?s=1">
+							<img src="" />
+						</a>
+					</div>
+				</div>'
+			]
+		];
 	}
 	
 	/**
@@ -86,6 +167,37 @@ class ViewItemTest extends TestCase {
 	}
 	
 	/**
+	 * Testing valid JS tags parameter yields no exception.
+	 * 
+	 * @dataProvider validJSTagsProvider
+	 * 
+	 * @param array $valid valid JS tags
+	 */
+	public function testValidJSTags ($valid) {
+		$this->js_tags = $valid;
+		$this->assertInstanceOf (ViewItem::class, $this->instance ());
+	}
+	
+	/**
+	 * Data provider for testValidJSTags().
+	 * 
+	 * @return array valid JS tags data
+	 */
+	public function validJSTagsProvider () {
+		return [
+			// Empty
+			[[]],
+			// One Item
+			[['<script type="text/javascript" src="/ViewItems/JS/dropdown.js"></script>']],
+			// Multiple Items
+			[[
+				'<script type="text/javascript" src="/ViewItems/JS/dropdown.js"></script>',
+				'<script type="text/javascript" src="/ViewItems/JS/logout.js"></script>'
+			]]
+		];
+	}
+	
+	/**
 	 * Testing invalid JS tags parameter yeilds TypeError.
 	 *
 	 * @dataProvider Tests\TestDataProviders::nonArrayProvider
@@ -95,6 +207,19 @@ class ViewItemTest extends TestCase {
 	 */
 	public function testInvalidJSTagsType ($invalid) {
 		$this->js_tags = $invalid;
+		$this->instance ();
+	}
+	
+	/**
+	 * Testing invalid JS tags items type yields InvalidArgumentException.
+	 * 
+	 * @dataProvider Tests\TestDataProviders::nonStringProvider
+	 * @expectedException InvalidArgumentException
+	 * 
+	 * @param mixed $invalid non-string type
+	 */
+	public function testInvalidJSTagsItemType ($invalid) {
+		$this->js_tags = [$invalid];
 		$this->instance ();
 	}
 }

@@ -4,7 +4,7 @@ namespace Tests;
 /**
  * Data provider sourcing test data for unit tests.
  */
-class TestDataProviders {
+class DataProviders {
 	/**
 	 * Non-array type provider.
 	 * 

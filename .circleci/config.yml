@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run: echo "PHP Unit Tests"
-      #- run: phpunit --bootstrap tests/TestBootstrap.php tests
+      - run: phpunit --bootstrap tests/TestBootstrap.php tests
 workflows:
   version: 2
   build:

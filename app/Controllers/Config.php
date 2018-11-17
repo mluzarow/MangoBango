@@ -72,9 +72,9 @@ class Config {
 		}
 		
 		$view_parameters = [];
-		$view_parameters['reader_display_style'] = $configs_dict['reader_display_style'];
+		$view_parameters['reader_display_style'] = (int) $configs_dict['reader_display_style'];
 		$view_parameters['manga_directory'] = $configs_dict['manga_directory'];
-		$view_parameters['library_view_type'] = $configs_dict['library_view_type'];
+		$view_parameters['library_view_type'] = (int) $configs_dict['library_view_type'];
 		
 		return (new \Services\View\Controller ())->
 			buildViewService ($_SERVER['DOCUMENT_ROOT'])->

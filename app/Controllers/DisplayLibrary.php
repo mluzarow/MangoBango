@@ -15,24 +15,25 @@ class DisplayLibrary {
 	 * Runs page process.
 	 */
 	public function begin () {
+		// Get library configs
 		$q = '
-			SELECT `config_value` FROM `server_configs`
-			WHERE `config_name` = "manga_directory"';
+			SELECT `config_name`, `config_value`
+			FROM `server_configs`
+			WHERE `config_name` IN ("manga_directory", "library_view_type")';
 		$r = $this->db->query ($q);
 		
-		$manga_directory = $r[0]['config_value'];
+		$configs = [];
+		foreach ($r as $row) {
+			$configs[$row['config_name']] = $row['config_value'];
+		}
 		
-		// Check for library view type
-		$q = '
-			SELECT `config_value` FROM `server_configs`
-			WHERE `config_name` = "library_view_type"';
-		$r = $this->db->query ($q);
+		$configs['library_view_type'] = (int) $configs['library_view_type'];
 		
-		$library_view_type = (int) $r[0]['config_value'];
-		
-		if ($library_view_type === 1) {
+		if ($configs['library_view_type'] === 1) {
 			// Display as series of covers
-			$view_parameters['manga_data'] = $this->getImagesCovers ($manga_directory);
+			$view_parameters['manga_data'] = $this->getImagesCovers (
+				$configs['manga_directory']
+			);
 			
 			return (new \Services\View\Controller ())->
 				buildViewService ($_SERVER['DOCUMENT_ROOT'])->
@@ -45,7 +46,7 @@ class DisplayLibrary {
 					],
 					$view_parameters
 				);
-		} else if ($library_view_type === 2) {
+		} else if ($configs['library_view_type'] === 2) {
 			// Display as bookcase
 			$view_parameters['manga_data'] = $this->getImagesSpines ($directory_tree);
 			$view = new DisplayLibraryBookcaseView ($view_parameters);

@@ -105,7 +105,7 @@ class FirstTimeSetup {
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_directories_series` (
 				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`folder_name` VARCHAR(255) NOT NULL
+				`folder_name` VARCHAR(255) NOT NULL,
 				PRIMARY KEY (`manga_id`)
 			)
 			COLLATE = "utf8_general_ci"
@@ -118,7 +118,7 @@ class FirstTimeSetup {
 			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
 				`chapter_id` INT(10) NOT NULL AUTO_INCREMENT,
 				`folder_name` VARCHAR(255) NOT NULL,
-				`is_archive` TINYINT(1) NOT NULL
+				`is_archive` TINYINT(1) NOT NULL,
 				PRIMARY KEY (`chapter_id`)
 			)
 			COLLATE = "utf8_general_ci"
@@ -146,7 +146,7 @@ class FirstTimeSetup {
 			CREATE TABLE IF NOT EXISTS `manga_metadata_volumes` (
 				`volume_id` INT(10) NOT NULL,
 				`sort` INT(10) NOT NULL,
-				`volume_name` text NULL DEFAULT NULL
+				`volume_name` text NULL DEFAULT NULL,
 				PRIMARY KEY (`volume_id`)
 			)
 			COLLATE = "utf8_general_ci"
@@ -159,7 +159,7 @@ class FirstTimeSetup {
 				`chapter_id` INT(10) NOT NULL,
 				`sort` INT(10) NOT NULL,
 				`volume_id` INT(10) NULL DEFAULT NULL,
-				`chapter_name` text NULL DEFAULT NULL
+				`chapter_name` text NULL DEFAULT NULL,
 				PRIMARY KEY (`chapter_id`)
 			)
 			COLLATE = "utf8_general_ci"
@@ -170,7 +170,7 @@ class FirstTimeSetup {
 		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_images_series` (
 				`manga_id` INT(10) NOT NULL,
-				`cover_ext` VARCHAR(10) NULL DEFAULT NULL
+				`cover_ext` VARCHAR(10) NULL DEFAULT NULL,
 				PRIMARY KEY (`manga_id`)
 			)
 			COLLATE = "utf8_general_ci"
@@ -183,7 +183,7 @@ class FirstTimeSetup {
 				`volume_id` INT(10) NOT NULL,
 				`cover_ext` VARCHAR(10) NULL DEFAULT NULL,
 				`index_ext` VARCHAR(10) NULL DEFAULT NULL,
-				`spine_ext` VARCHAR(10) NULL DEFAULT NULL
+				`spine_ext` VARCHAR(10) NULL DEFAULT NULL,
 				PRIMARY KEY (`volume_id`)
 			)
 			COLLATE = "utf8_general_ci"

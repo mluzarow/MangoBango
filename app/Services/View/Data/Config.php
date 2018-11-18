@@ -8,10 +8,12 @@ namespace Services\View\Data;
  */
 class Config implements IViewData {
 	/**
+	 * @var string $directory_structure  structure of files in directory
 	 * @var int    $library_view_type    library view type
 	 * @var string $manga_directory      manga directory setting
 	 * @var int    $reader_display_style reader display style setting
 	 */
+	private $directory_structure;
 	private $library_view_type;
 	private $manga_directory;
 	private $reader_display_style;
@@ -19,6 +21,7 @@ class Config implements IViewData {
 	/**
 	 * Constructor for data object.
 	 * 
+	 * @param string $directory_structure  structure of files in directory
 	 * @param int    $library_view_type    library view type
 	 * @param string $manga_directory      manga directory setting
 	 * @param int    $reader_display_style reader display style setting
@@ -26,13 +29,26 @@ class Config implements IViewData {
 	 * @throws TypeError on invalid parameter type
 	 */
 	public function __construct (
+		string $directory_structure,
 		int $library_view_type,
 		string $manga_directory,
 		int $reader_display_style
 	) {
+		$this->setDirectoryStructure ($directory_structure);
 		$this->setLibraryViewType ($library_view_type);
 		$this->setMangaDirectory ($manga_directory);
 		$this->setReaderDisplayStyle ($reader_display_style);
+	}
+	
+	/**
+	 * Gets the manga file directory structure setting.
+	 * 
+	 * @return string structure of files in directory
+	 * 
+	 * @throws TypeError on non-string return
+	 */
+	public function getDirectoryStructure () : string {
+		return $this->directory_structure;
 	}
 	
 	/**
@@ -77,6 +93,17 @@ class Config implements IViewData {
 	 */
 	public function getViewName () : string {
 		return 'Config';
+	}
+	
+	/**
+	 * Sets the manga directory structure setting.
+	 * 
+	 * @param string $directory_structure structure of files in directory
+	 * 
+	 * @throws TypeError on non-string config value
+	 */
+	private function setDirectoryStructure (string $directory_structure) {
+		$this->directory_structure = $directory_structure;
 	}
 	
 	/**

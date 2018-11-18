@@ -195,7 +195,7 @@ class FirstTimeSetup {
 			CREATE TABLE IF NOT EXISTS `server_configs` (
 				`config_id` INT(11) NOT NULL AUTO_INCREMENT,
 				`config_name` VARCHAR(255) NOT NULL,
-				`config_value` VARCHAR(255) NOT NULL,
+				`config_value` VARCHAR(255) NULL DEFAULT NULL,
 				PRIMARY KEY (`config_id`),
 				UNIQUE INDEX `config_name` (`config_name`)
 			)
@@ -261,6 +261,7 @@ class FirstTimeSetup {
 			INSERT INTO `server_configs`
 				(`config_name`, `config_value`)
 			VALUES
+				("directory_structure", ""),
 				("reader_display_style", 2),
 				("manga_directory", ""),
 				("library_view_type", 1)';

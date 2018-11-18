@@ -32,6 +32,14 @@ class Config {
 	public function ajaxUpdateConfigs () {
 		$configs = json_decode ($_POST['config'], true);
 		
+		if (!empty ($configs['directory_structure'])) {
+			$q = '
+				UPDATE `server_configs` 
+				SET `config_value` = "'.$this->db->sanitize ($configs['directory_structure']).'" 
+				WHERE `config_name` = "directory_structure"';
+			$r = $this->db->query ($q);
+		}
+		
 		if (!empty ($configs['reader_display_style'])) {
 			$q = '
 				UPDATE `server_configs` 
@@ -75,6 +83,7 @@ class Config {
 		$view_parameters['reader_display_style'] = (int) $configs_dict['reader_display_style'];
 		$view_parameters['manga_directory'] = $configs_dict['manga_directory'];
 		$view_parameters['library_view_type'] = (int) $configs_dict['library_view_type'];
+		$view_parameters['directory_structure'] = $configs_dict['directory_structure'];
 		
 		return (new \Services\View\Controller ())->
 			buildViewService ($_SERVER['DOCUMENT_ROOT'])->

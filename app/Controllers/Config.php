@@ -129,11 +129,17 @@ class Config {
 	 */
 	private function scanLibrary () {
 		$q = '
-			SELECT `config_value` FROM `server_configs`
-			WHERE `config_name` = "manga_directory"';
+			SELECT `config_name`, `config_value`
+			FROM `server_configs`
+			WHERE `config_name` IN ("directory_structure", "manga_directory")';
 		$r = $this->db->query ($q);
 		
-		$directory_tree = $this->dirToArray ($r[0]['config_value']);
+		$configs = [];
+		foreach ($r as $row) {
+			$configs[$row['config_name']] = $row['config_value'];
+		}
+		
+		$directory_tree = $this->dirToArray ($configs['manga_directory']);
 		
 		$new_content = [];
 		foreach ($directory_tree as $series_name => $series_contents) {
@@ -147,88 +153,54 @@ class Config {
 				continue;
 			}
 			
-			$new_manga = [
-				'name' => $series_name,
-				'name_original' => null,
-				'folder_name' => $series_name,
-				'series_cover' => null,
-				'volumes' => []
-			];
+			// Try and load the metadata file
+			$metadata = $configs['manga_directory'].DIRECTORY_SEPARATOR.$series_name.DIRECTORY_SEPARATOR.'info.json';
+			$f = fopen ($metadata, 'r');
+			$blob = fread ($f, filesize ($metadata));
+			fclose ($f);
 			
-			foreach ($series_contents as $volume_name => $volume_contents) {
-				if (is_string ($volume_contents)) {
+			$new_manga = [
+				'folder_name' => $series_name,
+				'metadata' => json_decode ($blob, true),
+				'chapters' => []
+			];
+				
+			foreach ($series_contents as $chapter_name => $chapter_contents) {
+				$is_archive = 0;
+				
+				if (is_string ($chapter_contents)) {
 					// Is a file
-					if (strpos ($volume_contents, 'series_cover') !== false) {
-						$file_segs = explode ('.', $volume_contents);
-						$new_manga['series_cover'] = end ($file_segs);
-					}
+					$file_segs = explode ('.', $chapter_contents);
+					$ext = end ($file_segs);
 					
-					continue;
-				}
-				
-				// Try and get the volume number
-				preg_match ('/((?:[0-9]+)(?:\.(?:[0-9]+))?)/', $volume_name, $matches);
-				$vol_number = $matches[0];
-				
-				$new_manga['volumes'][$vol_number] = [
-					'folder_name' => $volume_name,
-					'cover' => null,
-					'spine' => null,
-					'index' => null,
-					'chapters' => []
-				];
-				
-				foreach ($volume_contents as $chapter_name => $chapter_contents) {
-					$is_archive = 0;
+					$chap_folder_name = $chapter_contents;
 					
-					if (is_string ($chapter_contents)) {
-						// Is a file
-						$file_segs = explode ('.', $chapter_contents);
-						$ext = end ($file_segs);
-						
-						$chap_folder_name = $chapter_contents;
-						
-						if ($ext === 'zip') {
-							// Is archive
-							$is_archive = 1;
-						} else {
-							// Is an image
-							if (strpos ($chapter_contents, 'cover') !== false) {
-								// Is a cover image
-								$new_manga['volumes'][$vol_number]['cover'] = $ext;
-							} else if (strpos ($chapter_contents, 'spine') !== false) {
-								// Is a spine image
-								$new_manga['volumes'][$vol_number]['spine'] = $ext;
-							} else if (strpos ($chapter_contents, 'index') !== false) {
-								// Is an index image
-								$new_manga['volumes'][$vol_number]['index'] = $ext;
-							}
-							
-							continue;
-						}
+					if ($ext === 'zip') {
+						// Is archive
+						$is_archive = 1;
 					} else {
-						$chap_folder_name = $chapter_name;
+						continue;
 					}
-					
-					// Try and get the chapter number
-					preg_match ('/((?:[0-9]+)(?:\.(?:[0-9]+))?)/', $chap_folder_name, $matches);
-					$chap_number = $matches[0];
-					
-					$new_manga['volumes'][$vol_number]['chapters'][$chap_number] = [
-						'folder_name' => $chap_folder_name,
-						'is_archive' => $is_archive
-					];
+				} else {
+					$chap_folder_name = $chapter_name;
 				}
+					
+				// Try and get the chapter number
+				preg_match ('/((?:[0-9]+)(?:\.(?:[0-9]+))?)/', $chap_folder_name, $matches);
+				$chap_number = $matches[0];
 				
-				ksort ($new_manga['volumes'][$vol_number]['chapters']);
+				$new_manga['chapters'][$chap_number] = [
+					'folder_name' => $chap_folder_name,
+					'is_archive' => $is_archive
+				];
 			}
 			
-			ksort ($new_manga['volumes']);
+			ksort ($new_manga['chapters']);
 			
 			$new_content[] = $new_manga;
 		}
 		
-		return ($new_content);
+		return $new_content;
 	}
 	
 	/**
@@ -237,101 +209,57 @@ class Config {
 	 * @param array $manga_list dictionary of new manga
 	 */
 	private function saveNewManga ($manga_list) {
-		// Get the new manga IDs
-		$q = '
-			SELECT
-				MAX(`s`.`manga_id`) AS `id_series`,
-				MAX(`v`.`volume_id`) AS `id_volume`,
-				MAX(`c`.`chapter_id`) AS `id_chapter`
-			FROM `manga_directories_series` AS `s`
-			LEFT JOIN `manga_directories_volumes` AS `v`
-				ON `s`.`manga_id` = `v`.`manga_id`
-			LEFT JOIN `manga_directories_chapters` AS `c`
-				ON `v`.`volume_id` = `c`.`volume_id`';
-		$r = $this->db->query ($q);
-		
-		$new_id_series = empty($r[0]['id_series']) ? 1 : ++$r[0]['id_series'];
-		$new_id_volume = empty($r[0]['id_volume']) ? 1 : ++$r[0]['id_volume'];
-		$new_id_chapter = empty($r[0]['id_chapter']) ? 1 : ++$r[0]['id_chapter'];
-		
 		foreach ($manga_list as $manga) {
 			$q = '
-				INSERT INTO `manga_metadata`
-					(`manga_id`, `name`, `name_original`)
+				INSERT INTO `manga_metadata_series`
+					(`name`, `name_original`, `summary`, `genres`)
 				VALUES
 					(
-						'.$new_id_series.',
-						"'.$manga['name'].'",
-						"'.$manga['name_original'].'"
+						"'.$manga['metadata']['manga_info']['title'].'",
+						"'.$manga['metadata']['manga_info']['original_title'].'",
+						"'.$this->db->sanitize ($manga['metadata']['manga_info']['description']).'",
+						"'.$this->db->sanitize (json_encode ($manga['metadata']['manga_info']['tags'])).'"
 					)';
 			$r = $this->db->query ($q);
+			
+			$new_id_series = $this->db->getLastIndex ();
 			
 			$q = '
 				INSERT INTO `manga_directories_series`
-					(`manga_id`, `folder_name`, `series_cover`)
+					(`manga_id`, `folder_name`)
 				VALUES
 					(
 						'.$new_id_series.',
-						"'.$manga['folder_name'].'",
-						"'.$manga['series_cover'].'"
+						"'.$manga['folder_name'].'"
 					)';
 			$r = $this->db->query ($q);
 			
-			$vol_sort = 1;
-			foreach ($manga['volumes'] as $volume) {
+			$chap_sort = 1;
+			foreach ($manga['chapters'] as $chapter) {
+				
+				
 				$q = '
-					INSERT INTO `manga_directories_volumes`
+					INSERT INTO `manga_directories_chapters`
 						(
+							`chapter_id`,
 							`volume_id`,
-							`manga_id`,
 							`sort`,
 							`folder_name`,
-							`cover`,
-							`spine`,
-							`index`
+							`is_archive`
 						)
 					VALUES
 						(
+							'.$new_id_chapter.',
 							'.$new_id_volume.',
-							'.$new_id_series.',
-							'.$vol_sort.',
-							"'.$volume['folder_name'].'",
-							"'.$volume['cover'].'",
-							"'.$volume['spine'].'",
-							"'.$volume['index'].'"
+							'.$chap_sort.',
+							"'.$chapter['folder_name'].'",
+							'.$chapter['is_archive'].'
 						)';
 				$r = $this->db->query ($q);
 				
-				$chap_sort = 1;
-				foreach ($volume['chapters'] as $chapter) {
-					$q = '
-						INSERT INTO `manga_directories_chapters`
-							(
-								`chapter_id`,
-								`volume_id`,
-								`sort`,
-								`folder_name`,
-								`is_archive`
-							)
-						VALUES
-							(
-								'.$new_id_chapter.',
-								'.$new_id_volume.',
-								'.$chap_sort.',
-								"'.$chapter['folder_name'].'",
-								'.$chapter['is_archive'].'
-							)';
-					$r = $this->db->query ($q);
-					
-					$chap_sort++;
-					$new_id_chapter++;
-				}
-				
-				$vol_sort++;
-				$new_id_volume++;
+				$chap_sort++;
+				$new_id_chapter++;
 			}
-			
-			$new_id_series++;
 		}
 	}
 }

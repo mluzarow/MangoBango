@@ -128,6 +128,29 @@ class FirstTimeSetup {
 		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
 		
 		$q = '
+			CREATE TABLE IF NOT EXISTS `manga_volumes` (
+				`volume_id` INT(10) UNSIGNED NOT NULL,
+				`manga_id` INT(10) UNSIGNED NOT NULL,
+				PRIMARY KEY (`volume_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'manga_volumes');
+		
+		$q = '
+			CREATE TABLE IF NOT EXISTS `manga_chapters` (
+				`chapter_id` INT(10) UNSIGNED NOT NULL,
+				`manga_id` INT(10) UNSIGNED NOT NULL,
+				`volume_id` INT(10) UNSIGNED NULL DEFAULT NULL,
+				PRIMARY KEY (`chapter_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'manga_chapters');
+		
+		$q = '
 			CREATE TABLE IF NOT EXISTS `manga_metadata_series` (
 				`manga_id` INT(10) NOT NULL,
 				`name` text NOT NULL,

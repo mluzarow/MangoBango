@@ -15,7 +15,7 @@ class MangaCovers extends Connector {
 	/**
 	 * @var string MCD API base URL
 	 */
-	private $base_url = 'https://mcd.iosphe.re/api/v1/';
+	private $base_url = 'https://mcd.iosphe.re/api/v1';
 	
 	/**
 	 * Search for manga metadata by MangaUpdates ID.
@@ -37,10 +37,12 @@ class MangaCovers extends Connector {
 	 * 
 	 * @param string $title series name string
 	 * 
-	 * @return array manga series metadata
+	 * @return array dictionary of series title matches and their MU IDs
+	 * 
+	 * @throws TypeError on non-string or non-array return
 	 */
-	public function searchByTitle ($title) {
-		$url = $this->base_url.'search/';
+	public function searchByTitle (string $title) : array {
+		$url = "{$this->base_url}/search/";
 		
 		$args = [
 			'Title' => urlencode ($title)

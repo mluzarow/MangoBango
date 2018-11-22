@@ -46,6 +46,6 @@ class MangaCovers extends Connector {
 			'Title' => urlencode ($title)
 		];
 		
-		$result = json_decode ($this->requestPOST ($url, $args), true);
+		return json_decode ($this->requestPOST ($url, $args), true);
 	}
 }

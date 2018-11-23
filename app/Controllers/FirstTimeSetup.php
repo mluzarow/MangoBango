@@ -102,71 +102,138 @@ class FirstTimeSetup {
 		$q = 'use `server`';
 		$r = $db->query ($q);
 		
+		// Series tables
 		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_directories_series` (
-				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`folder_name` VARCHAR(255) NOT NULL,
-				`series_cover` VARCHAR(20) NULL DEFAULT NULL,
-				PRIMARY KEY (`manga_id`)
+			CREATE TABLE IF NOT EXISTS `metadata_series` (
+				`series_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`name` text NOT NULL,
+				`name_original` text NULL DEFAULT NULL,
+				`summary` text NULL DEFAULT NULL,
+				`genres` text NULL DEFAULT NULL,
+				PRIMARY KEY (`series_id`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_directories_series');
+		$messages[] = $this->createMessage ($r, 'metadata_series');
 		
 		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_directories_volumes` (
-				`volume_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`manga_id` INT(10) NOT NULL,
-				`sort` INT(10) NOT NULL,
+			CREATE TABLE IF NOT EXISTS `directories_series` (
+				`series_id` INT(10) UNSIGNED NOT NULL,
 				`folder_name` VARCHAR(255) NOT NULL,
-				`cover` VARCHAR(10) NULL DEFAULT NULL,
-				`spine` VARCHAR(10) NULL DEFAULT NULL,
-				`index` VARCHAR(10) NULL DEFAULT NULL,
-				PRIMARY KEY (`volume_id`)
+				PRIMARY KEY (`series_id`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_directories_volumes');
+		$messages[] = $this->createMessage ($r, 'directories_series');
 		
 		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_directories_chapters` (
-				`chapter_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`volume_id` INT(10) NOT NULL,
-				`sort` INT(10) NOT NULL,
-				`folder_name` VARCHAR(255) NOT NULL,
-				`is_archive` TINYINT(1) NOT NULL,
+			CREATE TABLE IF NOT EXISTS `images_series` (
+				`series_id` INT(10) UNSIGNED NOT NULL,
+				`cover_ext` VARCHAR(10) NULL DEFAULT NULL,
+				PRIMARY KEY (`series_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'images_series');
+		
+		// Chapter tables
+		$q = '
+			CREATE TABLE IF NOT EXISTS `metadata_chapters` (
+				`chapter_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`global_sort` INT(10) UNSIGNED NOT NULL,
+				`chapter_name` text NULL DEFAULT NULL,
 				PRIMARY KEY (`chapter_id`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_directories_chapters');
+		$messages[] = $this->createMessage ($r, 'metadata_chapters');
 		
 		$q = '
-			CREATE TABLE IF NOT EXISTS `manga_metadata` (
-				`manga_id` INT(10) NOT NULL AUTO_INCREMENT,
-				`name` VARCHAR(255) NOT NULL,
-				`name_original` VARCHAR(255) NULL DEFAULT NULL,
-				`summary` VARCHAR(2000) NULL DEFAULT NULL,
-				`genres` VARCHAR(2000) NULL DEFAULT NULL,
-				PRIMARY KEY (`manga_id`)
+			CREATE TABLE IF NOT EXISTS `directories_chapters` (
+				`chapter_id` INT(10) UNSIGNED NOT NULL,
+				`folder_name` VARCHAR(255) NOT NULL,
+				`is_archive` TINYINT(1) UNSIGNED NOT NULL,
+				PRIMARY KEY (`chapter_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'directories_chapters');
+		
+		// Volume tables
+		$q = '
+			CREATE TABLE IF NOT EXISTS `metadata_volumes` (
+				`volume_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`sort` INT(10) UNSIGNED NOT NULL,
+				`volume_name` text NULL DEFAULT NULL,
+				PRIMARY KEY (`volume_id`)
 			)
 			COLLATE = "utf8_general_ci"
 			ENGINE = InnoDB
 			AUTO_INCREMENT = 1';
 		$r = $db->query ($q);
-		$messages[] = $this->createMessage ($r, 'manga_metadata');
+		$messages[] = $this->createMessage ($r, 'metadata_volumes');
 		
+		$q = '
+			CREATE TABLE IF NOT EXISTS `images_volumes` (
+				`volume_id` INT(10) UNSIGNED NOT NULL,
+				`cover_ext` VARCHAR(10) NULL DEFAULT NULL,
+				`index_ext` VARCHAR(10) NULL DEFAULT NULL,
+				`spine_ext` VARCHAR(10) NULL DEFAULT NULL,
+				PRIMARY KEY (`volume_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'images_volumes');
+		
+		// Connections tables
+		$q = '
+			CREATE TABLE IF NOT EXISTS `connections_series` (
+				`chapter_id` INT(10) UNSIGNED NOT NULL,
+				`series_id` INT(10) UNSIGNED NOT NULL,
+				PRIMARY KEY (`chapter_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'connections_series');
+		
+		$q = '
+			CREATE TABLE IF NOT EXISTS `connections_volumes` (
+				`volume_id` INT(10) UNSIGNED NOT NULL,
+				`series_id` INT(10) UNSIGNED NOT NULL,
+				PRIMARY KEY (`volume_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'connections_volumes');
+		
+		$q = '
+			CREATE TABLE IF NOT EXISTS `connections_chapters` (
+				`chapter_id` INT(10) UNSIGNED NOT NULL,
+				`volume_id` INT(10) UNSIGNED NULL,
+				PRIMARY KEY (`chapter_id`)
+			)
+			COLLATE = "utf8_general_ci"
+			ENGINE = InnoDB';
+		$r = $db->query ($q);
+		$messages[] = $this->createMessage ($r, 'connections_chapters');
+		
+		// Other tables
 		$q = '
 			CREATE TABLE IF NOT EXISTS `server_configs` (
 				`config_id` INT(11) NOT NULL AUTO_INCREMENT,
 				`config_name` VARCHAR(255) NOT NULL,
-				`config_value` VARCHAR(255) NOT NULL,
+				`config_value` VARCHAR(255) NULL DEFAULT NULL,
 				PRIMARY KEY (`config_id`),
 				UNIQUE INDEX `config_name` (`config_name`)
 			)
@@ -232,6 +299,7 @@ class FirstTimeSetup {
 			INSERT INTO `server_configs`
 				(`config_name`, `config_value`)
 			VALUES
+				("directory_structure", ""),
 				("reader_display_style", 2),
 				("manga_directory", ""),
 				("library_view_type", 1)';

@@ -13,6 +13,10 @@ class Reader {
 	public function begin () {
 		$db = \Core\Database::getInstance ();
 		
+		if (empty ($_GET['sid']) || empty ($_GET['cid'])) {
+			throw new \Exception ('Missing required query variables.');
+		}
+		
 		// Fetch manga directory
 		$q = '
 			SELECT `config_value` FROM `server_configs`
@@ -26,31 +30,42 @@ class Reader {
 		// Fetch manga info by ID
 		$q = '
 			SELECT
-				`s`.`folder_name` AS `series_folder`,
-				`v`.`folder_name` AS `volume_folder`,
-				`v`.`sort` AS `volume_sort`,
-				`c`.`folder_name` AS `chapter_folder`,
-				`c`.`sort` AS `chapter_sort`,
-				`c`.`is_archive`
-			FROM `manga_directories_series` AS `s`
-			JOIN `manga_directories_volumes` AS `v`
-				ON `s`.`manga_id` = `v`.`manga_id`
-			JOIN `manga_directories_chapters` AS `c`
-				ON `v`.`volume_id` = `c`.`volume_id`
-			WHERE `s`.`manga_id` = '.$_GET['s'].'
-				AND `v`.`sort` = '.$_GET['v'].'
-				AND `c`.`sort` IN ('.$_GET['c'].','.($_GET['c'] + 1).')';
+				`mc`.`chapter_id`,
+				`mc`.`global_sort`,
+				`ds`.`folder_name` AS `series_folder`,
+				`dc`.`folder_name` AS `chapter_folder`,
+				`dc`.`is_archive`
+			FROM `metadata_chapters` AS `mc`
+			JOIN `directories_chapters` AS `dc`
+				ON `mc`.`chapter_id` = `dc`.`chapter_id`
+			JOIN `connections_series` AS `cs`
+				ON `dc`.`chapter_id` = `cs`.`chapter_id`
+			JOIN `directories_series` AS `ds`
+				ON `cs`.`series_id` = `ds`.`series_id`
+			WHERE `cs`.`series_id` = '.$_GET['sid'].'
+				AND `mc`.`global_sort` IN (
+					(
+						SELECT `global_sort`
+						FROM `metadata_chapters`
+						WHERE `chapter_id` = '.$_GET['cid'].'
+					),
+					(
+						SELECT `global_sort`
+						FROM `metadata_chapters`
+						WHERE `chapter_id` = '.$_GET['cid'].'
+					) + 1
+				)';
 		$r = $db->query ($q);
 		
 		if ($r === false)
 			return ['file_paths' => []];
 		
-		$next_chapter = count($r) ? $_GET['c'] + 1 : null;
+		$next_chapter = count($r) > 1 ? end ($r)['chapter_id'] : null;
 		
 		// Get the first row (which should be the sort we want to display)
 		$r = current ($r);
 		
-		$path = "{$manga_dir}\\{$r['series_folder']}\\{$r['volume_folder']}\\{$r['chapter_folder']}";
+		$path = "{$manga_dir}\\{$r['series_folder']}\\{$r['chapter_folder']}";
 			
 		$file_paths = [];
 		if ($r['is_archive'] === '1') {
@@ -76,9 +91,9 @@ class Reader {
 		$view_parameters['file_paths'] = $file_paths;
 		
 		if ($next_chapter !== null) {
-			$view_parameters['next_chapter_link'] = "\\reader?s={$_GET['s']}&v={$_GET['v']}&c={$next_chapter}";
+			$view_parameters['next_chapter_link'] = "\\reader?sid={$_GET['sid']}&cid={$next_chapter}";
 		} else {
-			$view_parameters['next_chapter_link'] = null;
+			$view_parameters['next_chapter_link'] = '';
 		}
 		
 		// Get the reader view style

@@ -85,6 +85,10 @@ class Database {
 		return $result;
 	}
 	
+	public function getLastIndex () {
+		return $this->connection->insert_id;
+	}
+	
 	/**
 	 * Sanitizes the given string.
 	 * 

@@ -20,6 +20,14 @@ $(window).ready (function () {
 		});
 	}
 	
+	$("#directory_structure").change (function () {
+		var config = {
+			"directory_structure" : $("#directory_structure").val ()
+		};
+		
+		ajaxUpdateConfigs (config, $(this));
+	});
+	
 	$("#reader_display_style").change (function () {
 		var config = {
 			"reader_display_style" : $("#reader_display_style").val ()

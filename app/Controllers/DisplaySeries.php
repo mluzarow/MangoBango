@@ -30,11 +30,13 @@ class DisplaySeries {
 		
 		// Fetch manga info by ID
 		$q = '
-			SELECT `s`.`folder_name` as `series_folder`, `v`.*
-			FROM `manga_directories_series` AS `s`
-			JOIN `manga_directories_volumes` AS `v`
-				ON `s`.`manga_id` = `v`.`manga_id`
-			WHERE `s`.`manga_id` = '.$_GET['s'];
+			SELECT `ds`.`series_id`, `ds`.`folder_name`, `cv`.`volume_id`, `iv`.`cover_ext`
+			FROM `directories_series` AS `ds`
+			JOIN `connections_volumes` AS `cv`
+				ON `ds`.`series_id` = `cv`.`series_id`
+			JOIN `images_volumes` AS `iv`
+				ON `cv`.`volume_id` = `iv`.`volume_id`
+			WHERE `ds`.`series_id` = '.$_GET['s'];
 		$r = $this->db->query ($q);
 		
 		if ($r === false) {
@@ -45,24 +47,24 @@ class DisplaySeries {
 		$view_parameters['volumes'] = [];
 		
 		foreach ($r as $v) {
-			if (empty($v['cover'])) {
+			if (empty($v['cover_ext'])) {
 				$path = '';
 			} else {
-				$path = "{$manga_directory}\\{$v['series_folder']}\\{$v['folder_name']}\\cover.{$v['cover']}";
+				$path = "{$manga_directory}\\{$v['folder_name']}\\cover.{$v['cover_ext']}";
 			}
 			
 			$view_parameters['volumes'][] = [
-				'link' => "/reader?s={$v['manga_id']}&v={$v['sort']}&c=1",
+				'link' => "/reader?sid={$_GET['s']}&cid=1",
 				'source' => $path
 			];
 		}
 		
 		$q = '
-			SELECT `v`.`sort` AS `volume_sort`, `c`.`sort` AS `chapter_sort`
-			FROM `manga_directories_volumes` AS `v`
-			JOIN `manga_directories_chapters` AS `c`
-				ON `v`.`volume_id` = `c`.`volume_id`
-			WHERE `v`.`manga_id` = '.$_GET['s'];
+			SELECT `mc`.`chapter_id`, `mc`.`global_sort`
+			FROM `metadata_chapters` AS `mc`
+			JOIN `connections_series` AS `cs`
+				ON `mc`.`chapter_id` = `cs`.`chapter_id`
+			WHERE `cs`.`series_id` = '.$_GET['s'];
 		$r = $this->db->query ($q);
 		
 		if ($r === false) {
@@ -71,11 +73,9 @@ class DisplaySeries {
 		
 		$view_parameters['chapters'] = [];
 		foreach ($r as $row) {
-			$key = "{$row['volume_sort']}{$row['chapter_sort']}";
-			
-			$view_parameters['chapters'][$key] = [
-				'title' => "Volume {$row['volume_sort']} Chapter {$row['chapter_sort']}",
-				'link' => "\\reader?s={$_GET['s']}&v={$row['volume_sort']}&c={$row['chapter_sort']}"
+			$view_parameters['chapters'][$row['global_sort']] = [
+				'title' => "Chapter {$row['global_sort']}",
+				'link' => "\\reader?sid={$_GET['s']}&cid={$row['chapter_id']}"
 			];
 		}
 		
@@ -83,8 +83,8 @@ class DisplaySeries {
 		
 		$q = '
 			SELECT `name`, `summary`, `genres`
-			FROM `manga_metadata`
-			WHERE `manga_id` = '.$_GET['s'];
+			FROM `metadata_series`
+			WHERE `series_id` = '.$_GET['s'];
 		$r = $this->db->query ($q);
 		
 		$view_parameters['summary'] = '';

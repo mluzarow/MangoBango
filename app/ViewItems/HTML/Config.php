@@ -20,6 +20,10 @@
 					<input id="manga_directory" value="<?php echo $view->getMangaDirectory (); ?>" type="text" autocomplete="off" />
 				</div>
 				<div class="config_item">
+					<label>Directory structure</label>
+					<input id="directory_structure" value="<?php echo $view->getDirectoryStructure  (); ?>" type="text" autocomplete="off" />
+				</div>
+				<div class="config_item">
 					<label>Library Display Style</label>
 					<select id="library_view_type" autocomplete="off">
 						<option value="1" <?php echo $view->getLibraryViewType () === 1 ? 'selected' : ''; ?>>

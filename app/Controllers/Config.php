@@ -145,7 +145,7 @@ class Config {
 		foreach ($directory_tree as $series_name => $series_contents) {
 			// Check if this folder is already bound to a series
 			$q = '
-				SELECT `manga_id` FROM `manga_directories_series`
+				SELECT `series_id` FROM `directories_series`
 				WHERE `folder_name` = "'.$this->db->sanitize ($series_name).'"';
 			$r = $this->db->query ($q);
 			
@@ -211,7 +211,7 @@ class Config {
 	private function saveNewManga ($manga_list) {
 		foreach ($manga_list as $manga) {
 			$q = '
-				INSERT INTO `manga_metadata_series`
+				INSERT INTO `metadata_series`
 					(`name`, `name_original`, `summary`, `genres`)
 				VALUES
 					(
@@ -225,8 +225,8 @@ class Config {
 			$new_id_series = $this->db->getLastIndex ();
 			
 			$q = '
-				INSERT INTO `manga_directories_series`
-					(`manga_id`, `folder_name`)
+				INSERT INTO `directories_series`
+					(`series_id`, `folder_name`)
 				VALUES
 					(
 						'.$new_id_series.',
@@ -234,31 +234,43 @@ class Config {
 					)';
 			$r = $this->db->query ($q);
 			
+			$q = '
+				INSERT INTO `images_series`
+					(`series_id`, `cover_ext`)
+				VALUES
+					('.$new_id_series.', "")';
+			$r = $this->db->query ($q);
+			
 			$chap_sort = 1;
 			foreach ($manga['chapters'] as $chapter) {
+				$q = '
+					INSERT INTO `metadata_chapters`
+						(`global_sort`, `chapter_name`)
+					VALUES
+						('.$chap_sort.', "")';
+				$r = $this->db->query ($q);
 				
+				$new_id_chapter = $this->db->getLastIndex ();
 				
 				$q = '
-					INSERT INTO `manga_directories_chapters`
-						(
-							`chapter_id`,
-							`volume_id`,
-							`sort`,
-							`folder_name`,
-							`is_archive`
-						)
+					INSERT INTO `directories_chapters`
+						(`chapter_id`, `folder_name`, `is_archive`)
 					VALUES
 						(
 							'.$new_id_chapter.',
-							'.$new_id_volume.',
-							'.$chap_sort.',
 							"'.$chapter['folder_name'].'",
 							'.$chapter['is_archive'].'
 						)';
 				$r = $this->db->query ($q);
 				
+				$q = '
+					INSERT INTO `connections_series`
+						(`chapter_id`, `series_id`)
+					VALUES
+						('.$new_id_chapter.', '.$new_id_series.')';
+				$r = $this->db->query ($q);
+				
 				$chap_sort++;
-				$new_id_chapter++;
 			}
 		}
 	}

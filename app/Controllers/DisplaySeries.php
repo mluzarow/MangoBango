@@ -54,7 +54,7 @@ class DisplaySeries {
 			}
 			
 			$view_parameters['volumes'][] = [
-				'link' => "/reader?cid=1",
+				'link' => "/reader?sid={$_GET['s']}&cid=1",
 				'source' => $path
 			];
 		}
@@ -75,7 +75,7 @@ class DisplaySeries {
 		foreach ($r as $row) {
 			$view_parameters['chapters'][$row['global_sort']] = [
 				'title' => "Chapter {$row['global_sort']}",
-				'link' => "\\reader?cid={$row['chapter_id']}"
+				'link' => "\\reader?sid={$_GET['s']}&cid={$row['chapter_id']}"
 			];
 		}
 		

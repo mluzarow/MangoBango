@@ -7,7 +7,7 @@
 	<?php
 	} 
 	
-	if ($view->getNextChapterLink () !== null) { ?>
+	if (!empty ($view->getNextChapterLink ())) { ?>
 		<div class="continue_btn">
 			<a href="<?php echo $view->getNextChapterLink (); ?>">
 				Continue to next chaper.

@@ -56,7 +56,7 @@ class Config {
 			$r = $this->db->query ($q);
 		}
 		
-		if (!empty ($configs['manga_directory'])) {
+		if (!empty ($configs['library_view_type'])) {
 			$q = '
 				UPDATE `server_configs` 
 				SET `config_value` = '.$configs['library_view_type'].' 

@@ -66,10 +66,12 @@ class DisplayLibrary {
 	 */
 	private function getImagesCovers ($manga_directory) {
 		$q = '
-			SELECT `s`.`folder_name`, `s`.`series_cover`, `m`.`manga_id`, `m`.`name`
-			FROM `manga_directories_series` AS `s`
-			JOIN `manga_metadata` AS `m`
-				ON `s`.`manga_id` = `m`.`manga_id`';
+			SELECT `m`.`series_id`, `m`.`name`, `d`.`folder_name`, `i`.`cover_ext` 
+			FROM `metadata_series` AS `m`
+			JOIN `directories_series` AS `d`
+				ON `m`.`series_id` = `d`.`series_id`
+			JOIN `images_series` AS `i`
+				ON `m`.`series_id` = `i`.`series_id`';
 		$r = $this->db->query ($q);
 		
 		if ($r === false) {
@@ -78,14 +80,14 @@ class DisplayLibrary {
 		
 		$series_data = [];
 		foreach ($r as $series) {
-			if (empty ($series['series_cover'])) {
+			if (empty ($series['cover_ext'])) {
 				$path = '';
 			} else {
-				$path = "{$manga_directory}\\{$series['folder_name']}\\series_cover.{$series['series_cover']}";
+				$path = "{$manga_directory}\\{$series['folder_name']}\\series_cover.{$series['cover_ext']}";
 			}
 			
 			$series_data[$series['name']] = [
-				'link' => "/displaySeries?s={$series['manga_id']}",
+				'link' => "/displaySeries?s={$series['series_id']}",
 				'path' => $path,
 				'title' => $series['name']
 			];
@@ -159,77 +161,5 @@ class DisplayLibrary {
 		}
 		
 		return ($manga_data);
-	}
-	
-	/**
-	 * Process series cover images into view-ready strings.
-	 * 
-	 * @param array $series_data dictionary of series covers
-	 * 
-	 * @return array view parameters dictionary
-	 */
-	private function processImagesCovers ($series_data) {
-		$view_parameters = [];
-		$view_parameters['series'] = [];
-		
-		foreach ($series_data as $id => $series) {
-			$f = fopen ($series['path'], 'r');
-			$blob = fread ($f, filesize ($series['path']));
-			fclose ($f);
-			
-			$file_segs = explode ('.', $series['path']);
-			$ext = end ($file_segs);
-			
-			$view_parameters['series'][] = [
-				'title' => $series['name'],
-				'link' => "/displaySeries?s={$id}",
-				'source' => "data:image/{$ext};base64,".base64_encode ($blob)
-			];
-		}
-		
-		usort ($view_parameters['series'], function ($a, $b) {
-			if ($a['title'] > $b['title']) {
-				return (1);
-			} else if ($a['title'] < $b['title']) {
-				return (-1);
-			} else {
-				return (0);
-			}
-		});
-		
-		return ($view_parameters);
-	}
-	
-	/**
-	 * Process volume spine images into view-ready strings.
-	 * 
-	 * @param array  $series_data     dictionary of series spines by volume
-	 * @param string $manga_directory manga directory
-	 * 
-	 * @return array view parameters dictionary
-	 */
-	private function processImagesSpines ($series_data, $manga_directory) {
-		$view_parameters = [];
-		$view_parameters['spines'] = [];
-		$view_parameters['series_links'] = [];
-		
-		foreach ($series_data as $series => $volumes) {
-			$view_parameters['spines'][$series] = [];
-			$view_parameters['series_links'][$series] = "/displaySeries?series={$series}";
-			
-			foreach ($volumes as $volume => $spine) {
-				$file_path = "{$manga_directory}\\{$series}\\{$volume}\\{$spine}";
-				
-				$f = fopen ($file_path, 'r');
-				$blob = fread ($f, filesize ($file_path));
-				fclose ($f);
-				
-				$ext = explode ('.', $spine)[1];
-				
-				$view_parameters['spines'][$series][] = "data:image/{$ext};base64,".base64_encode ($blob);
-			}
-		}
-		
-		return ($view_parameters);
 	}
 }

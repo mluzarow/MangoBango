@@ -9,6 +9,10 @@
 					<input id="manga_directory" value="<?php echo $view->getMangaDirectory (); ?>" type="text" autocomplete="off" />
 				</div>
 				<div class="config_item">
+					<label>Assets directory</label>
+					<input id="assets_directory" value="<?php echo $view->getAssetsDirectory (); ?>" type="text" autocomplete="off" />
+				</div>
+				<div class="config_item">
 					<label>Directory structure</label>
 					<input id="directory_structure" value="<?php echo $view->getDirectoryStructure  (); ?>" type="text" autocomplete="off" />
 				</div>

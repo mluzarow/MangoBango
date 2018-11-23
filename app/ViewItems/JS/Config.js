@@ -44,6 +44,14 @@ $(window).ready (function () {
 		ajaxUpdateConfigs (config, $(this));
 	});
 	
+	$("#assets_directory").focusout (function () {
+		var config = {
+			"assets_directory" : $("#assets_directory").val ()
+		};
+		
+		ajaxUpdateConfigs (config, $(this));
+	});
+	
 	$("#library_view_type").change (function () {
 		var config = {
 			"library_view_type" : $("#library_view_type").val ()

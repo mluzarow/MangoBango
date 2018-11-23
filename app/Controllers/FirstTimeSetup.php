@@ -299,6 +299,7 @@ class FirstTimeSetup {
 			INSERT INTO `server_configs`
 				(`config_name`, `config_value`)
 			VALUES
+				("assets_directory", ""),
 				("directory_structure", ""),
 				("reader_display_style", 2),
 				("manga_directory", ""),

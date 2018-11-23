@@ -13,9 +13,9 @@ class Home {
 		// Get number of series
 		$q = '
 			SELECT
-				(SELECT COUNT(*) FROM `manga_metadata_series`) AS `series`,
-				(SELECT COUNT(*) FROM `manga_metadata_volumes`) AS `volumes`,
-				(SELECT COUNT(*) FROM `manga_metadata_chapters`) AS `chapters`';
+				(SELECT COUNT(*) FROM `metadata_series`) AS `series`,
+				(SELECT COUNT(*) FROM `metadata_volumes`) AS `volumes`,
+				(SELECT COUNT(*) FROM `metadata_chapters`) AS `chapters`';
 		$r = $db->query ($q);
 		
 		$view_parameters['box_contents'] = [

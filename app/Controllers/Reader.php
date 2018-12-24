@@ -63,10 +63,10 @@ class Reader {
 		$next_chapter = count($r) > 1 ? end ($r)['chapter_id'] : null;
 		
 		// Get the first row (which should be the sort we want to display)
-		$r = current ($r);
+		$r = reset ($r);
 		
 		$path = "{$manga_dir}\\{$r['series_folder']}\\{$r['chapter_folder']}";
-			
+		
 		$file_paths = [];
 		if ($r['is_archive'] === '1') {
 			$files = array_keys (\Core\ZipManager::readFiles ($path));

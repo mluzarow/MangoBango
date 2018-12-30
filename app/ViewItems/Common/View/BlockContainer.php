@@ -4,9 +4,12 @@ declare (strict_types = 1);
 namespace ViewItems\Common\View;
 
 use ViewItems\View;
-use ViewItems\Common\Data\Block as ViewData;
+use ViewItems\Common\Data\BlockContainer as ViewData;
 
-class Block extends View {
+/**
+ * View for a list of block items.
+ */
+class BlockContainer extends View {
 	/**
 	 * Creates the CSS for this view.
 	 * 
@@ -16,30 +19,23 @@ class Block extends View {
 	 */
 	protected function renderCSS () : string {
 		$output =
-		'<style title="Common\Block">
-			.common_block {
-				margin-bottom: 30px;
-				background-color: #2b2b2b;
-				box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.4);
-				box-sizing: border-box;
-				color: #828282;
-			}
-			
-			.common_block .header {
-				padding: 3px 15px;
-				background-color: var(--hightlight_bg);
-				color: #000;
+		'<style title="Common\BlockContainer">
+			.block_container {
 				font-family: Consolas;
-				font-size: 1.7em;
 			}
 			
-			.common_block .items_wrap {
-				padding: 10px;
-				font-size: 1.5em;
+			.block_container > .heading {
+				margin-bottom: 0;
+				text-align: center;
+				font-size: 2em;
+			}
+			
+			.block_container > .items_wrap {
+				padding: 30px;
 			}
 		</style>';
 		
-		foreach ($this->getViewData ()->getViewCollection () as $view) {
+		foreach ($this->getViewData ()->getBlockCollection () as $view) {
 			$output .= $view->getCSS ();
 		}
 		
@@ -55,12 +51,12 @@ class Block extends View {
 	 */
 	protected function renderHTML () : string {
 		$output =
-		'<div class="common_block">
-			<div class="header">
+		'<div class="block_container">
+			<h2 class="header">
 				'.$this->getViewData ()->getTitle ().'
 			</div>
 			<div class="items_wrap">';
-				foreach ($this->getViewData ()->getViewCollection () as $view) {
+				foreach ($this->getViewData ()->getBlockCollection () as $view) {
 					$output .= $view->getHTML ();
 				}
 		$output .=

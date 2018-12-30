@@ -14,6 +14,14 @@ class Config {
 	 */
 	public function __construct () {
 		$this->db = \Core\Database::getInstance ();
+		
+		$v = new \ViewItems\Common\Data\ViewCollection ([]);
+		$c = new \ViewItems\Common\Data\Block ('hello', $v);
+		$b = new \ViewItems\Common\View\Block ($c);
+		echo $b->getCSS ();
+		echo $b->getHTML ();
+		// $p = new \Services\MangaEditor\Package ();
+		// $p->startService ('manga_metadata');
 	}
 	
 	/**

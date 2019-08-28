@@ -3,17 +3,16 @@ declare (strict_types = 1);
 
 namespace Tests\Services\View\Data;
 
-use PHPUnit\Framework\TestCase;
 use Services\View\Data\ViewItem;
 
 /**
  * Test targetting the general view object.
  */
-class ViewItemTest extends TestCase {
+class ViewItemTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Set up unit test variables.
 	 */
-	public function setUp () {
+	public function setUp () : void {
 		$this->css_tags = [
 			'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/UIFrame.css">',
 			'<link rel="stylesheet" type="text/css" href="/ViewItems/CSS/DisplayLibrary.css">'
@@ -92,13 +91,14 @@ class ViewItemTest extends TestCase {
 	
 	/**
 	 * Testing invalid CSS tags parameter yeilds TypeError.
-	 *
+	 * 
 	 * @dataProvider Tests\DataProviders::nonArrayProvider
-	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid non-array type
 	 */
 	public function testInvalidCSSTagsType ($invalid) {
+		$this->expectException('\TypeError');
+		
 		$this->css_tags = $invalid;
 		$this->instance ();
 	}
@@ -107,11 +107,12 @@ class ViewItemTest extends TestCase {
 	 * Testing invalid CSS tags items type yields InvalidArgumentException.
 	 * 
 	 * @dataProvider Tests\DataProviders::nonStringProvider
-	 * @expectedException InvalidArgumentException
 	 * 
 	 * @param mixed $invalid non-string type
 	 */
 	public function testInvalidCSSTagsItemType ($invalid) {
+		$this->expectException('\InvalidArgumentException');
+		
 		$this->css_tags = [$invalid];
 		$this->instance ();
 	}
@@ -155,13 +156,14 @@ class ViewItemTest extends TestCase {
 	
 	/**
 	 * Testing invalid HTML parameter yeilds TypeError.
-	 *
+	 * 
 	 * @dataProvider Tests\DataProviders::nonStringProvider
-	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid non-string type
 	 */
 	public function testInvalidHTMLType ($invalid) {
+		$this->expectException('\TypeError');
+		
 		$this->html = $invalid;
 		$this->instance ();
 	}
@@ -199,13 +201,14 @@ class ViewItemTest extends TestCase {
 	
 	/**
 	 * Testing invalid JS tags parameter yeilds TypeError.
-	 *
+	 * 
 	 * @dataProvider Tests\DataProviders::nonArrayProvider
-	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid non-array type
 	 */
 	public function testInvalidJSTagsType ($invalid) {
+		$this->expectException('\TypeError');
+		
 		$this->js_tags = $invalid;
 		$this->instance ();
 	}
@@ -214,11 +217,12 @@ class ViewItemTest extends TestCase {
 	 * Testing invalid JS tags items type yields InvalidArgumentException.
 	 * 
 	 * @dataProvider Tests\DataProviders::nonStringProvider
-	 * @expectedException InvalidArgumentException
 	 * 
 	 * @param mixed $invalid non-string type
 	 */
 	public function testInvalidJSTagsItemType ($invalid) {
+		$this->expectException('\InvalidArgumentException');
+		
 		$this->js_tags = [$invalid];
 		$this->instance ();
 	}

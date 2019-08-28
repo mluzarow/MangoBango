@@ -3,14 +3,13 @@ declare (strict_types = 1);
 
 namespace Tests\Services\View;
 
-use PHPUnit\Framework\TestCase;
 use Services\View\Controller;
 use Services\View\Service;
 
 /**
  * Test targetting the view service controller.
  */
-class ControllerTest extends TestCase {
+class ControllerTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Instances the view service Controller class with the current parameters.
 	 * 
@@ -60,11 +59,12 @@ class ControllerTest extends TestCase {
 	 * TypeError.
 	 * 
 	 * @dataProvider Tests\DataProviders::nonStringProvider
-	 * @expectedException TypeError
 	 * 
 	 * @param mixed $invalid non-string type
 	 */
 	public function testBuildViewServiceInvalidRootPathType ($invalid) {
+		$this->expectException('\TypeError');
+		
 		$this->instance ()->buildViewService ($invalid);
 	}
 }

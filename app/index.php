@@ -21,6 +21,13 @@ spl_autoload_register(function ($className) {
 	}
 });
 
+// Handle loose exceptions
+function exceptionHandler($exception) {
+	echo "<b>Exception:</b> " . $exception->getMessage();
+}
+
+set_exception_handler('exceptionHandler');
+
 /**
  * Gets the master view object.
  * 
@@ -70,8 +77,11 @@ function getPageView (string $title, ViewItem $view) : string {
 $db_status = true;
 try {
 	$db = \Core\Database::getInstance ();
-} catch (\Throwable $e) {
+} catch (\Exception\DatabaseInitException $e) {
 	$db_status = false;
+} catch (\Throwable $e) {
+	echo $e->getMessage();
+	exit;
 }
 
 // Load user session

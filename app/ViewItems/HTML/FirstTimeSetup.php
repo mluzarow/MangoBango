@@ -12,16 +12,32 @@
 		</div>
 		<div class="setup_btn setup_start_btn">Run Setup</div>
 		<div class="divider section_two"></div>
-		<div class="setup_message section_two">
-			Create a user below to use as the admin user. You can later 
-			change your username, password, or permissions on the config
-			page.
+		<div class="section_two">
+			<div class="status">
+				<i class="loading fa fa-sync fa-spin"></i>
+				<i class="success fa fa-check-square"></i>
+				<i class="failed fa fa-exclamation-triangle"></i>
+			</div><?php
+			?><div class="setup_message">
+				Creating database schema...
+			</div>
+			<div class="status">
+				<i class="loading fa fa-sync fa-spin"></i>
+				<i class="success fa fa-check-square"></i>
+				<i class="failed fa fa-exclamation-triangle"></i>
+			</div><?php
+			?><div class="setup_message">
+				Creating default configurations...
+			</div>
+			<div class="status">
+				<i class="loading fa fa-sync fa-spin"></i>
+				<i class="success fa fa-check-square"></i>
+				<i class="failed fa fa-exclamation-triangle"></i>
+			</div><?php
+			?><div class="setup_message">
+				Creating admin user (username: admin, password: racecar)...
+			</div>
 		</div>
-		<div class="input_wrap section_two">
-			<input id="username" type="text" autocomplete="off" placeholder="Username" />
-			<input id="password" type="text" autocomplete="off" placeholder="Password" />
-		</div>
-		<div class="setup_btn add_user_btn section_two">Add User</div>
 		<div class="divider section_three"></div>
 		<div class="setup_message section_three">
 			Congradulations! You are all set up! Redirecting you to the

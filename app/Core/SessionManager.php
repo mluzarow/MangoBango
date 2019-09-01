@@ -51,14 +51,14 @@ class SessionManager {
 		$db = \Core\Database::getInstance ();
 		
 		// Get saved value
-		$q = '
-			SELECT `username`, `password` FROM `users`
-			WHERE `username` = "'.$db->sanitize ($_POST['username']).'"';
-		$r = $db->query ($q);
+		$q =
+			'SELECT username, password FROM users
+			WHERE username = :username';
+		$r = $db->execute ($q, ['username' => $_POST['username']]);
 		
 		if (empty ($r)) {
 			// No matching username found
-			return (0);
+			return 0;
 		}
 		
 		$pass_valid = password_verify($_POST['password'], $r[0]['password']);

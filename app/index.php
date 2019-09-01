@@ -21,6 +21,13 @@ spl_autoload_register(function ($className) {
 	}
 });
 
+// Handle loose exceptions
+function exceptionHandler($exception) {
+	echo "<b>Exception:</b> " . $exception->getMessage();
+}
+
+set_exception_handler('exceptionHandler');
+
 /**
  * Gets the master view object.
  * 
@@ -67,12 +74,7 @@ function getPageView (string $title, ViewItem $view) : string {
 		);
 }
 
-$db_status = true;
-try {
-	$db = \Core\Database::getInstance ();
-} catch (\Throwable $e) {
-	$db_status = false;
-}
+$db = \Core\Database::getInstance ();
 
 // Load user session
 $user_session = new \Core\SessionManager ();
@@ -90,42 +92,6 @@ if (count ($current_segs) === 1) {
 		unset ($current_segs[0]);
 		$current_segs = array_values ($current_segs);
 	}
-}
-
-if ($db_status === false) {
-	// DB is not set up; ignore everything and route to the first time setup page
-	$uri = strtolower (implode ('/', $current_segs));
-	
-	if (
-		$uri === 'firsttimesetup' ||
-		$uri === 'ajax/controllers/firsttimesetup/ajaxrunsetup'
-	) {
-		if ($current_segs[0] === 'ajax') {
-			unset ($current_segs[0]);
-			$current_segs = array_values ($current_segs);
-			
-			$ajax = new AJAXProcessor ($current_segs);
-			$result = $ajax->fireTargetMethod ();
-			
-			echo $result;
-		} else {
-			echo getPageView (
-				'First Time Setup',
-				(new \Controllers\FirstTimeSetup ())->begin ()
-			);
-		}
-	} else {
-		// Redirect to first time setup
-		header ('Location: /firsttimesetup', true, 301);
-		exit;
-	}
-	
-	return;
-} else if (in_array ('firsttimesetup', $current_segs)) {
-	// Database is set up, so do not allow access to this script again. Redirect
-	// to login page.
-	header ('Location: /login', true, 301);
-	exit;
 }
 
 if ((new \Core\SessionManager ())->isLoggedIn () === false) {

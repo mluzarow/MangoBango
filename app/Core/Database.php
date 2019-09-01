@@ -3,6 +3,9 @@ declare (strict_types = 1);
 
 namespace Core;
 
+use Exception\DatabaseInitException;
+use Exception\DatabaseQueryException;
+
 /**
  * Database helper for interacting with the MariaDB database.
  */
@@ -18,17 +21,11 @@ class Database {
 	private static $instance;
 	
 	/**
-	 * @var mysqli $connection database connection
-	 * @var string $host       database hostname
-	 * @var string $password   database password
-	 * @var string $port       database port number
-	 * @var string #user       database username
+	 * @var \SQLite3 $connection database connection
+	 * @var string   $db_path    database hostname
 	 */
 	private $connection;
-	private $host;
-	private $password;
-	private $port;
-	private $user;
+	private $db_path;
 	
 	/**
 	 * Gets the instance of the database controller.
@@ -39,6 +36,7 @@ class Database {
 		if (self::$instance === null) {
 			self::$instance = new \Core\Database ();
 			self::$instance->initialize ();
+			
 		}
 		
 		return self::$instance;
@@ -61,75 +59,131 @@ class Database {
 	}
 	
 	/**
+	 * Query via prepared statement q with parameters defined in params.
+	 * 
+	 * @param string $q      query string
+	 * @param array  $params dictionary of query parameters
+	 * 
+	 * @return array|true list of returned rows or success flag
+	 * 
+	 * @throws DatabaseQueryException on failed query
+	 */
+	public function execute (string $q, array $params) {
+		$s = $this->connection->prepare ($q);
+		
+		if ($s === false) {
+			throw new DatabaseQueryException (
+				'Failed to prepare query. Error message: '.
+				$this->connection->error
+			);
+		}
+		
+		foreach ($params as $var_name => $value) {
+			if (is_int ($value)) {
+				$type = SQLITE3_INTEGER;
+			} elseif (is_null($value)) {
+				$type = SQLITE3_NULL;
+			} else {
+				$type = SQLITE3_TEXT;
+			}
+			
+			$p = $s->bindParam (':'.$var_name, $value, $type);
+			
+			if ($p === false) {
+				throw new DatabaseQueryException (
+					"Failed to bind parameter {$var_name}. Error message: ".
+					$this->connection->error
+				);
+			}
+		}
+		
+		$r = $s->execute ();
+		
+		if ($r === false) {
+			throw new DatabaseQueryException (
+				'Database query failed. Error message: '.$this->connection->error
+			);
+		}
+		
+		if ($r === true) {
+			return true;
+		}
+		
+		$data = [];
+		while ($row = $r->fetchArray (SQLITE3_ASSOC)) {
+			$data[] = $row;
+		}
+		
+		return $data;
+	}
+	
+	/**
 	 * Queries the database with the given MySQL string.
 	 * 
 	 * @param string $q MySQL query string
 	 * 
 	 * @return array|true list of returned rows or success flag
 	 * 
-	 * @throws Exception on failed query
+	 * @throws DatabaseQueryException on failed query
 	 */
 	public function query (string $q) {
 		$r = $this->connection->query ($q);
 		
 		if ($r === false)
-			throw new \Exception ($this->connection->error);
+			throw new DatabaseQueryException (
+				'Database query failed. Error message: '.$this->connection->error
+			);
 		
 		if ($r === true)
 			return true;
 		
-		$result = [];
-		while ($item = $r->fetch_assoc ())
-			$result[] = $item;
+		$data = [];
+		while ($row = $r->fetchArray (SQLITE3_ASSOC)) {
+			$data[] = $row;
+		}
 		
-		return $result;
+		return $data;
 	}
 	
 	public function getLastIndex () {
-		return $this->connection->insert_id;
-	}
-	
-	/**
-	 * Sanitizes the given string.
-	 * 
-	 * @param string $input raw input string
-	 * 
-	 * @return string sanitized input string
-	 */
-	public function sanitize (string $input) : string {
-		return $this->connection->real_escape_string ($input);
+		return $this->connection->lastInsertRowid ();
 	}
 	
 	/**
 	 * Constructor for database controller.
+	 * 
+	 * @throws \IOException on missing server ini file
 	 */
 	private function __construct () {
 		$config_data = parse_ini_file (self::DB_INI);
 		
 		if (empty($config_data))
-			throw new \IOException ('NO INI FILE');
+			throw new \IOException ('Missing server ini file at '.DB_INI);
 		
-		$this->host = $config_data['host'];
-		$this->password = $config_data['password'];
-		$this->port = $config_data['port'];
-		$this->user = $config_data['user'];
+		$this->db_path = empty($config_data['path']) ? '' : $config_data['path'];
 	}
 	
 	/**
 	 * Initialized database connection.
 	 * 
-	 * @uses \mysqli to instance MySQL database connection
-	 * 
-	 * @throws Exception on DB context query failure
+	 * @throws DatabaseInitException on DB initialization failure
 	 */
 	private function initialize () {
-		$this->connection = new \mysqli (
-			$this->host.':'.$this->port,
-			$this->user,
-			$this->password
-		);
+		if (empty($this->db_path))
+			throw new DatabaseInitException (
+				'Path to database file not provided.'
+			);
 		
-		if ($this->connection->query ('use `server`') === false)
-			throw new \Exception ('SOMETHING WRONG WITH DB');
+		$full_path = rtrim ($this->db_path, DIRECTORY_SEPARATOR).
+			DIRECTORY_SEPARATOR.'database.db';
+		
+		try {
+			$this->connection = new \SQLite3 ($full_path);
+		} catch (\Exception $e) {
+			throw new DatabaseInitException (
+				"Failed to open database file at {$full_path}. ".
+				'SQLite3 message: '.$e->getMessage()
+			);
+		}
 	}
 }

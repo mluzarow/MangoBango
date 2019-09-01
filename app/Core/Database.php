@@ -59,6 +59,65 @@ class Database {
 	}
 	
 	/**
+	 * Query via prepared statement q with parameters defined in params.
+	 * 
+	 * @param string $q      query string
+	 * @param array  $params dictionary of query parameters
+	 * 
+	 * @return array|true list of returned rows or success flag
+	 * 
+	 * @throws DatabaseQueryException on failed query
+	 */
+	public function execute (string $q, array $params) {
+		$s = $this->connection->prepare ($q);
+		
+		if ($s === false) {
+			throw new DatabaseQueryException (
+				'Failed to prepare query. Error message: '.
+				$this->connection->error
+			);
+		}
+		
+		foreach ($params as $var_name => $value) {
+			if (is_int ($value)) {
+				$type = SQLITE3_INTEGER;
+			} elseif (is_null($value)) {
+				$type = SQLITE3_NULL;
+			} else {
+				$type = SQLITE3_TEXT;
+			}
+			
+			$p = $s->bindParam (':'.$var_name, $value, $type);
+			
+			if ($p === false) {
+				throw new DatabaseQueryException (
+					"Failed to bind parameter {$var_name}. Error message: ".
+					$this->connection->error
+				);
+			}
+		}
+		
+		$r = $s->execute ();
+		
+		if ($r === false) {
+			throw new DatabaseQueryException (
+				'Database query failed. Error message: '.$this->connection->error
+			);
+		}
+		
+		if ($r === true) {
+			return true;
+		}
+		
+		$data = [];
+		while ($row = $r->fetchArray (SQLITE3_ASSOC)) {
+			$data[] = $row;
+		}
+		
+		return $data;
+	}
+	
+	/**
 	 * Queries the database with the given MySQL string.
 	 * 
 	 * @param string $q MySQL query string
@@ -78,11 +137,12 @@ class Database {
 		if ($r === true)
 			return true;
 		
-		$result = [];
-		while ($item = $r->fetch_assoc ())
-			$result[] = $item;
+		$data = [];
+		while ($row = $r->fetchArray (SQLITE3_ASSOC)) {
+			$data[] = $row;
+		}
 		
-		return $result;
+		return $data;
 	}
 	
 	public function getLastIndex () {

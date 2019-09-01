@@ -146,18 +146,7 @@ class Database {
 	}
 	
 	public function getLastIndex () {
-		return $this->connection->insert_id;
-	}
-	
-	/**
-	 * Sanitizes the given string.
-	 * 
-	 * @param string $input raw input string
-	 * 
-	 * @return string sanitized input string
-	 */
-	public function sanitize (string $input) : string {
-		return $this->connection->real_escape_string ($input);
+		return $this->connection->lastInsertRowid ();
 	}
 	
 	/**

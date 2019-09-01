@@ -33,43 +33,43 @@ class Config {
 		$configs = json_decode ($_POST['config'], true);
 		
 		if (!empty ($configs['assets_directory'])) {
-			$q = '
-				UPDATE `server_configs` 
-				SET `config_value` = "'.$this->db->sanitize ($configs['assets_directory']).'" 
-				WHERE `config_name` = "assets_directory"';
-			$r = $this->db->query ($q);
+			$q =
+				'UPDATE server_configs
+				SET config_value = :v
+				WHERE config_name = "assets_directory"';
+			$r = $this->db->execute ($q, ['v' => $configs['assets_directory']]);
 		}
 		
 		if (!empty ($configs['directory_structure'])) {
-			$q = '
-				UPDATE `server_configs` 
-				SET `config_value` = "'.$this->db->sanitize ($configs['directory_structure']).'" 
-				WHERE `config_name` = "directory_structure"';
-			$r = $this->db->query ($q);
+			$q =
+				'UPDATE server_configs
+				SET config_value = :v
+				WHERE config_name = "directory_structure"';
+			$r = $this->db->execute ($q, ['v' => $configs['directory_structure']]);
 		}
 		
 		if (!empty ($configs['reader_display_style'])) {
-			$q = '
-				UPDATE `server_configs` 
-				SET `config_value` = '.$configs['reader_display_style'].' 
-				WHERE `config_name` = "reader_display_style"';
-			$r = $this->db->query ($q);
+			$q =
+				'UPDATE server_configs
+				SET config_value = :v
+				WHERE config_name = "reader_display_style"';
+			$r = $this->db->execute ($q, ['v' => $configs['reader_display_style']]);
 		}
 		
 		if (!empty ($configs['manga_directory'])) {
-			$q = '
-				UPDATE `server_configs` 
-				SET `config_value` = "'.$this->db->sanitize ($configs['manga_directory']).'" 
-				WHERE `config_name` = "manga_directory"';
-			$r = $this->db->query ($q);
+			$q =
+				'UPDATE server_configs
+				SET config_value = :v
+				WHERE config_name = "manga_directory"';
+			$r = $this->db->execute ($q, ['v' => $configs['manga_directory']]);
 		}
 		
 		if (!empty ($configs['library_view_type'])) {
-			$q = '
-				UPDATE `server_configs` 
-				SET `config_value` = '.$configs['library_view_type'].' 
-				WHERE `config_name` = "library_view_type"';
-			$r = $this->db->query ($q);
+			$q =
+				'UPDATE server_configs
+				SET config_value = :v
+				WHERE config_name = "library_view_type"';
+			$r = $this->db->execute ($q, ['v' => $configs['library_view_type']]);
 		}
 	}
 	
@@ -77,9 +77,9 @@ class Config {
 	 * Runs page process.
 	 */
 	public function begin () {
-		$q = '
-			SELECT `config_name`, `config_value`
-			FROM `server_configs`';
+		$q =
+			'SELECT config_name, config_value
+			FROM server_configs';
 		$r = $this->db->query ($q);
 		
 		$configs_dict = [];
@@ -137,10 +137,10 @@ class Config {
 	 * @return array dictionary of new series and all its files in order
 	 */
 	private function scanLibrary () {
-		$q = '
-			SELECT `config_name`, `config_value`
-			FROM `server_configs`
-			WHERE `config_name` IN ("directory_structure", "manga_directory")';
+		$q =
+			'SELECT config_name, config_value
+			FROM server_configs
+			WHERE config_name IN ("directory_structure", "manga_directory")';
 		$r = $this->db->query ($q);
 		
 		$configs = [];
@@ -153,10 +153,10 @@ class Config {
 		$new_content = [];
 		foreach ($directory_tree as $series_name => $series_contents) {
 			// Check if this folder is already bound to a series
-			$q = '
-				SELECT `series_id` FROM `directories_series`
-				WHERE `folder_name` = "'.$this->db->sanitize ($series_name).'"';
-			$r = $this->db->query ($q);
+			$q =
+				'SELECT series_id FROM directories_series
+				WHERE folder_name = :v';
+			$r = $this->db->execute ($q, ['v' => $series_name]);
 			
 			if (!empty ($r)) {
 				continue;
@@ -219,64 +219,64 @@ class Config {
 	 */
 	private function saveNewManga ($manga_list) {
 		foreach ($manga_list as $manga) {
-			$q = '
-				INSERT INTO `metadata_series`
-					(`name`, `name_original`, `summary`, `genres`)
+			$q =
+				'INSERT INTO metadata_series
+					(name, name_original, summary, genres)
 				VALUES
-					(
-						"'.$manga['metadata']['manga_info']['title'].'",
-						"'.$manga['metadata']['manga_info']['original_title'].'",
-						"'.$this->db->sanitize ($manga['metadata']['manga_info']['description']).'",
-						"'.$this->db->sanitize (json_encode ($manga['metadata']['manga_info']['tags'])).'"
-					)';
-			$r = $this->db->query ($q);
+					(:name, :name_original, :summary, :genres)';
+			$r = $this->db->execute (
+				$q,
+				[
+					'name' => $manga['metadata']['manga_info']['title'],
+					'name_original' => $manga['metadata']['manga_info']['original_title'],
+					'summary' => $manga['metadata']['manga_info']['description'],
+					'genres' => json_encode ($manga['metadata']['manga_info']['tags'])
+				]
+			);
 			
 			$new_id_series = $this->db->getLastIndex ();
 			
-			$q = '
-				INSERT INTO `directories_series`
-					(`series_id`, `folder_name`)
+			$q =
+				"INSERT INTO directories_series
+					(series_id, folder_name)
 				VALUES
-					(
-						'.$new_id_series.',
-						"'.$manga['folder_name'].'"
-					)';
+					({$new_id_series}, \"{$manga['folder_name']}\")";
 			$r = $this->db->query ($q);
 			
-			$q = '
-				INSERT INTO `images_series`
-					(`series_id`, `cover_ext`)
+			$q =
+				"INSERT INTO images_series
+					(series_id, cover_ext)
 				VALUES
-					('.$new_id_series.', "")';
+					({$new_id_series}, \"\")";
 			$r = $this->db->query ($q);
 			
 			$chap_sort = 1;
 			foreach ($manga['chapters'] as $chapter) {
-				$q = '
-					INSERT INTO `metadata_chapters`
-						(`global_sort`, `chapter_name`)
+				$q =
+					"INSERT INTO metadata_chapters
+						(global_sort, chapter_name)
 					VALUES
-						('.$chap_sort.', "")';
+						({$chap_sort}, \"\")";
 				$r = $this->db->query ($q);
 				
 				$new_id_chapter = $this->db->getLastIndex ();
 				
-				$q = '
-					INSERT INTO `directories_chapters`
-						(`chapter_id`, `folder_name`, `is_archive`)
+				$q =
+					"INSERT INTO directories_chapters
+						(chapter_id, folder_name, is_archive)
 					VALUES
 						(
-							'.$new_id_chapter.',
-							"'.$chapter['folder_name'].'",
-							'.$chapter['is_archive'].'
-						)';
+							{$new_id_chapter},
+							\"{$chapter['folder_name']}\",
+							{$chapter['is_archive']}
+						)";
 				$r = $this->db->query ($q);
 				
-				$q = '
-					INSERT INTO `connections_series`
-						(`chapter_id`, `series_id`)
+				$q =
+					"INSERT INTO connections_series
+						(chapter_id, series_id)
 					VALUES
-						('.$new_id_chapter.', '.$new_id_series.')';
+						({$new_id_chapter}, {$new_id_series})";
 				$r = $this->db->query ($q);
 				
 				$chap_sort++;

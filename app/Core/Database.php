@@ -59,15 +59,6 @@ class Database {
 	}
 	
 	/**
-	 * Gets database file path.
-	 * 
-	 * @return string database file path
-	 */
-	public function getDBPath() : string {
-		return $this->db_path;
-	}
-	
-	/**
 	 * Queries the database with the given MySQL string.
 	 * 
 	 * @param string $q MySQL query string
@@ -134,11 +125,14 @@ class Database {
 				'Path to database file not provided.'
 			);
 		
+		$full_path = rtrim ($this->db_path, DIRECTORY_SEPARATOR).
+			DIRECTORY_SEPARATOR.'database.db';
+		
 		try {
-			$this->connection = new \SQLite3 ($this->db_path);
+			$this->connection = new \SQLite3 ($full_path);
 		} catch (\Exception $e) {
 			throw new DatabaseInitException (
-				"Failed to open database file at {$this->db_path}. ".
+				"Failed to open database file at {$full_path}. ".
 				'SQLite3 message: '.$e->getMessage()
 			);
 		}

@@ -55,11 +55,11 @@ if (!file_exists($db_filepath)) {
 
 // Set up tables
 $db = new \SQLite3($db_filepath);
-$n = 0;
+$table_failed = false;
 
 $q =
 	'CREATE TABLE IF NOT EXISTS metadata_series (
-		series_id INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY,
+		series_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
 		name_original TEXT NULL DEFAULT NULL,
 		summary TEXT NULL DEFAULT NULL,
@@ -68,6 +68,7 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: metadata_series.\n";
 }
 
@@ -79,6 +80,7 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: directories_series.\n";
 }
 
@@ -90,18 +92,20 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: images_series.\n";
 }
 
 $q =
 	'CREATE TABLE IF NOT EXISTS metadata_chapters (
-		chapter_id INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY,
+		chapter_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 		global_sort INTEGER NOT NULL,
 		chapter_name text NULL DEFAULT NULL
 	)';
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: metadata_chapters.\n";
 }
 
@@ -114,18 +118,20 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: directories_chapters.\n";
 }
 
 $q =
 	'CREATE TABLE IF NOT EXISTS metadata_volumes (
-		volume_id INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY,
+		volume_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 		sort INTEGER NOT NULL,
 		volume_name TEXT NULL DEFAULT NULL
 	)';
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: metadata_volumes.\n";
 }
 
@@ -139,6 +145,7 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: images_volumes.\n";
 }
 
@@ -150,6 +157,7 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: connections_series.\n";
 }
 
@@ -161,6 +169,7 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: connections_volumes.\n";
 }
 
@@ -172,36 +181,39 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: connections_chapters.\n";
 }
 
 $q =
 	'CREATE TABLE IF NOT EXISTS server_configs (
-		config_id INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY,
+		config_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 		config_name TEXT NOT NULL UNIQUE,
 		config_value TEXT NULL DEFAULT NULL
 	)';
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: server_configs.\n";
 }
 
 $q =
 	'CREATE TABLE IF NOT EXISTS statistics (
-		stat_id INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY,
+		stat_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
 		value TEXT NOT NULL
 	)';
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: statistics.\n";
 }
 
 $q =
 	'CREATE TABLE IF NOT EXISTS users (
-		user_id INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY,
+		user_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 		username TEXT NOT NULL UNIQUE,
 		password TEXT NOT NULL,
 		type TEXT NOT NULL
@@ -209,6 +221,7 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: users.\n";
 }
 
@@ -220,10 +233,11 @@ $q =
 $r = $db->query ($q);
 
 if ($r === false) {
+	$table_failed = true;
 	echo "!! Failed to create table: user_types.\n";
 }
 
-if (!empty($n)) {
+if ($table_failed === true) {
 	echo "✗ Failed to create some tables.\n";
 	return;
 }

@@ -225,5 +225,43 @@ if ($r === false) {
 
 if (!empty($n)) {
 	echo "✗ Failed to create some tables.\n";
+	return;
 }
 
+echo "✔ Successfully created all tables.\n";
+
+// Create default configs
+$q =
+	'INSERT INTO server_configs
+		(config_name, config_value)
+	VALUES
+		("assets_directory", ""),
+		("directory_structure", ""),
+		("reader_display_style", 2),
+		("manga_directory", ""),
+		("library_view_type", 1)';
+$r = $db->query ($q);
+
+if ($r === false) {
+	echo "✗ Failed to set up default configs.\n";
+	return;
+}
+
+echo "✔ Successfully created default configs.\n";
+
+// Create default user
+$q = '
+	INSERT INTO `users`
+		(`username`, `password`, `type`)
+	VALUES
+		("admin", "'.password_hash ('racecar', PASSWORD_DEFAULT).'", "admin")';
+$r = $db->query ($q);
+
+if ($r === false) {
+	echo "✗ Failed to set up default user.\n";
+	return;
+}
+
+echo "✔ Successfully created default user. Username: admin, Password: racecar\n";
+
+echo "✔ Success! We did it!\n";

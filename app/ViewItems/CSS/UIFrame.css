@@ -81,7 +81,6 @@ body {
 }
 
 .topbar .login_wrap {
-	position: relative;
 	min-width: 140px;
 	height: 39px;
 	display: inline-block;
@@ -115,9 +114,9 @@ body {
 
 .topbar .login_wrap .dropdown_menu {
 	position: absolute;
-	top: calc(100% + 5px);
-	right: -4px;
-	width: 100%;
+	top: 100%;
+	right: 0;
+	width: 145px;
 }
 
 .topbar .icons_wrap .burger_dropdown {

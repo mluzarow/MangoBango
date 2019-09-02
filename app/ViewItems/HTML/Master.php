@@ -47,7 +47,9 @@
 				<span>Logged in as</span>
 				<span class="login_name"><?php echo $view->getUsername (); ?></span>
 			</div>
-			<div class="dropdown_menu_button expand_arrow">▾</div>
+			<div class="dropdown_menu_button expand_arrow">
+				<i class="fas fa-caret-down"></i>
+			</div>
 			<div class="dropdown_menu">
 				<div class="logout_btn">Log Out</div>
 			</div>

@@ -4,7 +4,7 @@
 	</div>
 	<div class="icons_wrap">
 		<div class="button btn_burger dropdown_menu_button">
-			<img src="\resources\icons\burger.svg" />
+			<i class="fas fa-bars"></i>
 		</div>
 		<div class="burger_dropdown dropdown_menu">
 			<div class="menu_item login_wrap_mobile">
@@ -16,30 +16,30 @@
 			</div>
 			<div class="menu_item">
 				<a href="/displaylibrary">
-					<img src="\resources\icons\bookshelf.svg" />
+					<i class="fas fa-book"></i>
 					<span>Library</span>
 				</a>
 			</div>
 			<div class="menu_item">
 				<a href="/config">
-					<img src="\resources\icons\gears.svg" />
+					<i class="fas fa-cogs"></i>
 					<span>Settings</span>
 				</a>
 			</div>
 		</div>
 		<div class="button btn_library">
 			<a href="/displaylibrary">
-				<img src="\resources\icons\bookshelf.svg" />
+				<i class="fas fa-book"></i>
 			</a>
-		</div>
-		<div class="flyout library">
+		</div><?php
+		?><div class="flyout library">
 			<div class="search_wrap">
 				<input class="search_box" type="text" autocomplete="off" />
 			</div>
-		</div>
-		<div class="button btn_config">
+		</div><?php
+		?><div class="button btn_config">
 			<a href="/config">
-				<img src="\resources\icons\gears.svg" />
+				<i class="fas fa-cogs"></i>
 			</a>
 		</div>
 		<div class="login_wrap">
@@ -47,7 +47,9 @@
 				<span>Logged in as</span>
 				<span class="login_name"><?php echo $view->getUsername (); ?></span>
 			</div>
-			<div class="dropdown_menu_button expand_arrow">▾</div>
+			<div class="dropdown_menu_button expand_arrow">
+				<i class="fas fa-caret-down"></i>
+			</div>
 			<div class="dropdown_menu">
 				<div class="logout_btn">Log Out</div>
 			</div>

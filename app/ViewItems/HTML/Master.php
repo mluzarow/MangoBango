@@ -4,7 +4,7 @@
 	</div>
 	<div class="icons_wrap">
 		<div class="button btn_burger dropdown_menu_button">
-			<img src="\resources\icons\burger.svg" />
+			<i class="fas fa-bars"></i>
 		</div>
 		<div class="burger_dropdown dropdown_menu">
 			<div class="menu_item login_wrap_mobile">

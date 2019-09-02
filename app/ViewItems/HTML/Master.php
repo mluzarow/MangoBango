@@ -16,30 +16,30 @@
 			</div>
 			<div class="menu_item">
 				<a href="/displaylibrary">
-					<img src="\resources\icons\bookshelf.svg" />
+					<i class="fas fa-book"></i>
 					<span>Library</span>
 				</a>
 			</div>
 			<div class="menu_item">
 				<a href="/config">
-					<img src="\resources\icons\gears.svg" />
+					<i class="fas fa-cogs"></i>
 					<span>Settings</span>
 				</a>
 			</div>
 		</div>
 		<div class="button btn_library">
 			<a href="/displaylibrary">
-				<img src="\resources\icons\bookshelf.svg" />
+				<i class="fas fa-book"></i>
 			</a>
-		</div>
-		<div class="flyout library">
+		</div><?php
+		?><div class="flyout library">
 			<div class="search_wrap">
 				<input class="search_box" type="text" autocomplete="off" />
 			</div>
-		</div>
-		<div class="button btn_config">
+		</div><?php
+		?><div class="button btn_config">
 			<a href="/config">
-				<img src="\resources\icons\gears.svg" />
+				<i class="fas fa-cogs"></i>
 			</a>
 		</div>
 		<div class="login_wrap">

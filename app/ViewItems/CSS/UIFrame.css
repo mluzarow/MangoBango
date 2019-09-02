@@ -5,6 +5,8 @@
 
 :root {
 	--hightlight_bg: #ffc800;
+	--backlight: #414141;
+	--icon_hover: #000;
 }
 
 html,
@@ -41,9 +43,17 @@ body {
 }
 
 .topbar .icons_wrap .button {
-	padding: 0 20px;
-	width: 34px;
+	padding-right: 25px;
 	display: inline-block;
+	font-size: 2.3em;
+}
+
+.topbar .icons_wrap .button i {
+	color: var(--backlight);
+}
+
+.topbar .icons_wrap .button i:hover {
+	color: var(--icon_hover);
 }
 
 .topbar .icons_wrap .button.btn_burger {

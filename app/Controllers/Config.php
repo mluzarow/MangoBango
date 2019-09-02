@@ -165,8 +165,13 @@ class Config {
 			// Try and load the metadata file
 			$metadata = $configs['manga_directory'].DIRECTORY_SEPARATOR.$series_name.DIRECTORY_SEPARATOR.'info.json';
 			$f = fopen ($metadata, 'r');
-			$blob = fread ($f, filesize ($metadata));
-			fclose ($f);
+			
+			if (!empty($f)) {
+				$blob = fread ($f, filesize ($metadata));
+				fclose ($f);
+			} else {
+				$blob = '[]';
+			}
 			
 			$new_manga = [
 				'folder_name' => $series_name,
@@ -227,10 +232,14 @@ class Config {
 			$r = $this->db->execute (
 				$q,
 				[
-					'name' => $manga['metadata']['manga_info']['title'],
-					'name_original' => $manga['metadata']['manga_info']['original_title'],
-					'summary' => $manga['metadata']['manga_info']['description'],
-					'genres' => json_encode ($manga['metadata']['manga_info']['tags'])
+					'name' => empty($manga['metadata']['manga_info']['title']) ?
+						'' : $manga['metadata']['manga_info']['title'],
+					'name_original' => empty($manga['metadata']['manga_info']['original_title']) ?
+						'' : $manga['metadata']['manga_info']['original_title'],
+					'summary' => empty($manga['metadata']['manga_info']['description']) ?
+						'' : $manga['metadata']['manga_info']['description'],
+					'genres' => empty($manga['metadata']['manga_info']['tags']) ?
+						'[]' : json_encode ($manga['metadata']['manga_info']['tags'])
 				]
 			);
 			

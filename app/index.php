@@ -1,5 +1,9 @@
 <?php
 declare (strict_types = 1);
+define ('APP_PATH', __DIR__);
+define ('VENDOR_PATH', str_replace(DIRECTORY_SEPARATOR.'app', '', __DIR__).DIRECTORY_SEPARATOR.'vendor');
+
+require VENDOR_PATH.DIRECTORY_SEPARATOR.'autoload.php';
 
 use \Core\AJAXProcessor;
 use Services\View\Data\ViewItem;
@@ -22,11 +26,9 @@ spl_autoload_register(function ($className) {
 });
 
 // Handle loose exceptions
-function exceptionHandler($exception) {
-	echo "<b>Exception:</b> " . $exception->getMessage();
-}
-
-set_exception_handler('exceptionHandler');
+$whoops = new \Whoops\Run;
+$whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
 
 /**
  * Gets the master view object.

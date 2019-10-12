@@ -160,7 +160,8 @@ class Database {
 		if (empty($config_data))
 			throw new \IOException ('Missing server ini file at '.DB_INI);
 		
-		$this->db_path = empty($config_data['path']) ? '' : $config_data['path'];
+		$this->db_path = empty($config_data['path']) ?
+			APP_PATH : $config_data['path'];
 	}
 	
 	/**

@@ -36,7 +36,10 @@ $db_filepath = rtrim($f['path'], DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'datab
 
 // Check that DB file exists
 if (!file_exists($db_filepath)) {
-	if (!mkdir($f['path'], 0777, true)) {
+	if (
+		!is_dir(rtrim($f['path'], DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR) &&
+		!mkdir($f['path'], 0777, true)
+	) {
 		echo "✗ Failed to create directory path: {$f['path']}.\n";
 		return;
 	}

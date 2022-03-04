@@ -26,7 +26,14 @@ class Factory {
 		
 		$namespace = "\\Services\\View\\Data\\{$name}";
 		
-		return new $namespace (... $parameters);
+		if (class_exists($namespace) === false) {
+			// No specific data object exists so use the default one
+			$namespace = "\\Services\\View\\Data\\ViewData";
+			
+			return new $namespace ($parameters);
+		} else {
+			return new $namespace (... $parameters);
+		}
 	}
 	
 	/**
